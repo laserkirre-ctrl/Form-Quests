@@ -40,6 +40,14 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .btn.fr-dotted::before { border-style: dotted; }
 .btn.sh-round.fr-double::before, .btn.sh-round.fr-dashed::before, .btn.sh-round.fr-dotted::before { border-radius: .3em; }
 .btn.sh-pill.fr-double::before, .btn.sh-pill.fr-dashed::before, .btn.sh-pill.fr-dotted::before { border-radius: 999px; }
+/* Rahmen der geschnittenen Form: SVG-Overlay statt CSS-Rahmen */
+.btn.sh-cut, .btn.sh-cut:hover, .btn.sh-cut:focus-visible { box-shadow: none !important; }
+.btn.sh-cut::before { display: none !important; }
+.cf { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+.cf polygon { fill: none; }
+.cf .fr { stroke: var(--fr); }
+.cf .hv { stroke: var(--a); opacity: 0; }
+.btn.sh-cut.hv-invert:hover .cf .hv, .btn.sh-cut.hv-invert:focus-visible .cf .hv, .btn.sh-cut.f-ghost.fr-none:hover .cf .hv, .btn.sh-cut.f-ghost.fr-none:focus-visible .cf .hv { opacity: 1; }
 /* Muster */
 .btn::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
 .btn.pt-scan::after { background: repeating-linear-gradient(0deg, var(--pt) 0 1px, transparent 1px 3px); }
@@ -456,6 +464,21 @@ function iconNode(name) {
   else span.textContent = Array.from(name).slice(0, 4).join("");
   return span;
 }
+/* Rahmen für die geschnittene Form: SVG folgt den abgeschrägten Ecken (CSS-Rahmen würde sie nicht mitmachen) */
+const CUT_FRAMES = { thin: [{ d: .5, w: 1 }], thick: [{ d: 1, w: 2 }], double: [{ d: .5, w: 1 }, { d: 3.5, w: 1 }], dashed: [{ d: 2.5, w: 1, dash: "4 3" }], dotted: [{ d: 2.5, w: 1.3, dash: "0 3", cap: "round" }] };
+function cutFrame(b, frame) {
+  const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg"); svg.setAttribute("class", "cf"); svg.setAttribute("aria-hidden", "true");
+  const defs = (CUT_FRAMES[frame] || []).map((o) => Object.assign({ cls: "fr" }, o)).concat([{ d: .5, w: 1, cls: "hv" }]);
+  const polys = defs.map((o) => { const p = document.createElementNS(NS, "polygon"); p.setAttribute("class", o.cls); p.setAttribute("stroke-width", o.w); if (o.dash) p.setAttribute("stroke-dasharray", o.dash); if (o.cap) p.setAttribute("stroke-linecap", o.cap); svg.appendChild(p); return [p, o.d]; });
+  const draw = () => {
+    const W = b.offsetWidth, H = b.offsetHeight, fs = parseFloat(getComputedStyle(b).fontSize) || 16, c = Math.min(9, Math.max(5, .32 * fs));
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    polys.forEach(([p, d]) => { const k = d * (Math.SQRT2 - 1), r = (n) => Math.round(n * 100) / 100;
+      p.setAttribute("points", [[c + k, d], [W - d, d], [W - d, H - c - k], [W - c - k, H - d], [d, H - d], [d, c + k]].map((q) => r(q[0]) + "," + r(q[1])).join(" ")); });
+  };
+  b.appendChild(svg); draw();
+  if (typeof ResizeObserver === "function") new ResizeObserver(draw).observe(b);
+}
 function buildButton(cfg, host) {
   host.textContent = "";
   const mode = OPEN.some((o) => o[0] === cfg.open) ? cfg.open : "tab", href0 = okUrl(cfg.url), href = href0 ? resolveTarget(href0, mode) : "";
@@ -480,6 +503,7 @@ function buildButton(cfg, host) {
   b.appendChild(main);
   if (fx.includes("noise")) { const n = document.createElement("span"); n.className = "nz"; b.appendChild(n); }
   wrap.appendChild(b); host.appendChild(wrap);
+  if (shape === "cut") cutFrame(b, frame);
   /* Randabstand (Platz für Glühen/Zittern) und optional Rahmen ausfüllen */
   const pad = (cfg.pad && cfg.pad !== "auto" && !isNaN(+cfg.pad)) ? Math.max(0, Math.min(40, Math.round(+cfg.pad))) : ((fx.includes("glow") || fx.includes("jitter") || fx.includes("tear")) ? 20 : 0);
   host.style.boxSizing = "border-box"; host.style.padding = pad + "px";

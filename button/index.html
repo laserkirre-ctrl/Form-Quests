@@ -629,6 +629,9 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 /* Vorschau bei „Rahmen ausfüllen“: feste Rahmengröße (per Ecke ziehbar), damit die Schrift mitwachsen kann */
 .prev.ff, .side .prev.ff, .stage .prev.ff { height: 120px; width: 100%; max-width: 100%; }
 
+.igrid.fita button svg { width: 100%; height: 100%; overflow: visible; }
+.igrid.fita button { overflow: hidden; }
+
 </style>
 </head>
 <body>
@@ -1145,13 +1148,36 @@ function applyPage() {
     const b = $("g-ico"); b.textContent = ""; if (S.icon) b.appendChild(iconNode(S.icon)); b.appendChild(document.createTextNode(S.icon ? "ändern" : "wählen"));
   }
   function drawGrid() {
-    const g = $("ip-grid"); g.textContent = "";
+    const g = $("ip-grid"); g.textContent = ""; g.classList.toggle("fita", tab === "a");
     $("tab-e").setAttribute("aria-selected", String(tab === "e")); $("tab-s").setAttribute("aria-selected", String(tab === "s")); $("tab-a").setAttribute("aria-selected", String(tab === "a"));
     const add = (val, node, title) => { const b = document.createElement("button"); b.type = "button"; b.title = title || val; b.setAttribute("aria-label", title || val); b.setAttribute("aria-pressed", String(S.icon === val)); b.appendChild(node);
       b.addEventListener("click", () => { S.icon = val; drawIcoBtn(); drawGrid(); render(); ip.close(); }); g.appendChild(b); };
     if (tab === "e") EMOJIS.forEach((e) => add(e, document.createTextNode(e)));
     else if (tab === "s") Object.keys(ICONS).filter((n) => !HIDE_STATIC.has(n)).forEach((n) => { const s = iconNode(n); add(n, s.firstChild, ICON_LABELS[n] || n); });
-    else ANIMS.forEach((a) => add("a-" + a[0], iconNode("a-" + a[0]), a[1]));
+    else ANIMS.forEach((a) => { const n = iconNode("a-" + a[0]); fitToCell(n, a[0]); add("a-" + a[0], n, a[1]); });
+  }
+  /* Auswahl „Animiert“: jedes Symbol einzeln so skalieren, dass der äußerste Pixel an allen Seiten den Feldrahmen berührt (Ruhepose, ohne Bewegungs-Extras) */
+  const FIT_OVR = { barcode: [0, 3, 24, 20], biene: [0, 0, 24, 24], bienenblume: [7.5, -1, 18.5, 23.5] };
+  const FIT_CACHE = {};
+  function fitToCell(node, key) {
+    const svg = node.querySelector("svg"); if (!svg) return;
+    if (!FIT_CACHE[key]) {
+      let box = FIT_OVR[key] && { x: FIT_OVR[key][0], y: FIT_OVR[key][1], w: FIT_OVR[key][2] - FIT_OVR[key][0], h: FIT_OVR[key][3] - FIT_OVR[key][1], pad: 0 };
+      if (!box) {
+        const an = ANIMS.find((a) => a[0] === key), x = ANIM_X[key], parts = (ICONS[an[2]] || "").match(PART_RE) || [];
+        let inner = x ? x.groups.map((gr) => "<g>" + gr.map((k) => parts[k] || "").join("") + "</g>").join("") : ICONS[an[2]];
+        if (x && x.wrap) inner = "<g>" + inner + "</g>"; if (x && x.big) inner = '<g transform="' + x.big + '">' + inner + "</g>";
+        const m = document.createElementNS("http://www.w3.org/2000/svg", "svg"); m.setAttribute("viewBox", "0 0 24 24"); m.setAttribute("fill", "none"); m.setAttribute("stroke", "currentColor"); m.setAttribute("stroke-width", "2");
+        m.style.cssText = "position:absolute;left:-999px;top:0;width:24px;height:24px;visibility:hidden"; m.innerHTML = '<g id="fm">' + inner + "</g>"; document.body.appendChild(m);
+        const bb = m.firstChild.getBBox(); document.body.removeChild(m);
+        let sw = 2; (inner.match(/stroke-width="([\d.]+)"/g) || []).forEach(() => {}); const sws = (inner.match(/stroke-width="([\d.]+)"/g) || []).map((s) => parseFloat(s.replace(/[^\d.]/g, ""))); if (sws.length) sw = Math.max(sw, ...sws);
+        const sc = x && x.big ? parseFloat((x.big.match(/scale\(([\d.]+)/) || [0, 1])[1]) : 1;
+        box = { x: bb.x, y: bb.y, w: bb.width, h: bb.height, pad: sw / 2 * sc };
+      }
+      const s = Math.max(box.w, box.h) + 2 * box.pad, cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+      FIT_CACHE[key] = [cx - s / 2, cy - s / 2, s, s].map((v) => Math.round(v * 100) / 100).join(" ");
+    }
+    svg.setAttribute("viewBox", FIT_CACHE[key]);
   }
   $("g-ico").addEventListener("click", () => { drawGrid(); if (ip.showModal) ip.showModal(); else ip.setAttribute("open", ""); });
   $("tab-e").addEventListener("click", () => { tab = "e"; drawGrid(); }); $("tab-s").addEventListener("click", () => { tab = "s"; drawGrid(); }); $("tab-a").addEventListener("click", () => { tab = "a"; drawGrid(); });
@@ -1256,7 +1282,7 @@ function applyPage() {
     });
   }
   setupCollapse(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:01"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:09"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

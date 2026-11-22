@@ -674,7 +674,7 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 /* Vorschau bei „Rahmen ausfüllen“: feste Rahmengröße (per Ecke ziehbar), damit die Schrift mitwachsen kann */
 .prev.ff, .side .prev.ff, .stage .prev.ff { height: 120px; width: 100%; max-width: 100%; }
 
-.igrid.fita button svg { width: 100%; height: 100%; overflow: visible; }
+.igrid.fita button svg { width: 84%; height: 84%; overflow: visible; }
 .igrid.fita button { overflow: hidden; }
 
 </style>
@@ -731,7 +731,7 @@ const ANIMS = [["zahnrad", "Zahnrad dreht", "settings", "spin"], ["laden", "Lade
   ["dokusuche", "Dokument-Lupe scannt", "file-search", "x-dokusuche"], ["barcode", "Barcode wird gescannt", "barcode", "x-barcode"], ["handschlag", "Hände greifen und schütteln", "handshake", "x-handschlag"],
   ["daumen", "Daumen hoch", "thumb-up-line", "x-daumen"], ["klick", "Mausklick", "cursor-circles", "x-klick"],
   ["ziel", "Pfeil trifft Ziel", "target-arrow", "x-ziel"], ["bluete", "Blüte wächst und schrumpft", "flower-8", "x-bluete"],
-  ["lupe", "Lupe sucht", "search", "x-lupe"], ["raute", "Raute wackelt", "hash", "x-raute"], ["uhr", "Uhr: Zeiger drehen", "clock", "x-uhr"], ["bild", "Bild: Sonne geht auf und unter", "image", "x-bild"], ["megafon", "Megafon mit Actionlines", "megaphone", "x-megafon"], ["kolben", "Kolben sprudelt", "flask-conical", "x-kolben"], ["krone", "Krone funkelt", "crown", "x-krone"], ["diamant", "Diamant funkelt", "gem", "x-diamant"], ["schere", "Schere öffnet und schließt", "scissors", "x-schere"], ["kaefer", "Käfer krabbelt", "bug", "x-kaefer"], ["fisch", "Fisch schwimmt", "fish", "x-fisch"], ["biene", "Biene fliegt Schleifen, Strichlinie", "bee", "x-biene"], ["katze", "Katze läuft (Profil)", "cat-walk", "x-katze"], ["hund", "Hund an der Leine läuft", "dog-leash", "x-hund"], ["kuh", "Kuh grast und schwänzelt", "cow", "x-kuh"], ["bienenblume", "Biene landet auf Blume, fliegt weiter", "tulip-stem", "x-bienenblume"], ["blume", "Blume wächst", "daisy-grow", "x-blume"], ["gras", "Gras im Wind", "grass", "x-gras"], ["baum", "Baum verliert Blätter", "tree", "x-baum"], ["stinkefinger", "Hand zeigt Stinkefinger", "hand-finger", "x-stinkefinger"], ["bienewelle", "Biene: Welle, Schlaufe, Zickzack", "bee", "x-bienewelle"], ["bieneschlange", "Biene: Schlangenlinie", "bee", "x-bieneschlange"], ["bienezacken", "Biene: Zackenflug mit Abflug", "bee", "x-bienezacken"], ["bieneblume", "Biene: umkreist und besucht Blume", "bee", "x-bieneblume"], ];
+  ["lupe", "Lupe sucht", "search", "x-lupe"], ["raute", "Raute wackelt", "hash", "x-raute"], ["uhr", "Uhr: Zeiger drehen", "clock", "x-uhr"], ["bild", "Bild: Sonne geht auf und unter", "image", "x-bild"], ["megafon", "Megafon mit Actionlines", "megaphone", "x-megafon"], ["kolben", "Kolben sprudelt", "flask-conical", "x-kolben"], ["krone", "Krone funkelt", "crown", "x-krone"], ["diamant", "Diamant funkelt", "gem", "x-diamant"], ["schere", "Schere öffnet und schließt", "scissors", "x-schere"], ["kaefer", "Käfer krabbelt", "bug", "x-kaefer"], ["fisch", "Fisch schwimmt", "fish", "x-fisch"], ["kuh", "Kuh grast und schwänzelt", "cow", "x-kuh"], ["bienenblume", "Biene landet auf Blume, fliegt weiter", "tulip-stem", "x-bienenblume"], ["gras", "Gras im Wind", "grass", "x-gras"], ["baum", "Baum verliert Blätter", "tree", "x-baum"], ["bienewelle", "Biene: Welle, Schlaufe, Zickzack", "bee", "x-bienewelle"], ["bieneschlange", "Biene: Schlangenlinie", "bee", "x-bieneschlange"], ["bienezacken", "Biene: Zackenflug mit Abflug", "bee", "x-bienezacken"], ["bieneblume", "Biene: umkreist und besucht Blume", "bee", "x-bieneblume"], ];
 /* Teile-Gruppen (Indizes der Lucide-Elemente) und Zusatzformen für eigene Animationen */
 const PART_RE = /<(?:path|circle|line|polyline|polygon|rect|ellipse)\b[^>]*>/g;
 const ANIM_X = {
@@ -1331,7 +1331,7 @@ function applyPage() {
     });
   }
   setupCollapse(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:17"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:25"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

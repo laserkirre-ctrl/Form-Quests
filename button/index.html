@@ -318,6 +318,11 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .pv[aria-pressed=true] { background: color-mix(in srgb, var(--pa) 16%, transparent); }
 .pv .btn { cursor: pointer; }
 
+/* ---- Farbauswahl: Kreise (Kuchenstücke) ---- */
+.seg .pie { width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--pl); cursor: pointer; transform: rotate(-90deg); }
+.seg .pie:hover { transform: rotate(-90deg) scale(1.08); }
+.seg .pie[aria-pressed=true] { border-color: var(--pa); box-shadow: 0 0 0 2px var(--pp), 0 0 0 3px var(--pa); }
+
 </style>
 </head>
 <body>
@@ -549,7 +554,7 @@ if (q.has("url") || q.has("w")) {
     '<p class="msg" id="g-msg"></p>' +
     '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
     '<h3 class="sub3">Aussehen</h3>' +
-    '<div class="row"><span class="lab">Farbe</span><div class="seg"><button type="button" class="diy" id="g-diy"></button></div><p class="hint2">Theme oben wählen. DIY überschreibt einzelne Farben des Themes.</p></div>' +
+    '<div class="row"><span class="lab">Farbe</span><div class="seg" id="g-colors"></div><p class="hint2">Kreise: Farbpaletten (Themes und gespeicherte Kombinationen), jedes Stück = eine Farbe. DIY öffnet die Detaileinstellungen.</p></div>' +
     '<div class="row"><span class="lab">Füllung</span><div class="seg" id="g-fill"></div></div>' +
     '<div class="row"><span class="lab">Form</span><div class="seg" id="g-shape"></div></div>' +
     '<div class="row"><span class="lab">Rahmen</span><div class="seg" id="g-frame"></div></div>' +
@@ -600,7 +605,7 @@ if (q.has("url") || q.has("w")) {
       if (ready) { const dot = document.createElement("i"); dot.style.background = THEMES[k].a; b.appendChild(dot); }
       b.appendChild(document.createTextNode(name));
       if (!ready) { b.disabled = true; b.title = "Folgt später"; const sm = document.createElement("small"); sm.textContent = "bald"; b.appendChild(sm); }
-      else b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); render(); });
+      else b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); drawColors(); render(); });
       host.appendChild(b);
     });
   }
@@ -624,7 +629,29 @@ if (q.has("url") || q.has("w")) {
       host.appendChild(b);
     });
   };
-  const drawDiyBtn = () => { const b = $("g-diy"); b.className = "diy" + (diyCount() ? " on" : ""); b.textContent = "DIY" + (diyCount() ? " · " + diyCount() : ""); };
+  /* Farbauswahl: Kreise mit allen einmaligen Farben als Kuchenstücke (Themes + gespeicherte Kombinationen) + DIY-Knopf */
+  const sameDiy = (a, b) => { const ka = Object.keys(a || {}).filter((k) => a[k]), kb = Object.keys(b || {}).filter((k) => b[k]); return ka.length === kb.length && ka.every((k) => String(a[k]).toLowerCase() === String(b[k] || "").toLowerCase()); };
+  const pieOf = (theme, diy) => {
+    const p = palette(Object.assign({ theme }, diy || {})), cols = [];
+    [p.a, p.ink, p.panel, p.line, p.glow, p.g1, p.g2].forEach((c) => { c = String(c).toLowerCase(); if (!cols.includes(c)) cols.push(c); });
+    const n = cols.length, st = cols.map((c, k) => c + " " + (k * 360 / n).toFixed(2) + "deg " + ((k + 1) * 360 / n).toFixed(2) + "deg");
+    return "conic-gradient(from 0deg, " + st.join(", ") + ")";
+  };
+  const colorOpts = () => THEME_PICK.filter((t) => t[2]).map(([k, name]) => ({ name, theme: k, diy: {} })).concat(getCombos());
+  const activeName = () => { const o = colorOpts().find((c) => c.theme === S.theme && sameDiy(c.diy, S.diy)); return o ? o.name : THEMES[S.theme].name + (diyCount() ? " · DIY " + diyCount() : ""); };
+  function drawColors() {
+    const host = $("g-colors"); if (!host) return; host.textContent = "";
+    colorOpts().forEach((c) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "pie"; b.style.background = pieOf(c.theme, c.diy);
+      b.title = c.name; b.setAttribute("aria-label", c.name); b.setAttribute("aria-pressed", String(c.theme === S.theme && sameDiy(c.diy, S.diy)));
+      b.addEventListener("click", () => { S.theme = c.theme; S.diy = Object.assign({}, c.diy); try { localStorage.setItem(TK, c.theme); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); drawDiyBtn(); if (dlg.open) drawDiy(); render(); });
+      host.appendChild(b);
+    });
+    const d = document.createElement("button"); d.type = "button"; d.id = "g-diy"; d.className = "diy" + (diyCount() ? " on" : ""); d.textContent = "DIY" + (diyCount() ? " · " + diyCount() : "");
+    d.addEventListener("click", openDiy); host.appendChild(d);
+    if (typeof updateSums === "function") updateSums();
+  }
+  const drawDiyBtn = () => drawColors();
   /* Optionen mit Live-Vorschau: jede Auswahl ist ein echter Mini-Button im aktuellen Stil, nur die jeweilige Option ist ersetzt */
   const PV_ROWS = [["g-fill", FILLS, "fill"], ["g-shape", SHAPES, "shape"], ["g-frame", FRAMES, "frame"], ["g-pat", PATTERNS, "pat"], ["g-size", SIZES.map((z) => [z[0], z[1] + " " + z[2]]), "size"], ["g-fx", FX, "fx"], ["g-hov", HOVERS, "hov"], ["g-clk", CLICKS, "clk"]];
   let pvSig = "";
@@ -683,7 +710,7 @@ if (q.has("url") || q.has("w")) {
       const cp = document.createElement("button"); cp.type = "button"; cp.textContent = "Code"; cp.title = "Code kopieren";
       cp.addEventListener("click", async () => { const code = encCombo(c); try { await navigator.clipboard.writeText(code); cp.textContent = "Kopiert"; } catch (e) { $("cb-code").value = code; cp.textContent = "Unten"; } setTimeout(() => { cp.textContent = "Code"; }, 1500); });
       const del = document.createElement("button"); del.type = "button"; del.textContent = "×"; del.title = "Löschen"; del.setAttribute("aria-label", c.name + " löschen");
-      del.addEventListener("click", () => { const a = getCombos(); a.splice(i, 1); putCombos(a); drawCombos(); });
+      del.addEventListener("click", () => { const a = getCombos(); a.splice(i, 1); putCombos(a); drawCombos(); drawColors(); updateSums(); });
       r.append(dots, nm, use, cp, del); r.style.gridTemplateColumns = "auto 1fr auto auto auto"; box.appendChild(r);
     });
   }
@@ -705,7 +732,6 @@ if (q.has("url") || q.has("w")) {
     drawCombos();
   }
   function openDiy() { drawDiy(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
-  $("g-diy").addEventListener("click", openDiy);
   $("diy-ok").addEventListener("click", () => dlg.close());
   $("diy-reset").addEventListener("click", () => { S.diy = {}; drawDiy(); render(); drawDiyBtn(); });
   dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
@@ -714,12 +740,12 @@ if (q.has("url") || q.has("w")) {
     const c = cleanCombo({ name, theme: S.theme, diy: S.diy });
     if (!Object.keys(c.diy).length && S.theme === "standard") { $("cb-note").textContent = "Erst Farben ändern, dann speichern."; return; }
     a.push(c); $("cb-note").textContent = putCombos(a) ? "Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen." : "Speichern im Browser nicht möglich. Bitte „Code“ kopieren und selbst aufbewahren.";
-    $("cb-name").value = ""; drawCombos();
+    $("cb-name").value = ""; drawCombos(); drawColors();
   });
   $("cb-import").addEventListener("click", () => {
     const c = decCombo($("cb-code").value);
     if (!c) { $("cb-note").textContent = "Code ungültig."; return; }
-    const a = getCombos(); a.push(c); putCombos(a); $("cb-code").value = ""; drawCombos();
+    const a = getCombos(); a.push(c); putCombos(a); $("cb-code").value = ""; drawCombos(); drawColors();
   });
 
   /* ---- Symbol-Popup: Reiter Emojis / Symbole ---- */
@@ -807,7 +833,7 @@ if (q.has("url") || q.has("w")) {
   const saveOpen = () => { try { localStorage.setItem(OK, JSON.stringify(openState)); } catch (e) { /* ignorieren */ } };
   const lbl = (list, v) => { const x = list.find((i) => i[0] === v); return x ? x[1] : String(v); };
   const SUMS = {
-    "g-open": () => lbl(OPEN, S.open), "g-diy": () => THEMES[S.theme].name + (diyCount() ? " · DIY " + diyCount() : ""),
+    "g-open": () => lbl(OPEN, S.open), "g-colors": () => activeName(),
     "g-fill": () => lbl(FILLS, S.fill), "g-shape": () => lbl(SHAPES, S.shape), "g-frame": () => lbl(FRAMES, S.frame), "g-pat": () => lbl(PATTERNS, S.pat),
     "g-font": () => lbl(FONTS, S.font), "g-size": () => { const z = SIZES.find((x) => x[0] === S.size) || SIZES[1]; return z[1] + " · " + z[2] + " px"; },
     "g-caps": () => (S.caps ? "Großbuchstaben" : "Normal"), "g-align": () => lbl(ALIGNS, S.align), "g-fit": () => (S.fit === "frame" ? "Rahmen ausfüllen" : "Nach Inhalt"),

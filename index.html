@@ -336,7 +336,7 @@ main { width: min(100%, 1240px); }
 .row.r3 textarea.field { min-height: 210px; }
 .row .col > .sec { flex: 1; display: flex; flex-direction: column; }
 .row.r1 .col > .sec > .sec-clip { flex: 1; }
-@media (min-width: 860px) { .row.r3 > .sec.wide { grid-column: span 2; } }
+.row.r3 > .sec.wide { grid-column: 1 / -1; }
 @media (max-width: 859px) { .row { --cols: 2; } }
 @media (max-width: 619px) { .row { --cols: 1; } }
 
@@ -523,7 +523,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364434412}</script>
+<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364513098}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -543,7 +543,7 @@ const COLOR_DEFS = [
   { k: "--muted", label: "Hinweistext", ex: "„(Wähle beliebig viele Optionen aus)“, Feldbeschriftungen, leere Häkchen.", def: "#8fa58a" },
   { k: "--lime", label: "Akzent", ex: "Kartentitel, Speichern-Button, Hover- und Fokus-Rahmen, gesetzte Häkchen, Cursor.", def: "#c1f130" },
   { k: "--lime-ink", label: "Text auf Akzent", ex: "Schrift im Speichern-Button und der Haken-Strich in gewählten Optionen.", def: "#10170a" },
-  { k: "--ink", label: "Eingabetext", ex: "Text, der in Datum-, Journal- und Link-Feldern getippt wird.", def: "#d9f58c" },
+  { k: "--ink", label: "Eingabetext", ex: "Text, der in Datum- und Journal-Feldern getippt wird.", def: "#d9f58c" },
   { k: "--warn", label: "Warnung", ex: "Fehlermeldungen, Blinken bei fehlendem Kapitel, „Felder leeren“.", def: "#ff6b6b" },
 ];
 const PRESETS = {
@@ -576,7 +576,6 @@ const BUILTIN = {
   who: { title: "🐝 WER WIRD SICH DRUM KÜMMERN?", opts: ["STEVEN", "BEN", "NYMH", "CHRISTIANE"] },
   deadline: { title: "DEADLINE" },
   journal: { title: "🧾✍️ JOURNAL", desc: "Hier ist Platz für Notizen, Hinweise, Fragen, Mitschriften uvm." },
-  link: { title: "🔗 LINK", desc: "Link zu Entwurf, Referenz, Inspiration oder Cloud-Datei (Bilder, PDF, ZIP)." },
   upload: { title: "📍 UPLOAD", desc: "Lade Entwürfe, Referenzen, Ideen, Inspiration uvm. hoch." },
   extras: [],
 };
@@ -1030,7 +1029,7 @@ function buildForm() {
     r2.appendChild(sw);
   }
   /* TASKS, ZUSTÄNDIG */
-  for (const [key, name, row, lbl] of [["who", "ZUSTÄNDIG", r1, "Verantwortlich"], ["tasks", "TASKS", r3, "Aufgaben"]]) {
+  for (const [key, name, row, lbl] of [["who", "ZUSTÄNDIG", r1, "Verantwortlich"], ["tasks", "TASKS", col1, "Aufgaben"]]) {
     const m = model[key], { c, inn } = card(m.title);
     if (m.desc) inn.appendChild(el("p", "q-desc", m.desc));
     inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(name, m.opts, key, null, lbl));
@@ -1056,7 +1055,8 @@ function buildForm() {
     }
     extraSecs.push(wrap(c, { open: true }));
   });
-  /* JOURNAL */
+  /* JOURNAL (immer letztes Feld, volle Breite) */
+  let jw = null;
   { const { c, inn } = card(model.journal.title);
     inn.appendChild(el("p", "q-desc", model.journal.desc || ""));
     const gw = el("div", "ghostwrap");
@@ -1065,7 +1065,7 @@ function buildForm() {
     const ghost = el("div", "ghost"); ghost.setAttribute("aria-hidden", "true");
     ghost.innerHTML = '<span class="g-text"></span><span class="g-cur"></span>';
     gw.append(journal, ghost); inn.appendChild(gw);
-    const jw = wrap(c, { open: true }); jw.classList.add("wide"); r3.appendChild(jw);
+    jw = wrap(c, { open: true }); jw.classList.add("wide");
     const txt = ghost.querySelector(".g-text"); let timer = null;
     const stop = () => { clearTimeout(timer); timer = null; ghost.classList.remove("typing"); };
     const sync = () => ghost.classList.toggle("filled", journal.value !== "");
@@ -1079,15 +1079,10 @@ function buildForm() {
     });
     journal.addEventListener("blur", () => { stop(); ghost.classList.remove("on"); });
     journal.addEventListener("input", sync); }
-  /* LINK */
-  { const { c, inn } = fieldCard(model.link.title, model.link.desc);
-    const w = el("div", "dates"); w.style.marginTop = "8px";
-    w.innerHTML = '<input class="field" type="url" id="x-link" placeholder="https://…" spellcheck="false" aria-label="Link">';
-    inn.appendChild(w); col1.appendChild(wrap(c, { open: true })); }
   /* UPLOAD (derzeit deaktiviert) */
   if (!model.noUpload) {
     const { c, inn } = fieldCard(model.upload.title, model.upload.desc);
-    inn.appendChild(el("p", "q-hint", "Nur Textdateien (" + UP_EXT.map((e) => "." + e).join(" ") + "), je bis 200 KB, max. " + UP_COUNT + " Dateien. Bilder, PDF und ZIP über das Link-Feld."));
+    inn.appendChild(el("p", "q-hint", "Nur Textdateien (" + UP_EXT.map((e) => "." + e).join(" ") + "), je bis 200 KB, max. " + UP_COUNT + " Dateien."));
     const lab = el("label", "filebtn"); lab.style.display = "inline-block";
     const b = el("span", "", "Dateien wählen"); b.style.cssText = "display:inline-block;padding:8px 16px;border:1px solid var(--line);cursor:pointer;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)";
     const fi = document.createElement("input"); fi.type = "file"; fi.multiple = true; fi.id = "x-file"; fi.accept = UP_EXT.map((e) => "." + e).join(",");
@@ -1098,6 +1093,7 @@ function buildForm() {
     renderFiles();
   }
   extraSecs.forEach((x) => r3.appendChild(x));
+  if (jw) r3.appendChild(jw);
   indexModel();
   multiRefreshAll();
 }
@@ -1226,7 +1222,7 @@ function buildFields(st) {
     else { const e = $("x-" + i), v = e ? e.value.trim() : ""; if (v) F.push({ prop: x.prop, type: x.type === "number" ? "number" : x.type, value: x.type === "number" ? Number(v) : v }); }
   });
   const j = journal ? journal.value.trim() : ""; if (j) F.push({ prop: "JOURNAL", type: "text", value: j });
-  const lk = $("x-link") ? $("x-link").value.trim() : ""; if (lk) F.push({ prop: "LINK", type: "url", value: lk });
+  
   return F;
 }
 function chunks(s) { const o = []; for (let i = 0; i < s.length && o.length < 90; i += 2000) o.push({ text: { content: s.slice(i, i + 2000) } }); return o; }
@@ -1271,8 +1267,6 @@ function validate(st) {
     return false;
   }
   const de = $("d-end").value;
-  const lk = $("x-link").value.trim();
-  if (lk && !validUrl(lk)) { say("Der Link muss mit http:// oder https:// beginnen.", "err"); return false; }
   for (let i = 0; i < model.extras.length; i++) {
     const x = model.extras[i]; if (!x.required) continue;
     const got = (x.type === "multi_select" || x.type === "select" || x.type === "checkbox") ? [...form.querySelectorAll("input:checked")].some((n) => n.name === x.prop) : ($("x-" + i) && $("x-" + i).value.trim());

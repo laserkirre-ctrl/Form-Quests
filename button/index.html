@@ -311,14 +311,12 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .alt:hover { background: var(--pa); color: var(--pink); }
 
 /* ---- Optionen mit Live-Vorschau ---- */
-.seg.pvrow { gap: 10px; }
-.pv { display: inline-flex; align-items: center; justify-content: center; padding: 8px 10px; border: 1px dashed var(--pl); border-radius: 4px; cursor: pointer; background: transparent; outline: none; }
-.pv:hover { border-color: var(--pa); }
-.pv:focus-visible { box-shadow: 0 0 0 2px var(--pa); }
-.pv[aria-pressed=true] { border: 1px solid var(--pa); box-shadow: 0 0 0 1px var(--pa); }
+.seg.pvrow { gap: 8px; }
+.pv { display: inline-flex; align-items: center; justify-content: center; padding: 8px 10px; border: 0; border-radius: 4px; cursor: pointer; background: transparent; outline: none; }
+.pv:hover { background: rgb(var(--pa-rgb, 255 255 255) / .07); background: color-mix(in srgb, var(--pa) 8%, transparent); }
+.pv:focus-visible { background: color-mix(in srgb, var(--pa) 14%, transparent); }
+.pv[aria-pressed=true] { background: color-mix(in srgb, var(--pa) 16%, transparent); }
 .pv .btn { cursor: pointer; }
-.seg .pv.mchk::before { content: none; }
-.pv.mchk[aria-pressed=true]::before { content: none; }
 
 </style>
 </head>

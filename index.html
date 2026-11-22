@@ -334,6 +334,9 @@ main { width: min(100%, 1240px); }
 .row .opts { grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 6px; }
 .row .opt { padding: 7px 10px; }
 .row.r3 textarea.field { min-height: 210px; }
+.row .col > .sec { flex: 1; display: flex; flex-direction: column; }
+.row.r1 .col > .sec > .sec-clip { flex: 1; }
+@media (min-width: 860px) { .row.r3 > .sec.wide { grid-column: span 2; } }
 @media (max-width: 859px) { .row { --cols: 2; } }
 @media (max-width: 619px) { .row { --cols: 1; } }
 
@@ -521,7 +524,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795364071862}</script>
+<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364257952}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -1008,11 +1011,12 @@ function buildForm() {
   form.textContent = "";
   const r1 = el("div", "row r1"), r2 = el("div", "row r2"), r3 = el("div", "row r3");
   form.append(r1, r2, r3);
+  const col1 = el("div", "col"); r1.appendChild(col1);
   /* DEADLINE */
   { const { c, inn } = card(model.deadline.title);
     const d = el("div", "dates");
     d.innerHTML = '<div class="dfield"><span class="dlabel">Deadline (optional)</span><input type="hidden" id="d-end"><button type="button" class="field datebtn" id="d-show" aria-haspopup="dialog" aria-expanded="false"></button></div><p class="d-note" id="d-note" hidden>Hinweis: Das Datum liegt in der Vergangenheit.</p>';
-    inn.appendChild(d); r1.appendChild(wrap(c, { open: true })); calBind(); }
+    inn.appendChild(d); col1.appendChild(wrap(c, { open: true })); calBind(); }
   /* KAPITEL */
   { const { c, inn } = card(model.kapitel.title, { orn: true, req: true });
     c.id = "card-kapitel";
@@ -1033,7 +1037,7 @@ function buildForm() {
     inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(name, m.opts, key, null, lbl));
     row.appendChild(wrap(c, { open: true }));
   }
-  const col2 = el("div", "col"); r3.appendChild(col2);
+  const col2 = el("div", "col"); if (!model.noUpload) r3.appendChild(col2);
   /* Zusätzliche Felder aus dem Abgleich */
   const extraSecs = [];
   model.extras.forEach((x, i) => {
@@ -1062,7 +1066,7 @@ function buildForm() {
     const ghost = el("div", "ghost"); ghost.setAttribute("aria-hidden", "true");
     ghost.innerHTML = '<span class="g-text"></span><span class="g-cur"></span>';
     gw.append(journal, ghost); inn.appendChild(gw);
-    r3.appendChild(wrap(c, { open: true }));
+    const jw = wrap(c, { open: true }); jw.classList.add("wide"); r3.appendChild(jw);
     const txt = ghost.querySelector(".g-text"); let timer = null;
     const stop = () => { clearTimeout(timer); timer = null; ghost.classList.remove("typing"); };
     const sync = () => ghost.classList.toggle("filled", journal.value !== "");
@@ -1080,7 +1084,7 @@ function buildForm() {
   { const { c, inn } = fieldCard(model.link.title, model.link.desc);
     const w = el("div", "dates"); w.style.marginTop = "8px";
     w.innerHTML = '<input class="field" type="url" id="x-link" placeholder="https://…" spellcheck="false" aria-label="Link">';
-    inn.appendChild(w); col2.appendChild(wrap(c, { open: true })); }
+    inn.appendChild(w); col1.appendChild(wrap(c, { open: true })); }
   /* UPLOAD (derzeit deaktiviert) */
   if (!model.noUpload) {
     const { c, inn } = fieldCard(model.upload.title, model.upload.desc);
@@ -1479,6 +1483,9 @@ function hintText() { $("hint").textContent = cfg.webhook ? "Quest ausfüllen un
 applyColors(); renderThemes();
 buildForm(); updateAll(true);
 hintText();
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>

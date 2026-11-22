@@ -283,6 +283,38 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   @keyframes gl-ha { 0% { opacity: 1; clip-path: inset(12% 0 55% 0); transform: translate(-4px, 0); } 1.2% { clip-path: inset(58% 0 8% 0); transform: translate(4px, 0); } 2.4% { clip-path: inset(30% 0 40% 0); transform: translate(-3px, 0); } 3.6%, 100% { opacity: 0; } }
   @keyframes gl-hb { 0% { opacity: 1; clip-path: inset(60% 0 10% 0); transform: translate(4px, 0); } 1.2% { clip-path: inset(6% 0 72% 0); transform: translate(-4px, 0); } 2.4% { clip-path: inset(42% 0 28% 0); transform: translate(3px, 0); } 3.6%, 100% { opacity: 0; } }
 }
+
+/* Kalender */
+.dfield { display: grid; gap: 4px; flex: 1 1 200px; }
+.dlabel { color: var(--muted); font-size: .9rem; }
+.datebtn { text-align: left; min-height: 44px; cursor: pointer; clip-path: none; border-radius: 2px; letter-spacing: .04em; }
+.datebtn.empty { color: var(--muted); }
+.datebtn::before { content: "▦"; margin-right: 10px; color: var(--lime); opacity: .8; }
+.datebtn:hover { filter: none; }
+.d-note { flex: 1 1 100%; margin: 0; color: var(--warn); font-size: .92rem; }
+.d-note::before { content: "⚠ "; }
+.cal { --cut: 14px; position: fixed; z-index: 20; width: min(312px, calc(100vw - 16px)); padding: 1.5px; background: rgb(var(--lime-rgb) / .6);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); filter: drop-shadow(0 10px 24px rgb(0 0 0 / .55)); }
+.cal-in { padding: 12px 12px 10px; background: var(--panel); clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.cal-title { color: var(--lime); letter-spacing: .1em; text-transform: uppercase; font-size: .95rem; }
+.cal button { clip-path: none; border-radius: 2px; padding: 0; }
+.cal-nav { width: 36px; height: 34px; font-size: 1.3rem; line-height: 1; color: var(--lime); border-color: var(--line); }
+.cal-nav:hover, .cal-act:hover { background: rgb(var(--lime-rgb) / .14); filter: none; }
+.cal-wd, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-wd span { text-align: center; color: var(--muted); font-size: .8rem; letter-spacing: .08em; padding: 2px 0 4px; }
+.cal-d { height: 36px; border: 1px solid transparent; background: rgb(var(--lime-rgb) / .03); color: var(--text); font-size: .95rem; }
+.cal-d.out { color: var(--muted); opacity: .45; }
+.cal-d.past { color: var(--muted); }
+.cal-d.today { border-color: rgb(var(--lime-rgb) / .7); color: var(--lime); }
+.cal-d:hover { background: rgb(var(--lime-rgb) / .16); border-color: rgb(var(--lime-rgb) / .5); filter: none; }
+.cal-d.sel { background: var(--lime); color: var(--lime-ink); border-color: var(--lime); font-weight: 600; opacity: 1; }
+.cal-foot { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.cal-act { padding: 6px 12px; font-size: .9rem; color: var(--lime); border-color: var(--line); }
+@media (prefers-reduced-motion: no-preference) {
+  .cal { animation: cal-in .22s steps(4, end); }
+  @keyframes cal-in { 0% { opacity: 0; transform: translateY(-6px); } 50% { opacity: 1; transform: translate(3px, -2px); } 100% { opacity: 1; transform: none; } }
+}
 </style>
 </head>
 <body>
@@ -436,7 +468,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361386650}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361638855}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -780,13 +812,91 @@ function fieldCard(title, desc) {
 }
 let journal = null, pendingFiles = [];
 
+/* ---- Kalender (eigenes Popup statt Browser-Auswahl) ---- */
+const MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+let calPop = null, calView = null;
+function calIso(y, m, d) { return y + "-" + two(m + 1) + "-" + two(d); }
+function calFmt(v) { if (!v) return "Kein Datum gewählt"; const p = v.split("-"); return p[2] + "." + p[1] + "." + p[0]; }
+function calShow() {
+  const h = $("d-end"), b = $("d-show"), n = $("d-note"); if (!h || !b) return;
+  b.textContent = calFmt(h.value); b.classList.toggle("empty", !h.value);
+  n.hidden = !(h.value && h.value < todayStr());
+}
+function calSet(v) {
+  const h = $("d-end"); h.value = v; calShow();
+  h.dispatchEvent(new Event("input", { bubbles: true }));
+}
+function calShut(refocus) {
+  if (calPop) { calPop.remove(); calPop = null; }
+  const b = $("d-show"); if (b) { b.setAttribute("aria-expanded", "false"); if (refocus) b.focus(); }
+}
+function calPlace() {
+  const b = $("d-show"); if (!calPop || !b) return;
+  const r = b.getBoundingClientRect(), w = calPop.offsetWidth, h = calPop.offsetHeight;
+  const left = Math.min(Math.max(8, r.left), Math.max(8, innerWidth - w - 8));
+  let top = r.bottom + 6; if (top + h > innerHeight - 8) top = (r.top - h - 6 > 8) ? r.top - h - 6 : Math.max(8, innerHeight - h - 8);
+  calPop.style.left = left + "px"; calPop.style.top = top + "px";
+}
+function calRender(focusDay) {
+  const sel = $("d-end").value, today = todayStr(), y = calView.y, m = calView.m;
+  calPop.textContent = "";
+  const inn = el("div", "cal-in");
+  const head = el("div", "cal-head");
+  const prev = el("button", "cal-nav", "‹"), next = el("button", "cal-nav", "›");
+  prev.type = next.type = "button"; prev.setAttribute("aria-label", "Vorheriger Monat"); next.setAttribute("aria-label", "Nächster Monat");
+  const go = (dm) => { calView.m += dm; if (calView.m < 0) { calView.m = 11; calView.y--; } if (calView.m > 11) { calView.m = 0; calView.y++; } if (typeof Snd !== "undefined") Snd.swipe(); calRender(); };
+  prev.addEventListener("click", () => go(-1)); next.addEventListener("click", () => go(1));
+  head.append(prev, el("span", "cal-title", MONTHS[m] + " " + y), next);
+  inn.appendChild(head);
+  const wd = el("div", "cal-wd"); ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].forEach((t) => wd.appendChild(el("span", "", t))); inn.appendChild(wd);
+  const grid = el("div", "cal-grid");
+  const first = new Date(y, m, 1), off = (first.getDay() + 6) % 7;
+  let focusBtn = null;
+  for (let i = 0; i < 42; i++) {
+    const dt = new Date(y, m, 1 - off + i), v = calIso(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const b = el("button", "cal-d", String(dt.getDate())); b.type = "button"; b.dataset.v = v;
+    if (dt.getMonth() !== m) b.classList.add("out");
+    if (v < today) b.classList.add("past");
+    if (v === today) b.classList.add("today");
+    if (v === sel) { b.classList.add("sel"); b.setAttribute("aria-pressed", "true"); }
+    b.setAttribute("aria-label", dt.getDate() + ". " + MONTHS[dt.getMonth()] + " " + dt.getFullYear());
+    b.addEventListener("click", () => { if (typeof Snd !== "undefined") Snd.yes(); calSet(v); calShut(true); });
+    if (v === sel || (!focusBtn && v === today && dt.getMonth() === m)) focusBtn = b;
+    grid.appendChild(b);
+  }
+  inn.appendChild(grid);
+  const foot = el("div", "cal-foot");
+  const bt = el("button", "cal-act", "Heute"), bc = el("button", "cal-act", "Löschen");
+  bt.type = bc.type = "button";
+  bt.addEventListener("click", () => { if (typeof Snd !== "undefined") Snd.yes(); calSet(today); calShut(true); });
+  bc.addEventListener("click", () => { if (typeof Snd !== "undefined") Snd.no(); calSet(""); calShut(true); });
+  foot.append(bt, bc); inn.appendChild(foot);
+  calPop.appendChild(inn);
+  if (focusDay) (focusBtn || grid.children[off]).focus();
+  calPlace();
+}
+function calOpen() {
+  if (calPop) { calShut(true); return; }
+  const v = $("d-end").value, base = v ? new Date(v + "T00:00:00") : new Date();
+  calView = { y: base.getFullYear(), m: base.getMonth() };
+  calPop = el("div", "cal"); calPop.setAttribute("role", "dialog"); calPop.setAttribute("aria-label", "Datum wählen");
+  document.body.appendChild(calPop);
+  $("d-show").setAttribute("aria-expanded", "true");
+  if (typeof Snd !== "undefined") Snd.open();
+  calRender(true);
+}
+function calBind() { calShut(); const b = $("d-show"); b.addEventListener("click", calOpen); calShow(); }
+document.addEventListener("pointerdown", (e) => { if (calPop && !calPop.contains(e.target) && !e.target.closest("#d-show")) calShut(); }, true);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && calPop) { e.preventDefault(); e.stopPropagation(); calShut(true); } }, true);
+addEventListener("resize", calPlace); addEventListener("scroll", calPlace, true);
+
 function buildForm() {
   form.textContent = "";
   /* DEADLINE */
   { const { c, inn } = card(model.deadline.title);
     const d = el("div", "dates");
-    d.innerHTML = '<label>Deadline (optional)<input class="field" type="date" id="d-end"></label>';
-    inn.appendChild(d); form.appendChild(wrap(c, { open: true })); }
+    d.innerHTML = '<div class="dfield"><span class="dlabel">Deadline (optional)</span><input type="hidden" id="d-end"><button type="button" class="field datebtn" id="d-show" aria-haspopup="dialog" aria-expanded="false"></button></div><p class="d-note" id="d-note" hidden>Hinweis: Das Datum liegt in der Vergangenheit.</p>';
+    inn.appendChild(d); form.appendChild(wrap(c, { open: true })); calBind(); }
   /* KAPITEL */
   { const { c, inn } = card(model.kapitel.title, { orn: true, req: true });
     c.id = "card-kapitel";
@@ -1030,7 +1140,6 @@ function validate(st) {
     return false;
   }
   const de = $("d-end").value;
-  if (de && de < todayStr()) { say("Die Deadline liegt in der Vergangenheit.", "err"); return false; }
   const lk = $("x-link").value.trim();
   if (lk && !validUrl(lk)) { say("Der Link muss mit http:// oder https:// beginnen.", "err"); return false; }
   for (let i = 0; i < model.extras.length; i++) {

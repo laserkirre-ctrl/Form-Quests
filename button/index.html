@@ -177,14 +177,14 @@ svg.defs { position: absolute; width: 0; height: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .wrap[data-fx~="rgb"] .gl::before { animation: gl-ia 5.5s steps(1, end) var(--gd, 0s) infinite; }
   .wrap[data-fx~="rgb"] .gl::after { animation: gl-ib 5.5s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="rgb"] .btn:hover .gl::before, .wrap[data-fx~="rgb"] .btn:focus-visible .gl::before { animation: gl-a .55s steps(1, end) infinite; }
-  .wrap[data-fx~="rgb"] .btn:hover .gl::after, .wrap[data-fx~="rgb"] .btn:focus-visible .gl::after { animation: gl-b .55s steps(1, end) infinite; }
-  .wrap[data-fx~="rgb"] .btn:hover .lbl, .wrap[data-fx~="rgb"] .btn:focus-visible .lbl { animation: gl-s .55s steps(1, end) infinite; }
+  .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .gl::before, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .gl::before { animation: gl-a .55s steps(1, end) infinite; }
+  .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .gl::after, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .gl::after { animation: gl-b .55s steps(1, end) infinite; }
+  .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .lbl, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .lbl { animation: gl-s .55s steps(1, end) infinite; }
   .wrap[data-fx~="jitter"] .btn { animation: jit 4.2s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="jitter"] .btn:hover, .wrap[data-fx~="jitter"] .btn:focus-visible { animation: jit-h .42s steps(1, end) infinite; }
+  .wrap[data-fx~="jitter"] .btn.hv-glitch:hover, .wrap[data-fx~="jitter"] .btn.hv-glitch:focus-visible { animation: jit-h .42s steps(1, end) infinite; }
   .wrap[data-fx~="noise"] .btn > .nz { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; mix-blend-mode: difference;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px 160px; animation: nz 4.8s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="noise"] .btn:hover > .nz, .wrap[data-fx~="noise"] .btn:focus-visible > .nz { animation: nz-h .5s steps(1, end) infinite; }
+  .wrap[data-fx~="noise"] .btn.hv-glitch:hover > .nz, .wrap[data-fx~="noise"] .btn.hv-glitch:focus-visible > .nz { animation: nz-h .5s steps(1, end) infinite; }
   @keyframes gl-a { 0% { opacity: 1; clip-path: inset(10% 0 62% 0); transform: translate(-3px, 0); } 14% { clip-path: inset(58% 0 12% 0); transform: translate(2px, 0); }
   28% { clip-path: inset(0 0 80% 0); transform: translate(-4px, 1px); } 42% { clip-path: inset(34% 0 36% 0); transform: translate(3px, 0); }
   57% { clip-path: inset(78% 0 0 0); transform: translate(-2px, 0); } 71% { clip-path: inset(22% 0 52% 0); transform: translate(4px, -1px); } 85% { clip-path: inset(48% 0 30% 0); transform: translate(-3px, 0); } }
@@ -201,8 +201,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes nz { 0% { opacity: .9; background-position: 0 0; clip-path: inset(18% 0 56% 0); } 1.6% { opacity: .95; background-position: -37px 21px; clip-path: inset(62% 0 10% 0); } 3.2% { opacity: .85; background-position: 55px -17px; clip-path: inset(4% 0 82% 0); } 4.8% { opacity: .9; background-position: 12px 40px; clip-path: inset(38% 0 36% 0); } 6%, 100% { opacity: 0; } }
   @keyframes fl { 0% { opacity: .25; } 1% { opacity: 1; } 2% { opacity: .5; } 3% { opacity: 1; } 4.5% { opacity: .35; } 5.2%, 100% { opacity: 1; } }
   @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 calc(3px * var(--gk, 1)) rgb(var(--arg) / calc(.3 * var(--ga, 1)))); } 50% { filter: drop-shadow(0 0 calc(10px * var(--gk, 1)) rgb(var(--arg) / calc(.65 * var(--ga, 1)))); } }
-  .wrap[data-fx~="glow"]:has(.btn:hover), .wrap[data-fx~="glow"]:has(.btn:focus-visible) { --gdur: .9s; --gk: 1.9; --ga: 1.4; }
-  .wrap[data-fx~="flicker"]:has(.btn:hover), .wrap[data-fx~="flicker"]:has(.btn:focus-visible) { --fln: fl-h; --fdur: .55s; }
+  .wrap[data-fx~="glow"]:has(.btn.hv-glitch:hover), .wrap[data-fx~="glow"]:has(.btn.hv-glitch:focus-visible) { --gdur: .9s; --gk: 1.9; --ga: 1.4; }
+  .wrap[data-fx~="flicker"]:has(.btn.hv-glitch:hover), .wrap[data-fx~="flicker"]:has(.btn.hv-glitch:focus-visible) { --fln: fl-h; --fdur: .55s; }
 }
 
 
@@ -557,9 +557,9 @@ a.btn.wp { cursor: pointer; }
 .mqi { padding: 0 .4em; color: var(--tx); }
 .wp.f-solid .mqi { color: var(--ink); }
 .wp:not(.f-solid) .mqi { color: var(--ac); }
-.mqs { color: var(--tx); opacity: .55; padding: 0 .4em; display: inline-flex; align-items: center; }
+.mqs { color: var(--ac, var(--tx)); opacity: .85; padding: 0 .4em; display: inline-flex; align-items: center; }
 .mqs .ico { display: inline-flex; }
-.mqs .ico svg { width: 1em; height: 1em; }
+.mqs .ico svg { width: 1.05em; height: 1.05em; overflow: visible; }
 .mqp:hover .mqt { animation-play-state: paused; }
 @keyframes mq-l { from { transform: translateX(0); } to { transform: translateX(calc(-1 * var(--mqw, 50%))); } }
 @keyframes mq-r { from { transform: translateX(calc(-1 * var(--mqw, 50%))); } to { transform: translateX(0); } }
@@ -674,9 +674,12 @@ a.btn.wp { cursor: pointer; }
   .rob .ant { animation: rant 2.2s ease-in-out infinite; }
   .rob .eye { animation: rblink 4.4s ease-in-out infinite; } .rob .e2 { animation-delay: .02s; }
   .rob .chest { animation: rch 1.6s ease-in-out infinite; }
-  .fn.throw .ar { animation: rthrow .9s cubic-bezier(.3, 1.6, .5, 1) both; }
-  .fn.throw .rbody { animation: rlean .9s ease-in-out both; }
-  .fn.throw .fdw, .fdw.tumble { animation: rtum .9s cubic-bezier(.4, 0, .6, 1) both; }
+  .fn.throw .ar { animation: rthrow .95s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .fn.throw .rbody { animation: rlean .95s ease-in-out both; }
+  .fdw.tumble { animation: ddx .95s linear .38s both, ddy .95s linear .38s both; }
+  .fdw.tumble .dshape { transform-box: fill-box; transform-origin: center; animation: dspin .95s cubic-bezier(.2, .6, .4, 1) .38s both; }
+  .fn.throw .fsd { animation: dsh .95s linear .38s both; }
+  .fn.throw .fdw:not(.tumble) { opacity: 0; }
   .fdw.land { animation: rland .6s cubic-bezier(.3, 2, .5, 1) both; }
   .fn.happy .rbody { animation: rjump .55s cubic-bezier(.3, 1.6, .5, 1) 3; }
   .fn.sad .rbody { animation: rsad 1.4s ease-in-out both; } .fn.sad .ant { animation: rdroop 1.4s ease-in-out both; }
@@ -797,6 +800,104 @@ a.btn.wp { cursor: pointer; }
 @keyframes fl-t { to { transform: perspective(9em) rotateX(-90deg); } }
 @keyframes fl-b { from { transform: perspective(9em) rotateX(90deg); } to { transform: perspective(9em) rotateX(0); } }
 @keyframes fl-s { 0% { transform: perspective(9em) rotateY(0); } 49% { transform: perspective(9em) rotateY(90deg); } 51% { transform: perspective(9em) rotateY(-90deg); } 100% { transform: perspective(9em) rotateY(0); } }
+
+.kb { display: inline-flex; align-items: center; justify-content: center; }
+.kb .ki { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; }
+.kb .ki svg { width: 1em; height: 1em; overflow: visible; }
+.kb .ki.kmir { transform: scaleX(-1); }
+@media (prefers-reduced-motion: no-preference) {
+  .kan-arrow svg, .kan-chev svg, .kan-tri svg { animation: kn-nudge 1.3s ease-in-out infinite; }
+  .kan-dchev .n1 { animation: kn-run 1.2s ease-in-out infinite; } .kan-dchev .n2 { animation: kn-run 1.2s ease-in-out .25s infinite; }
+  @keyframes kn-nudge { 0%, 100% { transform: translateX(-1px); } 50% { transform: translateX(3px); } }
+  @keyframes kn-run { 0%, 100% { opacity: .35; transform: translateX(-1px); } 50% { opacity: 1; transform: translateX(2px); } }
+}
+
+/* Würfel: Flugbogen, Hüpfer, Schatten */
+.fdz { position: relative; width: 5.8em; height: 5.8em; }
+.fdz .fdw { position: relative; }
+.fsd { position: absolute; left: 14%; right: 14%; bottom: -.22em; height: .55em; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(0, 0, 0, .6), rgba(0, 0, 0, 0) 70%); opacity: .45; }
+.die .dn.d4 { font-size: 21px; }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ddx { 0% { translate: -3.6em 0; animation-timing-function: cubic-bezier(.25, .55, .55, 1); } 52% { translate: 0 0; } 100% { translate: 0 0; } }
+  @keyframes ddy {
+    0% { transform: translateY(-.6em) scale(.4); opacity: 0; animation-timing-function: ease-out; }
+    6% { opacity: 1; }
+    26% { transform: translateY(-1.9em) scale(1.08); animation-timing-function: cubic-bezier(.5, 0, 1, .65); }
+    52% { transform: translateY(0) scale(1.1, .82); animation-timing-function: cubic-bezier(.15, .7, .4, 1); }
+    68% { transform: translateY(-1em) scale(.97, 1.04); animation-timing-function: cubic-bezier(.5, 0, 1, .65); }
+    80% { transform: translateY(0) scale(1.06, .9); animation-timing-function: cubic-bezier(.15, .7, .4, 1); }
+    90% { transform: translateY(-.32em) scale(1); animation-timing-function: cubic-bezier(.5, 0, 1, .65); }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes dspin { 0% { transform: rotate(0); } 100% { transform: rotate(720deg); } }
+  @keyframes dsh { 0%, 22% { opacity: 0; transform: scale(.3); } 52% { opacity: .6; transform: scale(1.05); } 68% { opacity: .3; transform: scale(.6); } 80% { opacity: .55; transform: scale(1); } 90% { opacity: .38; transform: scale(.8); } 100% { opacity: .45; transform: scale(1); } }
+}
+/* Roboter: Kopf + Mini-Animationen */
+.rob .hdg { transform-origin: 36px 52px; }
+@media (prefers-reduced-motion: no-preference) {
+  .fn.idle[data-mi="kratzen"] .ar { animation: mi-krat 2.3s ease-in-out both; }
+  .fn.idle[data-mi="kratzen"] .hdg { animation: mi-krath 2.3s ease-in-out both; }
+  .fn.idle[data-mi="winken"] .ar { animation: mi-wink 2.1s ease-in-out both; }
+  .fn.idle[data-mi="winken"] .hdg { animation: mi-winkh 2.1s ease-in-out both; }
+  .fn.idle[data-mi="lachen"] .rbody { animation: mi-lach 1.9s linear both; }
+  .fn.idle[data-mi="lachen"] .al { animation: mi-lacha 1.9s ease-in-out both; } .fn.idle[data-mi="lachen"] .ar { animation: mi-lacha2 1.9s ease-in-out both; }
+  .fn.idle[data-mi="springen"] .rbody { animation: mi-hop .65s ease-in-out 2; }
+  .fn.idle[data-mi="springen"] .ar { animation: mi-hopr .65s ease-in-out 2; } .fn.idle[data-mi="springen"] .al { animation: mi-hopl .65s ease-in-out 2; }
+  .fn.idle[data-mi="tanzen"] .rbody { animation: mi-dance .72s ease-in-out 4; }
+  .fn.idle[data-mi="tanzen"] .hdg { animation: mi-danceh .72s ease-in-out 4; }
+  .fn.idle[data-mi="tanzen"] .ar { animation: mi-dancer .72s ease-in-out 4; } .fn.idle[data-mi="tanzen"] .al { animation: mi-dancel .72s ease-in-out 4; }
+  .fn.idle[data-mi="tanzen"] .ant { animation: rant .36s ease-in-out infinite; }
+  .fn.idle[data-mi="zurueck"] .eyes { animation: mi-zeyes 2.7s ease-in-out both; }
+  .fn.idle[data-mi="zurueck"] .hdg { animation: mi-zhead 2.7s ease-in-out both; }
+  .fn.idle[data-mi="zurueck"] .rbody { animation: mi-zbody 2.7s ease-in-out both; }
+  .fn.idle[data-mi="skeptisch"] .e1 { animation: mi-sk1 2.5s ease-in-out both; } .fn.idle[data-mi="skeptisch"] .e2 { animation: mi-sk2 2.5s ease-in-out both; }
+  .fn.idle[data-mi="skeptisch"] .mo { animation: mi-skm 2.5s ease-in-out both; transform-origin: 36px 45px; }
+  .fn.idle[data-mi="skeptisch"] .hdg { animation: mi-skh 2.5s ease-in-out both; }
+  .fn.idle[data-mi="skeptisch"] .al { animation: mi-ska 2.5s ease-in-out both; }
+  .fn.idle[data-mi="schief"] .hdg { animation: mi-schief 2.5s ease-in-out both; }
+  .fn.idle[data-mi="schief"] .eyes { animation: mi-schiefe 2.5s ease-in-out both; }
+  @keyframes mi-krat { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(-150deg); } 25%, 45%, 65% { transform: rotate(-160deg); } 35%, 55%, 75% { transform: rotate(-142deg); } 88% { transform: rotate(-150deg); } }
+  @keyframes mi-krath { 0%, 100% { transform: rotate(0); } 15%, 80% { transform: rotate(7deg); } }
+  @keyframes mi-wink { 0%, 100% { transform: rotate(0); } 14% { transform: rotate(-128deg); } 24%, 44%, 64% { transform: rotate(-108deg); } 34%, 54%, 74% { transform: rotate(-146deg); } 88% { transform: rotate(-120deg); } }
+  @keyframes mi-winkh { 0%, 100% { transform: rotate(0); } 15%, 82% { transform: rotate(-5deg); } }
+  @keyframes mi-lach { 0%, 100% { transform: translateY(0) rotate(0); } 8% { transform: translateY(-2px) rotate(-2deg); } 16% { transform: translateY(0) rotate(2deg); } 24% { transform: translateY(-2px) rotate(-2deg); } 32% { transform: translateY(0) rotate(2deg); } 40% { transform: translateY(-2px) rotate(-2deg); } 48% { transform: translateY(0) rotate(2deg); } 56% { transform: translateY(-2px) rotate(-1.5deg); } 64% { transform: translateY(0) rotate(1.5deg); } 74% { transform: translateY(-1px) rotate(-1deg); } 86% { transform: translateY(0) rotate(0); } }
+  @keyframes mi-lacha { 0%, 100% { transform: rotate(0); } 12%, 80% { transform: rotate(-25deg); } }
+  @keyframes mi-lacha2 { 0%, 100% { transform: rotate(0); } 12%, 80% { transform: rotate(25deg); } }
+  @keyframes mi-hop { 0%, 100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.05, .93); } 50% { transform: translateY(-11px) scale(.97, 1.04); } 85% { transform: translateY(0) scale(1.05, .94); } }
+  @keyframes mi-hopr { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-80deg); } }
+  @keyframes mi-hopl { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(80deg); } }
+  @keyframes mi-dance { 0%, 100% { transform: translate(-2px, 0) rotate(-5deg); } 25% { transform: translate(0, -5px) rotate(0); } 50% { transform: translate(2px, 0) rotate(5deg); } 75% { transform: translate(0, -5px) rotate(0); } }
+  @keyframes mi-danceh { 0%, 100% { transform: rotate(7deg); } 50% { transform: rotate(-7deg); } }
+  @keyframes mi-dancer { 0%, 100% { transform: rotate(-100deg); } 50% { transform: rotate(-35deg); } }
+  @keyframes mi-dancel { 0%, 100% { transform: rotate(35deg); } 50% { transform: rotate(100deg); } }
+  @keyframes mi-zeyes { 0%, 100% { transform: translateX(0); } 18%, 42% { transform: translateX(5px); } 52% { transform: translateX(0); } 66%, 84% { transform: translateX(-5px); } }
+  @keyframes mi-zhead { 0%, 100% { transform: translateX(0) rotate(0); } 18%, 42% { transform: translateX(3px) rotate(7deg) scaleX(.92); } 52% { transform: translateX(0) rotate(0); } 66%, 84% { transform: translateX(-3px) rotate(-7deg) scaleX(.92); } }
+  @keyframes mi-zbody { 0%, 100% { transform: rotate(0); } 18%, 42% { transform: rotate(3deg); } 66%, 84% { transform: rotate(-3deg); } }
+  @keyframes mi-sk1 { 0%, 100% { transform: scaleY(1) translateY(0); } 15%, 82% { transform: scaleY(.4) translateY(3px); } }
+  @keyframes mi-sk2 { 0%, 100% { transform: scale(1) translateY(0); } 15%, 82% { transform: scale(1.12) translateY(-1.5px); } }
+  @keyframes mi-skm { 0%, 100% { transform: rotate(0); } 15%, 82% { transform: rotate(-9deg) translateY(1px); } }
+  @keyframes mi-skh { 0%, 100% { transform: rotate(0); } 15%, 82% { transform: rotate(-7deg); } }
+  @keyframes mi-ska { 0%, 100% { transform: rotate(0); } 15%, 82% { transform: rotate(60deg); } }
+  @keyframes mi-schief { 0%, 100% { transform: rotate(0); } 18%, 45% { transform: rotate(-13deg); } 62%, 82% { transform: rotate(10deg); } }
+  @keyframes mi-schiefe { 0%, 100% { transform: translateY(0); } 18%, 45% { transform: translateY(1px); } 62%, 82% { transform: translateY(-.5px); } }
+}
+.fn.idle[data-mi="lachen"] .rob .eyes .eye, .fn.idle[data-mi="tanzen"] .rob .eyes .eye { display: none; }
+.fn.idle[data-mi="lachen"] .rob .eh, .fn.idle[data-mi="tanzen"] .rob .eh { display: block; }
+.fn.idle[data-mi="lachen"] .rob .mo, .fn.idle[data-mi="tanzen"] .rob .mo { display: none; }
+.fn.idle[data-mi="lachen"] .rob .ms2, .fn.idle[data-mi="tanzen"] .rob .ms2 { display: block; }
+/* Bedienung im Widget */
+.fct { display: grid; gap: .45em; margin-top: .7em; justify-items: center; font-size: .74em; width: 100%; }
+.fcd { display: flex; flex-wrap: wrap; gap: .3em; justify-content: center; }
+.fcr { display: flex; flex-wrap: wrap; gap: .5em .9em; justify-content: center; }
+.fcs { display: inline-flex; align-items: center; gap: .3em; }
+.fcl { opacity: .7; letter-spacing: .08em; text-transform: uppercase; font-size: .9em; }
+.fcv { min-width: 2.6em; text-align: center; font-weight: 700; color: var(--ac); }
+.fcb { font: inherit; color: var(--ac); background: transparent; border: 1px solid color-mix(in srgb, var(--ac) 45%, transparent); border-radius: .3em; padding: .2em .55em; cursor: pointer; line-height: 1.2; transition: transform .15s cubic-bezier(.3, 2.2, .5, 1), background .12s; }
+.fcb:hover:not(:disabled) { background: color-mix(in srgb, var(--ac) 22%, transparent); transform: scale(1.08); }
+.fcb:active:not(:disabled) { transform: scale(.92); }
+.fcb[aria-pressed="true"] { background: var(--ac); color: var(--ik, #111); border-color: var(--ac); font-weight: 700; }
+.fcb:disabled { opacity: .3; cursor: default; }
+.fcm { min-width: 1.7em; padding: .2em .3em; }
 
 /* ---------- Generator ---------- */
 body.gen { background: var(--pb); padding: 18px; height: auto; min-height: 100%; }
@@ -955,6 +1056,21 @@ input[type=number] { max-width: 9em; }
 .seg.sepic button { padding: 5px 7px; display: inline-flex; }
 .seg.sepic button svg { width: 20px; height: 20px; }
 
+.seg.sepan button { padding: 6px 8px; }
+.seg.sepan button svg { width: 24px; height: 24px; overflow: visible; }
+.sepsel .sl { margin: 8px 0 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+.sepsel .sl:first-child { margin-top: 0; }
+
+.mdl { display: grid; gap: 8px; }
+.mdr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mdr input[type=date] { flex: 1 1 150px; min-width: 0; }
+.mdy { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; white-space: nowrap; cursor: pointer; }
+.mdx, .mdp { font: inherit; cursor: pointer; border: 1px solid var(--pl, #444); background: transparent; color: inherit; border-radius: 6px; padding: 5px 10px; }
+.mdp { justify-self: start; }
+.mdx:hover, .mdp:hover { background: rgba(255,255,255,.08); }
+.seg.navi button { min-width: 38px; justify-content: center; align-items: center; }
+.seg.navi button .ki { width: 22px; height: 22px; }
+
 </style>
 </head>
 <body>
@@ -995,7 +1111,7 @@ const FILLS = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transpar
 const SHAPES = [["cut", "Geschnitten"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"]];
 const FRAMES = [["auto", "Automatisch"], ["none", "Keiner"], ["thin", "Dünn"], ["thick", "Dick"], ["double", "Doppelt"], ["dashed", "Gestrichelt"], ["dotted", "Gepunktet"]];
 const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], ["grid", "Gitter"], ["diag", "Diagonal"], ["check", "Schachbrett"]];
-const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["none", "Keiner"]];
+const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["glitch", "Glitch"], ["none", "Keiner"]];
 const CLICKS = [["press", "Eindrücken"], ["flash", "Aufblitzen"], ["shake", "Rütteln"], ["none", "Keiner"]];
 const SCHEMES = [["dark", "Dunkel"], ["light", "Hell"], ["auto", "Auto"]];
 const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Banner"], ["textfeld", "Textfeld"], ["uhr", "Uhr"], ["countdown", "Countdown"], ["counter", "Counter"], ["kalender", "Kalender"], ["fun", "Würfel-Roboter"]];
@@ -1229,7 +1345,7 @@ function startBursts(getBtn) {
   setTimeout(burst, rnd(1200, 3000));
   /* Hover: Streifen-Schübe laufen, solange die Maus über dem Element steht (Button, Widget, Auswahl-Vorschau) */
   document.addEventListener("pointerover", (ev) => {
-    const e = ev.target.closest && ev.target.closest(".btn"); if (!e || e._th || reduced() || !e.parentElement || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) return;
+    const e = ev.target.closest && ev.target.closest(".btn.hv-glitch"); if (!e || e._th || reduced() || !e.parentElement || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) return;
     e._th = true;
     (function step() {
       if (!e.isConnected || !e.matches(":hover") || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) { e.style.filter = ""; e._th = false; return; }
@@ -1245,7 +1361,7 @@ function cfgFromParams(q) {
     label: (q.get("label") || "").slice(0, 60), url: q.get("url") || "", icon: (q.get("icon") || "").slice(0, 24), sub: (q.get("sub") || "").slice(0, 60),
     theme: (q.get("theme") || "standard").toLowerCase(), caps: q.get("caps") !== "0",
     fill: (q.get("fill") || "").toLowerCase(), shape: (q.get("shape") || "").toLowerCase(), frame: (q.get("frame") || "").toLowerCase(), pat: (q.get("pat") || "scan").toLowerCase(),
-    hov: (q.get("hov") || "bright").toLowerCase(), clk: (q.get("clk") || "press").toLowerCase(), scheme: (q.get("scheme") || "auto").toLowerCase(),
+    hov: (q.get("hov") || (((q.get("w") || "button").toLowerCase() === "button") ? "bright" : ((q.get("w") || "").toLowerCase() === "banner" ? "bright" : "none"))).toLowerCase(), clk: (q.get("clk") || "press").toLowerCase(), scheme: (q.get("scheme") || "auto").toLowerCase(),
     fx: ((q.get("w") || "button").toLowerCase() !== "button" && !q.has("fx")) ? W_DEFAULT_FX.slice() : parseFx(q.get("fx")), open: (q.get("open") || "tab").toLowerCase(), size: (q.get("size") || "mid").toLowerCase(), align: (q.get("align") || "left").toLowerCase(),
     font: (q.get("font") || "rajdhani").toLowerCase(), pad: (q.get("pad") || "auto").toLowerCase(), fit: q.has("fit") ? (q.get("fit") === "frame" ? "frame" : "content") : (((q.get("w") || "button").toLowerCase() !== "button" && (q.get("w") || "").toLowerCase() !== "lauftext") ? "frame" : "content"),
   };
@@ -1296,7 +1412,7 @@ function wShell(type, cfg, o, host) {
   const font = FONTS.some((f) => f[0] === cfg.font) ? cfg.font : "rajdhani"; loadFont(font);
   const wrap = el("div", "wrap wpw"); wrap.dataset.fx = fx.join(" "); applyTheme(wrap, cfg);
   const href0 = type === "banner" ? okUrl(cfg.url) : "", href = href0 ? resolveTarget(href0, "tab") : "";
-  const hov = href ? pick(HOVERS, cfg.hov, "bright") : "none", clk = href ? pick(CLICKS, cfg.clk, "press") : "none";
+  const hov = (type === "banner" && !href) ? "none" : pick(HOVERS, cfg.hov, "none"), clk = href ? pick(CLICKS, cfg.clk, "press") : "none";
   const b = el(href ? "a" : "div", "btn wp wt-" + type + " f-" + fill + " sh-" + shape + " fr-" + frame + " pt-" + pat + " hv-" + hov + " ck-" + clk + (cfg.caps !== false ? " caps" : "") + (href ? "" : " nolink"));
   if (href) { b.href = href; if (!href.startsWith("mailto:")) { b.target = "_blank"; b.rel = "noopener noreferrer"; } }
   { const t = palette(cfg); b.style.setProperty("--fr", HEX.test(cfg.line || "") ? t.line : (fill === "solid" ? t.ink : (cfg.frame && cfg.frame !== "auto" ? t.a : t.line))); b.style.setProperty("--pt", fill === "solid" ? "rgb(0 0 0 / .16)" : "rgb(255 255 255 / .07)");
@@ -1337,7 +1453,7 @@ function wLauftext(sh) {
   const speed = { slow: 36, mid: 72, fast: 130 }[o.speed] || 72, fade = o.fade !== "0", pause = o.pause !== "0";
   body.classList.add("mq"); if (fade) body.classList.add("mqf"); if (pause) body.classList.add("mqp");
   const track = el("div", "mqt"), mk = () => { const g = el("span", "mqg"); return g; };
-  const fillGroup = (g, n) => { g.textContent = ""; for (let i = 0; i < n; i++) { g.appendChild(el("span", "mqi", text)); if (sep) { const sp = el("span", "mqs"); if (/^i:[a-z0-9-]+$/.test(sep) && ICONS[sep.slice(2)]) sp.appendChild(iconNode(sep.slice(2))); else sp.textContent = sep.slice(0, 6); g.appendChild(sp); } } };
+  const fillGroup = (g, n) => { g.textContent = ""; for (let i = 0; i < n; i++) { g.appendChild(el("span", "mqi", text)); if (sep) { const sp = el("span", "mqs"); if (/^i:[a-z0-9-]+$/.test(sep) && ICONS[sep.slice(2)]) sp.appendChild(iconNode(sep.slice(2))); else if (/^a:[a-z0-9]+$/.test(sep) && ANIMS.some((x) => x[0] === sep.slice(2))) sp.appendChild(iconNode("a-" + sep.slice(2))); else sp.textContent = sep.slice(0, 6); g.appendChild(sp); } } };
   const g1 = mk(), g2 = mk(); track.append(g1, g2); body.appendChild(track);
   b.classList.add("mqb");
   const layout = () => {
@@ -1458,13 +1574,24 @@ function wCountdown(sh) {
 
 /* ---------- Kalender ---------- */
 function isoWeek(y, m, d) { const t = new Date(Date.UTC(y, m - 1, d)), dn = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - dn + 3); const f = new Date(Date.UTC(t.getUTCFullYear(), 0, 4)); return 1 + Math.round(((t - f) / 86400000 - 3 + ((f.getUTCDay() + 6) % 7)) / 7); }
+const NAVI = { chev: '<path d="M9 5l7 7-7 7"/>', arrow: '<path d="M4 12h15M13 6l6 6-6 6"/>', dchev: '<path d="M5 5l7 7-7 7" class="n1"/><path d="M12 5l7 7-7 7" class="n2"/>', tri: '<path d="M8 5l10 7-10 7z" fill="currentColor"/>', "an-arrow": '<path d="M4 12h15M13 6l6 6-6 6"/>', "an-chev": '<path d="M9 5l7 7-7 7"/>', "an-dchev": '<path d="M5 5l7 7-7 7" class="n1"/><path d="M12 5l7 7-7 7" class="n2"/>', "an-tri": '<path d="M8 5l10 7-10 7z" fill="currentColor"/>' };
+const NAVI_LIST = [["txt", "‹ ›"], ["chev", "Winkel"], ["arrow", "Pfeil"], ["dchev", "Doppelwinkel"], ["tri", "Dreieck"]];
+const NAVI_ANIM = [["an-arrow", "Pfeil wippt"], ["an-chev", "Winkel wippt"], ["an-dchev", "Doppelwinkel läuft"], ["an-tri", "Dreieck wippt"], ["a:herz", "Herz"], ["a:stern", "Stern"], ["a:funken", "Funken"], ["a:sonne", "Sonne"]];
+function naviNode(kind, prev) {
+  const s = el("span", "ki" + (prev ? " kmir" : "") + (/^an-/.test(kind) ? " kan kan-" + kind.slice(3) : ""));
+  if (NAVI[kind]) { s.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + NAVI[kind] + "</svg>"; }
+  else if (/^a:[a-z0-9]+$/.test(kind) && ANIMS.some((x) => x[0] === kind.slice(2))) s.appendChild(iconNode("a-" + kind.slice(2)));
+  else { s.classList.remove("kmir"); s.textContent = prev ? "‹" : "›"; s.style.width = "auto"; }
+  return s;
+}
 function wKalender(sh) {
   const { body, o, host, b } = sh;
   const sunStart = o.start === "su", nav = o.nav !== "0", wk = o.wk === "1", we = o.we !== "0";
   const now = new Date(), mm = /^(\d{4})-(\d{2})$/.exec(o.month || ""); let vy = now.getFullYear(), vm = now.getMonth() + 1; if (mm && +mm[2] >= 1 && +mm[2] <= 12) { vy = +mm[1]; vm = +mm[2]; }
-  const marks = new Set((o.mark || "").split(",").map((s) => s.trim()).filter((s) => /^\d{4}-\d{2}-\d{2}$/.test(s)));
+  const marks = new Set(), yearly = new Set();
+  (o.mark || "").split(",").forEach((s) => { const m = /^(\d{4})-(\d{2})-(\d{2})(y?)$/.exec(s.trim()); if (!m) return; if (m[4]) yearly.add(m[2] + "-" + m[3]); else marks.add(m[1] + "-" + m[2] + "-" + m[3]); });
   const base = { y: vy, m: vm };
-  const head = el("div", "kh"), prevB = el("button", "kb", "‹"), nextB = el("button", "kb", "›"), ttl = el("div", "kt gl"); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
+  const head = el("div", "kh"), navk = NAVI[o.navi] || /^a:[a-z0-9]+$/.test(o.navi || "") ? o.navi : "txt", prevB = el("button", "kb"), nextB = el("button", "kb"), ttl = el("div", "kt gl"); prevB.appendChild(naviNode(navk, true)); nextB.appendChild(naviNode(navk, false)); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
   if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
   const grid = el("div", "kg"); body.append(head, grid);
   const draw = () => {
@@ -1481,7 +1608,7 @@ function wKalender(sh) {
         if (i >= 1 && i <= dim && r < rows) {
           const dow = sunStart ? (c + 6) % 7 : c; cell.textContent = String(i);
           if (dow >= 5) cell.classList.add("we"); if (vy === ty && vm === tm && i === td) cell.classList.add("td");
-          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i))) cell.classList.add("mk");
+          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.has(pad2(vm) + "-" + pad2(i))) cell.classList.add("mk");
         } else cell.classList.add("em");
         grid.appendChild(cell);
       }
@@ -1504,49 +1631,87 @@ function dieShape(sides) {
 }
 function wFun(sh) {
   const { body, o, host, b } = sh;
-  const sides = DIE_SIDES.includes(+o.die) ? +o.die : 20, n = clampN(o.n, 1, 10, 1), mod = clampN(o.mod, -50, 50, 0), name = (o.name !== undefined ? o.name : "Würfel-Bot").slice(0, 24), hist = o.hist !== "0";
-  const formula = n + "W" + sides + (mod ? (mod > 0 ? "+" : "−") + Math.abs(mod) : "");
-  const root = el("div", "fn idle"); body.appendChild(root); b.classList.add("fnb"); b.setAttribute("role", "button"); b.tabIndex = 0; b.setAttribute("aria-label", formula + " würfeln");
+  let sides = DIE_SIDES.includes(+o.die) ? +o.die : 20, n = clampN(o.n, 1, 10, 1), mod = clampN(o.mod, -50, 50, 0), mult = clampN(o.mult, 1, 20, 1);
+  const name = (o.name !== undefined ? o.name : "Würfel-Bot").slice(0, 24), hist = o.hist !== "0", ctlOn = o.ctl !== "0", persist = ctlOn && !document.getElementById("g-out");
+  const skey = "wbot:" + (location.pathname + location.search).slice(-180);
+  if (persist) { try { const s = JSON.parse(localStorage.getItem(skey) || "null"); if (s) { if (DIE_SIDES.includes(+s.d)) sides = +s.d; n = clampN(s.n, 1, 10, n); mod = clampN(s.m, -50, 50, mod); mult = clampN(s.x, 1, 20, mult); } } catch (e) { /* kein Speicher */ } }
+  const fmtF = () => n + "W" + sides + (mult > 1 ? "×" + mult : "") + (mod ? (mod > 0 ? "+" : "−") + Math.abs(mod) : "");
+  const root = el("div", "fn idle"); body.appendChild(root); b.classList.add("fnb"); b.setAttribute("role", "button"); b.tabIndex = 0; b.setAttribute("aria-label", fmtF() + " würfeln");
   /* Roboter */
   const rb = svgEl("svg", { viewBox: "0 0 72 100", class: "rob" });
   rb.innerHTML =
-    '<g class="rbody"><g class="ant"><line x1="36" y1="14" x2="36" y2="22"/><circle cx="36" cy="10" r="3.6" class="ball"/></g>' +
+    '<g class="rbody"><g class="hdg"><g class="ant"><line x1="36" y1="14" x2="36" y2="22"/><circle cx="36" cy="10" r="3.6" class="ball"/></g>' +
     '<rect x="16" y="22" width="40" height="30" rx="9" class="hd"/>' +
     '<g class="eyes"><g class="eye e1"><rect x="25" y="31" width="6.5" height="8" rx="3" class="ef"/></g><g class="eye e2"><rect x="40.5" y="31" width="6.5" height="8" rx="3" class="ef"/></g>' +
     '<path class="eh" d="M24.5 38.5q4-7 8 0M39.5 38.5q4-7 8 0"/><path class="ex" d="M25 31l7 8M32 31l-7 8M40 31l7 8M47 31l-7 8"/></g>' +
-    '<path class="mo" d="M28 45h16"/><path class="ms2" d="M27 43q9 8 18 0"/><path class="mf" d="M27 47q9-7 18 0"/>' +
+    '<path class="mo" d="M28 45h16"/><path class="ms2" d="M27 43q9 8 18 0"/><path class="mf" d="M27 47q9-7 18 0"/></g>' +
     '<line x1="36" y1="52" x2="36" y2="56"/><rect x="20" y="56" width="32" height="26" rx="7" class="bd"/><circle cx="36" cy="69" r="3.4" class="chest"/>' +
     '<g class="arm al"><line x1="20" y1="62" x2="10" y2="74"/><circle cx="9" cy="75.5" r="2.2"/></g>' +
     '<g class="arm ar"><line x1="52" y1="62" x2="63" y2="72"/><circle cx="64.4" cy="73.6" r="2.6"/></g>' +
     '<line x1="29" y1="82" x2="29" y2="92"/><line x1="43" y1="82" x2="43" y2="92"/><line x1="25" y1="93" x2="32" y2="93"/><line x1="40" y1="93" x2="47" y2="93"/></g>';
   /* Würfel + Ergebnis */
-  const col = el("div", "fcol"), dwrap = el("div", "fdw"), ds = svgEl("svg", { viewBox: "0 0 100 100", class: "die" }); ds.appendChild(dieShape(sides));
-  const num = svgEl("text", { x: 50, y: 56, "text-anchor": "middle", "dominant-baseline": "middle", class: "dn" }); num.textContent = "?"; ds.appendChild(num); dwrap.appendChild(ds);
-  const fl = el("div", "ffo gl", formula), chips = el("div", "fch"), msg = el("div", "fms", "Klick zum Würfeln"), hs = el("div", "fhi");
-  col.append(dwrap, fl, chips, msg); if (hist) col.appendChild(hs);
-  if (name) { const nm = el("div", "fnm", name); col.insertBefore(nm, dwrap); }
+  const col = el("div", "fcol"), fdz = el("div", "fdz"), dwrap = el("div", "fdw"), shd = el("div", "fsd"), ds = svgEl("svg", { viewBox: "0 0 100 100", class: "die" }); ds.appendChild(dieShape(sides));
+  const num = svgEl("text", { x: 50, y: 56, "text-anchor": "middle", "dominant-baseline": "middle", class: "dn" }); num.textContent = "?"; ds.appendChild(num); dwrap.appendChild(ds); fdz.append(shd, dwrap);
+  const fl = el("div", "ffo gl", fmtF()), chips = el("div", "fch"), msg = el("div", "fms", "Klick zum Würfeln"), hs = el("div", "fhi");
+  col.append(fdz, fl, chips, msg); if (hist) col.appendChild(hs);
+  if (name) { const nm = el("div", "fnm", name); col.insertBefore(nm, fdz); }
   root.append(rb, col);
-  const history = []; let busy = false, timers = [];
-  const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); wReg(host, { o: t }); return t; };
-  const setNum = (t) => { num.textContent = String(t); num.setAttribute("class", "dn" + (String(t).length > 2 ? " d3" : String(t).length > 1 ? " d2" : "")); };
+  const history = []; let busy = false;
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); wReg(host, { o: t }); return t; };
+  const setNum = (t) => { const L = String(t).length; num.textContent = String(t); num.setAttribute("class", "dn" + (L > 3 ? " d3 d4" : L > 2 ? " d3" : L > 1 ? " d2" : "")); };
+  const refresh = (save) => {
+    fl.textContent = fmtF(); fl.dataset.text = fl.textContent; b.setAttribute("aria-label", fmtF() + " würfeln");
+    const old = ds.querySelector(".dshape"); if (old) ds.replaceChild(dieShape(sides), old);
+    chips.textContent = ""; msg.textContent = "Klick zum Würfeln"; setNum("?"); dwrap.classList.remove("land");
+    if (save && persist) { try { localStorage.setItem(skey, JSON.stringify({ d: sides, n, m: mod, x: mult })); } catch (e) { /* ok */ } }
+  };
+  /* Bedienung im Widget */
+  if (ctlOn) {
+    const box = el("div", "fct"), dr = el("div", "fcd"), sr = el("div", "fcr"), dbs = [];
+    DIE_SIDES.forEach((d) => { const bt = el("button", "fcb", "W" + d); bt.type = "button"; bt.setAttribute("aria-pressed", String(d === sides)); bt.addEventListener("click", () => { sides = d; dbs.forEach((x) => x[1].setAttribute("aria-pressed", String(x[0] === d))); refresh(true); }); dbs.push([d, bt]); dr.appendChild(bt); });
+    const step = (lab, get, set, lo, hi, fmt, tip) => {
+      const g = el("div", "fcs"), l = el("span", "fcl", lab), mn = el("button", "fcb fcm", "−"), v = el("span", "fcv"), pl = el("button", "fcb fcm", "+"); mn.type = pl.type = "button"; g.title = tip; mn.setAttribute("aria-label", tip + " verringern"); pl.setAttribute("aria-label", tip + " erhöhen");
+      const show = () => { v.textContent = fmt(get()); mn.disabled = get() <= lo; pl.disabled = get() >= hi; };
+      mn.addEventListener("click", () => { set(Math.max(lo, get() - 1)); show(); refresh(true); }); pl.addEventListener("click", () => { set(Math.min(hi, get() + 1)); show(); refresh(true); });
+      show(); g.append(l, mn, v, pl); return g;
+    };
+    sr.append(step("Anz.", () => n, (x) => { n = x; }, 1, 10, (x) => String(x), "Anzahl Würfel"), step("Mod.", () => mod, (x) => { mod = x; }, -50, 50, (x) => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x), "Modifikator"), step("Mult.", () => mult, (x) => { mult = x; }, 1, 20, (x) => "×" + x, "Multiplikator"));
+    box.append(dr, sr); col.appendChild(box);
+    ["click", "keydown", "pointerdown"].forEach((ev) => box.addEventListener(ev, (e) => e.stopPropagation()));
+  }
   const roll = () => {
-    if (busy) return; busy = true; root.className = "fn throw"; msg.textContent = "…"; chips.textContent = ""; dwrap.classList.remove("land"); void dwrap.offsetWidth;
-    const vals = Array.from({ length: n }, () => dieRoll(sides)), sum = vals.reduce((a, v) => a + v, 0) + mod;
-    const flick = reduced() ? null : setInterval(() => { setNum(Math.max(1, dieRoll(sides) * (n > 1 ? n : 1))); }, 60); if (flick) wReg(host, { i: flick });
-    dwrap.classList.add("tumble");
+    if (busy) return; busy = true; delete root.dataset.mi; root.className = "fn throw"; msg.textContent = "…"; chips.textContent = ""; dwrap.classList.remove("land"); void dwrap.offsetWidth;
+    const S = sides, N = n, M = mod, X = mult;
+    const vals = Array.from({ length: N }, () => dieRoll(S)), sum = vals.reduce((a, v) => a + v, 0) * X + M;
+    const rd = reduced(); let flick = null;
+    if (!rd) { dwrap.classList.add("tumble"); later(() => { flick = setInterval(() => { setNum(Math.max(1, dieRoll(S) * (N > 1 ? N : 1) * X)); }, 60); wReg(host, { i: flick }); }, 380); }
     later(() => {
       if (flick) clearInterval(flick); dwrap.classList.remove("tumble"); setNum(sum); dwrap.classList.add("land");
-      vals.forEach((v) => chips.appendChild(el("span", "fc" + (v === sides ? " mx" : v === 1 ? " mn" : ""), String(v)))); if (mod) chips.appendChild(el("span", "fc md", (mod > 0 ? "+" : "−") + Math.abs(mod)));
-      const crit = vals.every((v) => v === sides) && sides >= 4, bad = vals.every((v) => v === 1) && sides >= 4;
+      vals.forEach((v) => chips.appendChild(el("span", "fc" + (v === S ? " mx" : v === 1 ? " mn" : ""), String(v)))); if (X > 1) chips.appendChild(el("span", "fc md", "×" + X)); if (M) chips.appendChild(el("span", "fc md", (M > 0 ? "+" : "−") + Math.abs(M)));
+      const crit = vals.every((v) => v === S) && S >= 4, bad = vals.every((v) => v === 1) && S >= 4;
       root.className = "fn " + (crit ? "happy" : bad ? "sad" : "ok");
-      msg.textContent = crit ? "Kritischer Treffer!" : bad ? "Patzer!" : (n > 1 ? "Summe " + sum : "Ergebnis " + sum);
+      msg.textContent = crit ? "Kritischer Treffer!" : bad ? "Patzer!" : (N > 1 || X > 1 ? "Summe " + sum : "Ergebnis " + sum);
       history.unshift(sum); history.length = Math.min(history.length, 6); hs.textContent = ""; history.slice(1).forEach((h) => hs.appendChild(el("span", "fh", String(h)))); if (hist && history.length > 1) hs.title = "Letzte Würfe";
       later(() => { busy = false; if (!root.classList.contains("throw")) root.classList.add("rest"); }, 380);
       later(() => { if (!busy) root.className = "fn idle"; }, 3200);
-    }, reduced() ? 80 : 900);
+    }, rd ? 80 : 1350);
   };
   b.addEventListener("click", roll); b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); roll(); } });
-  b.style.cursor = "pointer";
+  b.style.cursor = "pointer"; refresh(false);
+  /* zufällige Mini-Animationen des Roboters */
+  if (!reduced()) {
+    const MI = [["kratzen", 2300], ["lachen", 1900], ["springen", 1300], ["tanzen", 2900], ["zurueck", 2700], ["skeptisch", 2500], ["schief", 2500], ["winken", 2100]];
+    const h = { o: 0 }; wReg(host, h); let last = "";
+    const plan = (first) => {
+      h.o = setTimeout(() => {
+        if (!busy && root.classList.contains("idle") && !document.hidden) {
+          const pool = MI.filter((x) => x[0] !== last), m = pool[Math.floor(Math.random() * pool.length)]; last = m[0]; root.dataset.mi = m[0];
+          h.o = setTimeout(() => { delete root.dataset.mi; plan(); }, m[1] + 100);
+        } else plan();
+      }, first ? 2500 + Math.random() * 2500 : 3500 + Math.random() * 5000);
+    };
+    plan(true);
+  }
 }
 
 /* ---------- Verteiler ---------- */
@@ -1868,7 +2033,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Randabstand</span><div class="seg" id="g-pad"></div><p class="hint2">Platz um den Button, damit Glühen und Zittern nicht abgeschnitten werden. Auto: 20 px bei Glühen, Zittern oder Streifen, sonst 0. Rahmen in Notion = Button + Randabstand.</p></div>' +
     '<h3 class="sub3">Animation</h3>' +
     '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl, keine Auswahl = ruhiger Button.</p></div>' +
-    '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div><p class="hint2">Maus über die Option bewegen zeigt die Wirkung.</p></div>' +
+    '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div><p class="hint2">Maus über die Option bewegen zeigt die Wirkung. „Glitch“ verstärkt die gewählten Glitch-Effekte beim Darüberfahren; ohne diese Auswahl reagieren Glitch-Effekte nicht auf die Maus.</p></div>' +
     '<div class="row"><span class="lab">Klick</span><div class="seg" id="g-clk"></div><p class="hint2">Klick auf die Option zeigt die Wirkung, danach wird sie gewählt.</p></div>' +
     '<h3 class="sub3">Notion</h3>' +
     '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
@@ -1972,6 +2137,7 @@ function applyPage() {
   const pvCfg = (key, val, label) => {
     const c = cfgNow(); c.label = label; c.sub = ""; c.icon = ""; c.url = ""; c.fx = []; c.pad = "0"; c.fit = "content"; c.open = "tab"; c.demo = true;
     if (key === "fx") { c.fx = [val]; c.pad = "6"; } else c[key] = val;
+    if (key === "hov" && val === "glitch") { c.fx = S.fx.length ? S.fx.slice() : ["rgb", "jitter"]; c.pad = "6"; }
     if (key !== "size") c.size = "small";
     return c;
   };
@@ -2164,7 +2330,7 @@ function applyPage() {
     loadWidgetParams(u.searchParams);
     $("g-label").value = c.label; $("g-sub").value = c.sub; $("g-url").value = c.url;
     S.theme = THEMES[c.theme] ? c.theme : "standard"; S.fill = pick(FILLS, c.fill, "solid"); S.shape = pick(SHAPES, c.shape, "cut"); S.frame = pick(FRAMES, c.frame, "auto"); S.pat = pick(PATTERNS, c.pat, "scan");
-    S.hov = pick(HOVERS, c.hov, "bright"); S.clk = pick(CLICKS, c.clk, "press"); S.scheme = pick(SCHEMES, c.scheme, "auto"); S.caps = c.caps; S.fx = c.fx;
+    S.hov = pick(HOVERS, c.hov, wt === "button" || wt === "banner" ? "bright" : "none"); S.clk = pick(CLICKS, c.clk, "press"); S.scheme = pick(SCHEMES, c.scheme, "auto"); S.caps = c.caps; S.fx = c.fx;
     S.open = pick(OPEN, c.open, "tab"); S.size = pick(SIZES, c.size, "mid"); S.align = (JUST[c.align] || c.align === "justify") ? c.align : "left"; S.font = pick(FONTS, c.font, "rajdhani"); S.icon = c.icon; S.diy = {}; S.pad = c.pad; S.fit = c.fit;
     DIY_KEYS.forEach(([k]) => { if (HEX.test(c[k] || "")) S.diy[k] = c[k].toLowerCase(); });
     applyPage(); drawAll(); render(); m.textContent = "Geladen. Nach dem Anpassen neue Adresse in der Notion-Einbettung ersetzen.";
@@ -2206,14 +2372,14 @@ function applyPage() {
     });
   }
   /* ================= Weitere Widgets im Generator ================= */
-  const W_STYLE_DEF = (t) => ({ fill: "outline", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", caps: true, fx: W_DEFAULT_FX.slice(), size: "mid", align: ["lauftext", "banner", "textfeld"].includes(t) ? "left" : "center", pad: "auto", fit: t === "lauftext" ? "content" : "frame", font: "rajdhani" });
+  const W_STYLE_DEF = (t) => ({ fill: "outline", shape: "cut", frame: "auto", pat: "scan", hov: t === "banner" ? "bright" : "none", clk: "press", caps: true, fx: W_DEFAULT_FX.slice(), size: "mid", align: ["lauftext", "banner", "textfeld"].includes(t) ? "left" : "center", pad: "auto", fit: t === "lauftext" ? "content" : "frame", font: "rajdhani" });
   const STYLE_KEYS = ["fill", "shape", "frame", "pat", "hov", "clk", "caps", "fx", "size", "align", "pad", "fit", "font"];
   const SW = {};
   const ALIGNS_T = ALIGNS.concat([["justify", "Blocksatz"]]);
   const ALL_ROWS = ["g-colors", "g-fill", "g-shape", "g-frame", "g-pat", "g-font", "g-size", "g-caps", "g-align", "g-fit", "g-pad", "g-fx", "g-hov", "g-clk", "g-open", "g-scheme"];
   const BASE = ["g-colors", "g-fill", "g-shape", "g-frame", "g-pat", "g-font", "g-size", "g-caps", "g-pad", "g-fx", "g-scheme"];
-  const ROWSV = { button: ALL_ROWS, lauftext: BASE, banner: BASE.concat(["g-align", "g-fit", "g-hov", "g-clk"]), textfeld: BASE.concat(["g-align", "g-fit"]), uhr: BASE.concat(["g-align", "g-fit"]), countdown: BASE.concat(["g-align", "g-fit"]), kalender: BASE.concat(["g-align", "g-fit"]), fun: BASE.concat(["g-align", "g-fit"]) };
-  const WPREV = { lauftext: 80, banner: 130, textfeld: 210, uhr: 170, countdown: 170, kalender: 340, fun: 230 };
+  const ROWSV = { button: ALL_ROWS, lauftext: BASE.concat(["g-hov"]), banner: BASE.concat(["g-align", "g-fit", "g-hov", "g-clk"]), textfeld: BASE.concat(["g-align", "g-fit", "g-hov"]), uhr: BASE.concat(["g-align", "g-fit", "g-hov"]), countdown: BASE.concat(["g-align", "g-fit", "g-hov"]), kalender: BASE.concat(["g-align", "g-fit", "g-hov"]), fun: BASE.concat(["g-align", "g-fit", "g-hov"]) };
+  const WPREV = { lauftext: 80, banner: 130, textfeld: 210, uhr: 170, countdown: 170, kalender: 340, fun: 330 };
   const in7 = (() => { const d = new Date(Date.now() + 7 * 86400000); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + "T18:00"; })();
   const YN = (a, b) => [["1", a], ["0", b]];
   const F = (k, label, kind, x) => Object.assign({ k, label, kind, def: "" }, x || {});
@@ -2223,11 +2389,11 @@ function applyPage() {
     textfeld: [F("title", "Überschrift", "text", { max: 80, ph: "optional" }), F("text", "Text", "area", { max: 700, ph: "Dein Text. Neue Zeile = neuer Absatz.", rows: 6 }), F("lh", "Zeilenabstand", "seg", { items: [["tight", "Eng"], ["mid", "Normal"], ["loose", "Weit"]], def: "mid" }), F("type", "Tipp-Animation", "seg", { items: [["0", "Aus"], ["1", "Schreibmaschine"]], def: "0", hint: "Text tippt sich selbst; Klick zeigt ihn sofort." })],
     uhr: [F("mode", "Anzeige", "seg", { items: [["digital", "Digital"], ["analog", "Analog"]], def: "digital" }), F("ds", "Uhr-Stil", "ds", { def: "", hint: "Eigene Zeichnungen, nur im gewählten Theme verfügbar. Ein Stil ersetzt „Anzeige“. Klick auf die Uhr startet die Stunden-Show (Klingeln, Kuckuck)." }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("h12", "Format", "seg", { items: [["0", "24 Stunden"], ["1", "12 Stunden"]], def: "0", hint: "Nur bei digitaler Anzeige." }), F("flip", "Umblättern", "seg", { items: [["none", "Aus"], ["top", "Oben"], ["side", "Seite"]], def: "none", hint: "Oben: Klappe fällt nach unten (Klapp-Uhr). Seite: Karte dreht sich um die senkrechte Achse. Nur bei Digital ohne Uhr-Stil." }), F("fu", "Umblättern bei", "multi", { items: [["h", "Stunden"], ["m", "Minuten"], ["s", "Sekunden"]], def: "hms" }), F("date", "Datum", "seg", { items: [["none", "Keins"], ["short", "Kurz"], ["long", "Lang"]], def: "short" }), F("name", "Name", "text", { max: 30, ph: "optional, z. B. Berlin" })],
     countdown: [F("title", "Titel", "text", { max: 60, ph: "z. B. Bis zur nächsten Session" }), F("to", "Zieldatum", "dt", { def: in7, req: true }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("units", "Einheiten", "seg", { items: [["full", "Ausgeschrieben"], ["short", "Kurz"]], def: "full" }), F("done", "Text nach Ablauf", "text", { max: 60, def: "Es ist soweit!" })],
-    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("mark", "Markierte Tage", "dates", { ph: "z. B. 28.11.2026, 05.12.2026", hint: "Kommagetrennt, Format TT.MM.JJJJ." })],
-    fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zur Summe addiert." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
+    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag)." })],
+    fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mult", "Multiplikator", "num", { min: 1, max: 20, def: "1", hint: "Würfelsumme × Multiplikator." }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zuletzt addiert: (Summe × Multiplikator) + Modifikator." }), F("ctl", "Bedienung im Widget", "seg", { items: YN("An", "Aus"), def: "1", hint: "Würfel, Anzahl, Multiplikator und Modifikator lassen sich im Widget selbst ändern (wird im Browser gemerkt). Die Werte oben sind die Startwerte." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
   };
   const X = {}; WTYPES.forEach((t) => { X[t] = {}; WSCHEMA[t].forEach((f) => { X[t][f.k] = String(f.def); }); });
-  const normDates = (raw) => String(raw || "").split(/[\s,;]+/).map((s) => { let m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(s); if (m) return m[3] + "-" + pad2(+m[2]) + "-" + pad2(+m[1]); return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : ""; }).filter(Boolean).join(",");
+  const normDates = (raw) => String(raw || "").split(/[\s,;]+/).map((s) => { let m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(s); if (m) return m[3] + "-" + pad2(+m[2]) + "-" + pad2(+m[1]); return /^\d{4}-\d{2}-\d{2}y?$/.test(s) ? s : ""; }).filter(Boolean).join(",");
   const oFor = (t) => { const o = Object.assign({}, X[t]); if (t === "kalender") o.mark = normDates(o.mark); return o; };
   function drawWc() {
     const host = $("wc"); host.textContent = "";
@@ -2258,7 +2424,42 @@ function applyPage() {
             const r1 = document.createElement("div"); r1.className = "seg"; const r2 = document.createElement("div"); r2.className = "seg sepic";
             CH.forEach(([v, l]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = l; b.setAttribute("aria-pressed", String(cur === v)); b.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); }); r1.appendChild(b); });
             IC.forEach((n) => { const b = document.createElement("button"); b.type = "button"; b.title = n; b.appendChild(iconNode(n)); b.setAttribute("aria-pressed", String(cur === "i:" + n)); b.addEventListener("click", () => { X[t][f.k] = "i:" + n; redraw(); render(); }); r2.appendChild(b); });
-            ctl.append(r1, r2);
+            const AN = [["stern", "Stern"], ["funken", "Funken"], ["zauber", "Zauberstab"], ["diamant", "Diamant"], ["herz", "Herz"], ["schaedel", "Totenkopf"], ["schwerter", "Schwerter"], ["fisch", "Fisch"], ["sonne", "Sonne"], ["funk", "Funkturm"], ["glocke", "Glocke"], ["warnung", "Warnung"], ["auge", "Auge"], ["flamme", "Flamme"], ["klick", "Klickkreis"], ["barcode", "Barcode"], ["stift", "Stift"], ["uhr", "Uhr"], ["raute", "Hashtag"], ["bild", "Bild"], ["krone", "Krone"], ["kaefer", "Käfer"], ["zahnrad", "Zahnrad"]];
+            const r3 = document.createElement("div"); r3.className = "seg sepic sepan";
+            AN.forEach(([n, l]) => { const b = document.createElement("button"); b.type = "button"; b.title = l + " (animiert)"; b.appendChild(iconNode("a-" + n)); b.setAttribute("aria-pressed", String(cur === "a:" + n)); b.addEventListener("click", () => { X[t][f.k] = "a:" + n; redraw(); render(); }); r3.appendChild(b); });
+            const l2 = document.createElement("div"); l2.className = "sl"; l2.textContent = "Flache Icons"; const l3 = document.createElement("div"); l3.className = "sl"; l3.textContent = "Animierte Icons";
+            ctl.append(r1, l2, r2, l3, r3);
+          };
+          redraw(); ctl._redraw = redraw;
+        } else if (f.kind === "mdates") {
+          ctl = document.createElement("div"); ctl.className = "mdl";
+          let arr = [""]; const load = () => { arr = String(X[t][f.k] || "").split(",").map((s) => s.trim()).filter((s) => /^\d{4}-\d{2}-\d{2}y?$/.test(s)); if (!arr.length) arr = [""]; };
+          const redraw = () => {
+            ctl.textContent = "";
+            const commit = () => { X[t][f.k] = arr.filter(Boolean).join(","); render(); };
+            arr.forEach((v, i) => {
+              const r = document.createElement("div"); r.className = "mdr"; const inp = document.createElement("input"); inp.type = "date"; inp.value = v.slice(0, 10); inp.setAttribute("aria-label", "Markierter Tag " + (i + 1));
+              const yl = document.createElement("label"); yl.className = "mdy"; const yc = document.createElement("input"); yc.type = "checkbox"; yc.checked = v.endsWith("y"); yl.append(yc, document.createTextNode(" jährlich"));
+              const x = document.createElement("button"); x.type = "button"; x.className = "mdx"; x.textContent = "✕"; x.title = "Entfernen"; x.setAttribute("aria-label", "Tag entfernen");
+              const upd = () => { arr[i] = inp.value ? inp.value + (yc.checked ? "y" : "") : ""; commit(); };
+              inp.addEventListener("input", () => { upd(); const pl = ctl.querySelector(".mdp"); if (pl) pl.hidden = !arr[arr.length - 1]; }); yc.addEventListener("change", upd);
+              x.addEventListener("click", () => { arr.splice(i, 1); if (!arr.length) arr = [""]; X[t][f.k] = arr.filter(Boolean).join(","); redraw(); render(); });
+              r.append(inp, yl, x); ctl.appendChild(r);
+            });
+            const plus = document.createElement("button"); plus.type = "button"; plus.className = "mdp"; plus.textContent = "+ Weiterer Tag"; plus.hidden = !arr[arr.length - 1] || arr.length >= 20;
+            plus.addEventListener("click", () => { arr.push(""); redraw(); const ins = ctl.querySelectorAll("input[type=date]"); if (ins.length) ins[ins.length - 1].focus(); });
+            ctl.appendChild(plus);
+          };
+          load(); redraw(); ctl._redraw = () => { load(); redraw(); };
+        } else if (f.kind === "navi") {
+          ctl = document.createElement("div"); ctl.className = "sepsel";
+          const redraw = () => {
+            ctl.textContent = ""; const cur = X[t][f.k];
+            [["Flach", NAVI_LIST], ["Animiert", NAVI_ANIM]].forEach(([lab, list]) => {
+              const p = document.createElement("div"); p.className = "sl"; p.textContent = lab; const r = document.createElement("div"); r.className = "seg sepic sepan navi";
+              list.forEach(([v, l]) => { const b = document.createElement("button"); b.type = "button"; b.title = l; b.appendChild(v === "txt" ? document.createTextNode("‹ ›") : naviNode(v, false)); b.setAttribute("aria-pressed", String(cur === v)); b.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); }); r.appendChild(b); });
+              ctl.append(p, r);
+            });
           };
           redraw(); ctl._redraw = redraw;
         } else if (f.kind === "tz") {
@@ -2313,11 +2514,11 @@ function applyPage() {
     if (t === "banner") { if (cfg.url) p.set("url", ok && isMail(cfg.url) ? okUrl(raw) : cfg.url); if (cfg.icon) p.set("icon", cfg.icon); }
     if (cfg.theme !== "standard") p.set("theme", cfg.theme);
     ["fill", "shape", "frame", "pat", "size", "align", "pad", "font"].forEach((k) => { if (S[k] !== D[k]) p.set(k, S[k]); });
-    if (t === "banner") { if (S.hov !== "bright") p.set("hov", S.hov); if (S.clk !== "press") p.set("clk", S.clk); }
+    if (S.hov !== D.hov) p.set("hov", S.hov); if (t === "banner" && S.clk !== "press") p.set("clk", S.clk);
     if (!S.caps) p.set("caps", "0"); if (S.fit !== D.fit) p.set("fit", S.fit); if (S.scheme !== "auto") p.set("scheme", S.scheme);
     if (S.fx.slice().sort().join() !== W_DEFAULT_FX.slice().sort().join()) p.set("fx", S.fx.length ? S.fx.join(",") : "none");
     DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
-    WSCHEMA[t].forEach((f) => { let v = X[t][f.k]; if (f.kind === "dates") v = normDates(v); if (f.req ? v !== "" : v !== String(f.def)) p.set(f.k, v); });
+    WSCHEMA[t].forEach((f) => { let v = X[t][f.k]; if (f.kind === "dates" || f.kind === "mdates") v = normDates(v); if (f.req ? v !== "" : v !== String(f.def)) p.set(f.k, v); });
     $("g-out").value = location.origin + location.pathname + "?" + p.toString(); $("g-copy").disabled = false;
   }
   function loadWidgetParams(u) {
@@ -2326,7 +2527,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:30"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:45"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

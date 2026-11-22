@@ -291,7 +291,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
 .datebtn.empty { color: var(--muted); }
 .datebtn::before { content: "▦"; margin-right: 10px; color: var(--lime); opacity: .8; }
 .datebtn:hover { filter: none; }
-.d-note { flex: 1 1 100%; margin: 0; color: var(--warn); font-size: .92rem; }
+.d-note { flex: 1 1 100%; margin: 0; color: #ffd23f; font-size: .92rem; }
 .d-note::before { content: "⚠ "; }
 .cal { --cut: 14px; position: fixed; z-index: 20; width: min(312px, calc(100vw - 16px)); padding: 1.5px; background: rgb(var(--lime-rgb) / .6);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); filter: drop-shadow(0 10px 24px rgb(0 0 0 / .55)); }
@@ -315,6 +315,28 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   .cal { animation: cal-in .22s steps(4, end); }
   @keyframes cal-in { 0% { opacity: 0; transform: translateY(-6px); } 50% { opacity: 1; transform: translate(3px, -2px); } 100% { opacity: 1; transform: none; } }
 }
+
+/* 3-Spalten-Raster */
+main { width: min(100%, 1240px); }
+@media (hover: hover) and (min-width: 700px) { main { padding-right: calc(clamp(12px, 3vw, 24px) + 118px); } }
+.row { --cols: 3; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 14px; align-items: start; }
+.row.r1, .row.r2 { align-items: stretch; }
+.row.r2 > .sec:not(.open) { display: none; }
+.row.r2 > .sec.span2 { grid-column: span 2; }
+.row .sec.nest > .sec-clip > .card-wrap { margin-left: 0; padding-left: 0; border-left: 0; }
+.row .col { display: flex; flex-direction: column; min-width: 0; }
+.row.r1 .sec-clip, .row.r2 .sec-clip { display: flex; }
+.row.r1 .card-wrap, .row.r2 .card-wrap { flex: 1; display: flex; flex-direction: column; }
+.row.r1 .card, .row.r2 .card { flex: 1; display: flex; flex-direction: column; }
+.row.r1 .card-in, .row.r2 .card-in { flex: 1; }
+.row .card-in { padding: 14px 14px 16px; }
+.row .q-title.orn { letter-spacing: .2em; gap: 8px; font-size: 1.1rem; white-space: nowrap; }
+.row .q-title.orn::before { flex-basis: 12px; }
+.row .opts { grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 6px; }
+.row .opt { padding: 7px 10px; }
+.row.r3 textarea.field { min-height: 210px; }
+@media (max-width: 859px) { .row { --cols: 2; } }
+@media (max-width: 619px) { .row { --cols: 1; } .row.r2 > .sec.span2 { grid-column: auto; } }
 </style>
 </head>
 <body>
@@ -468,7 +490,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795362196718}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363221070}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -892,31 +914,37 @@ addEventListener("resize", calPlace); addEventListener("scroll", calPlace, true)
 
 function buildForm() {
   form.textContent = "";
+  const r1 = el("div", "row r1"), r2 = el("div", "row r2"), r3 = el("div", "row r3");
+  form.append(r1, r2, r3);
   /* DEADLINE */
   { const { c, inn } = card(model.deadline.title);
     const d = el("div", "dates");
     d.innerHTML = '<div class="dfield"><span class="dlabel">Deadline (optional)</span><input type="hidden" id="d-end"><button type="button" class="field datebtn" id="d-show" aria-haspopup="dialog" aria-expanded="false"></button></div><p class="d-note" id="d-note" hidden>Hinweis: Das Datum liegt in der Vergangenheit.</p>';
-    inn.appendChild(d); form.appendChild(wrap(c, { open: true })); calBind(); }
+    inn.appendChild(d); r1.appendChild(wrap(c, { open: true })); calBind(); }
   /* KAPITEL */
   { const { c, inn } = card(model.kapitel.title, { orn: true, req: true });
     c.id = "card-kapitel";
     inn.append(el("p", "q-desc", model.kapitel.desc || ""), el("p", "q-hint", "(Wähle bis zu 1 Option aus)"), optionList("KAPITEL", model.kapitel.opts, "radio"));
-    form.appendChild(wrap(c, { open: true })); }
+    r1.appendChild(wrap(c, { open: true })); }
   /* Bedingte Abschnitte */
   for (const s of SECTIONS) {
     const { c, inn } = card(s.title);
     if (s.desc) inn.appendChild(el("p", "q-desc", s.desc));
     inn.append(el("p", "q-hint", "(Wähle beliebig viele Optionen aus)"), optionList(s.prop, s.opts, "checkbox", s.id));
-    form.appendChild(wrap(c, { open: false, nest: !!s.parent, id: s.id }));
+    const sw = wrap(c, { open: false, nest: !!s.parent, id: s.id });
+    if (s.opts.length > 8) sw.classList.add("span2");
+    r2.appendChild(sw);
   }
   /* TASKS, ZUSTÄNDIG */
-  for (const [key, name] of [["tasks", "TASKS"], ["who", "ZUSTÄNDIG"]]) {
+  for (const [key, name, row] of [["who", "ZUSTÄNDIG", r1], ["tasks", "TASKS", r3]]) {
     const m = model[key], { c, inn } = card(m.title);
     if (m.desc) inn.appendChild(el("p", "q-desc", m.desc));
     inn.append(el("p", "q-hint", "(Wähle beliebig viele Optionen aus)"), optionList(name, m.opts, "checkbox", key));
-    form.appendChild(wrap(c, { open: true }));
+    row.appendChild(wrap(c, { open: true }));
   }
+  const col2 = el("div", "col"); r3.appendChild(col2);
   /* Zusätzliche Felder aus dem Abgleich */
+  const extraSecs = [];
   model.extras.forEach((x, i) => {
     const { c, inn } = card(x.title || x.prop, { req: !!x.required });
     if (x.desc) inn.appendChild(el("p", "q-desc", x.desc));
@@ -932,7 +960,7 @@ function buildForm() {
       inp.setAttribute("aria-label", x.title || x.prop);
       const w = el("div", "dates"); w.style.marginTop = "8px"; w.appendChild(inp); inn.appendChild(w);
     }
-    form.appendChild(wrap(c, { open: true }));
+    extraSecs.push(wrap(c, { open: true }));
   });
   /* JOURNAL */
   { const { c, inn } = card(model.journal.title);
@@ -943,7 +971,7 @@ function buildForm() {
     const ghost = el("div", "ghost"); ghost.setAttribute("aria-hidden", "true");
     ghost.innerHTML = '<span class="g-text"></span><span class="g-cur"></span>';
     gw.append(journal, ghost); inn.appendChild(gw);
-    form.appendChild(wrap(c, { open: true }));
+    r3.appendChild(wrap(c, { open: true }));
     const txt = ghost.querySelector(".g-text"); let timer = null;
     const stop = () => { clearTimeout(timer); timer = null; ghost.classList.remove("typing"); };
     const sync = () => ghost.classList.toggle("filled", journal.value !== "");
@@ -961,7 +989,7 @@ function buildForm() {
   { const { c, inn } = fieldCard(model.link.title, model.link.desc);
     const w = el("div", "dates"); w.style.marginTop = "8px";
     w.innerHTML = '<input class="field" type="url" id="x-link" placeholder="https://…" spellcheck="false" aria-label="Link">';
-    inn.appendChild(w); form.appendChild(wrap(c, { open: true })); }
+    inn.appendChild(w); col2.appendChild(wrap(c, { open: true })); }
   /* UPLOAD (derzeit deaktiviert) */
   if (!model.noUpload) {
     const { c, inn } = fieldCard(model.upload.title, model.upload.desc);
@@ -972,9 +1000,10 @@ function buildForm() {
     fi.addEventListener("change", async () => { await addFiles([...fi.files]); fi.value = ""; });
     lab.append(fi, b); inn.appendChild(lab);
     const ul = el("ul", "list"); ul.id = "x-files"; inn.appendChild(ul);
-    form.appendChild(wrap(c, { open: true }));
+    col2.appendChild(wrap(c, { open: true }));
     renderFiles();
   }
+  extraSecs.forEach((x) => r3.appendChild(x));
   indexModel();
 }
 function renderFiles() {
@@ -1327,9 +1356,9 @@ function hintText() { $("hint").textContent = cfg.webhook ? "Quest ausfüllen un
   if (window.matchMedia("(hover: none)").matches) return;
   let targetY = window.innerHeight * 0.45, curY = targetY, raf = 0;
   function place() {
-    const w = dock.offsetWidth, h = dock.offsetHeight, r = main.getBoundingClientRect();
+    const w = dock.offsetWidth, h = dock.offsetHeight, r = form.getBoundingClientRect();
     const minY = head.getBoundingClientRect().bottom + 8, maxY = Math.max(minY, window.innerHeight - h - 8);
-    const x = Math.max(8, Math.min(r.right + 18, window.innerWidth - w - 12));
+    const x = Math.max(8, Math.min(r.right + 14, window.innerWidth - w - 12));
     const y = Math.max(minY, Math.min(curY - h / 2, maxY));
     dock.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
   }

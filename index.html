@@ -393,7 +393,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360211546}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360255236}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -952,6 +952,14 @@ async function save() {
 }
 function showDone() { openDlg(doneDlg); }
 saveBtn.addEventListener("click", save);
+/* Ziel-Links: im selben Tab; im Einbettungs-Rahmen (falls gesperrt) in neuem Tab */
+function goTo(url) {
+  if (window.top === window) { location.href = url; return; }
+  let left = false; window.addEventListener("pagehide", () => { left = true; }, { once: true });
+  try { window.top.location.href = url; } catch (e) {}
+  setTimeout(() => { if (!left) { const w = window.open(url, "_blank", "noopener"); if (!w) say("Link wird hier blockiert. Formular direkt im Browser öffnen.", "err"); } }, 450);
+}
+for (const id of ["dn-pin", "dn-wiki", "dn-view"]) $(id).addEventListener("click", (e) => { e.preventDefault(); goTo($(id).href); });
 const choiceDlg = $("choice");
 $("dn-close").addEventListener("click", () => doneDlg.close());
 doneDlg.addEventListener("close", () => openDlg(choiceDlg));

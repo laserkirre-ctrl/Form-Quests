@@ -468,7 +468,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361638855}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795362196718}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -1069,7 +1069,7 @@ form.addEventListener("submit", (e) => e.preventDefault());
 /* ---- Leeren ---- */
 const dlgClear = $("confirm");
 function resetForm() {
-  form.reset(); pendingFiles = []; renderFiles(); updateAll();
+  form.reset(); calShut(); { const h = $("d-end"); if (h) h.value = ""; } calShow(); pendingFiles = []; renderFiles(); updateAll();
   if (journal) journal.dispatchEvent(new Event("input"));
   say("Alle Felder geleert.");
 }
@@ -1177,8 +1177,9 @@ function goTo(url) {
   setTimeout(() => { if (!left) { const w = window.open(url, "_blank", "noopener"); if (!w) say("Link wird hier blockiert. Formular direkt im Browser öffnen.", "err"); } }, 450);
 }
 for (const id of ["dn-pin", "dn-wiki", "dn-view"]) $(id).addEventListener("click", (e) => { e.preventDefault(); goTo($(id).href); });
-$("dn-close").addEventListener("click", () => doneDlg.close());
-$("dn-new").addEventListener("click", () => { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
+function finishDone() { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); }
+$("dn-close").addEventListener("click", finishDone);
+$("dn-new").addEventListener("click", finishDone);
 doneDlg.addEventListener("click", (e) => { if (e.target === doneDlg) doneDlg.close(); });
 
 /* ---- Admin Area ---- */

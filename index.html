@@ -322,7 +322,6 @@ main { width: min(100%, 1240px); }
 .row { --cols: 3; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 14px; align-items: start; }
 .row.r1, .row.r2 { align-items: stretch; }
 .row.r2 > .sec:not(.open) { display: none; }
-.row.r2 > .sec.span2 { grid-column: span 2; }
 .row .sec.nest > .sec-clip > .card-wrap { margin-left: 0; padding-left: 0; border-left: 0; }
 .row .col { display: flex; flex-direction: column; min-width: 0; }
 .row.r1 .sec-clip, .row.r2 .sec-clip { display: flex; }
@@ -336,7 +335,39 @@ main { width: min(100%, 1240px); }
 .row .opt { padding: 7px 10px; }
 .row.r3 textarea.field { min-height: 210px; }
 @media (max-width: 859px) { .row { --cols: 2; } }
-@media (max-width: 619px) { .row { --cols: 1; } .row.r2 > .sec.span2 { grid-column: auto; } }
+@media (max-width: 619px) { .row { --cols: 1; } }
+
+/* Mehrfachauswahl */
+.multi { margin-top: 8px; }
+.multibtn { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; text-align: left; cursor: pointer; clip-path: none; border-radius: 2px; letter-spacing: .04em; }
+.multibtn::after { content: "▾"; color: var(--lime); margin-left: auto; opacity: .8; order: 3; }
+.multibtn .mb-label { flex: 1 1 auto; }
+.multibtn .mb-count { order: 2; font-size: .82rem; color: var(--muted); letter-spacing: .08em; padding: 2px 7px; border: 1px solid var(--line); }
+.multibtn.has .mb-count { color: var(--lime-ink); background: var(--lime); border-color: var(--lime); }
+.multibtn[aria-expanded="true"] { background: rgb(var(--lime-rgb) / .09); border-color: rgb(var(--lime-rgb) / .6); }
+.multibtn:hover { filter: none; }
+.mb-chips { display: flex; flex-wrap: wrap; gap: 4px 5px; margin-top: 8px; }
+.mb-chip { font-size: .78rem; line-height: 1.2; padding: 3px 7px; border: 1px solid rgb(var(--lime-rgb) / .35); color: var(--lime); background: rgb(var(--lime-rgb) / .06); letter-spacing: .03em; overflow-wrap: anywhere; }
+.mpop { --cut: 12px; position: fixed; z-index: 20; width: max-content; max-width: min(460px, calc(100vw - 16px)); padding: 1.5px; background: rgb(var(--lime-rgb) / .6);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); filter: drop-shadow(0 10px 24px rgb(0 0 0 / .55)); }
+.mpop-in { display: flex; flex-direction: column; max-height: min(70vh, 460px); padding: 10px; background: var(--panel); clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+.mp-grid { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 5px; overflow-y: auto; padding: 1px; }
+.mpop button { clip-path: none; border-radius: 2px; padding: 0; }
+.mp-o { display: flex; align-items: center; gap: 9px; padding: 8px 10px !important; text-align: left; border: 1px solid var(--line); background: rgb(var(--lime-rgb) / .03); color: var(--text); font-size: .95rem; line-height: 1.2; overflow-wrap: anywhere; }
+.mp-o:hover { background: rgb(var(--lime-rgb) / .14); border-color: rgb(var(--lime-rgb) / .5); filter: none; }
+.mp-box { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--muted); position: relative; }
+.mp-o.on { border-color: var(--lime); color: var(--lime); background: rgb(var(--lime-rgb) / .1); }
+.mp-o.on .mp-box { background: var(--lime); border-color: var(--lime); }
+.mp-o.on .mp-box::after { content: ""; position: absolute; inset: 2px 3px 4px 3px; border: solid var(--lime-ink); border-width: 0 2px 2px 0; transform: rotate(40deg) translate(-1px, -1px); }
+.mp-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.mp-cnt { color: var(--muted); font-size: .85rem; }
+.mp-done { padding: 6px 14px !important; color: var(--lime); border: 1px solid var(--line); }
+.mp-done:hover { background: rgb(var(--lime-rgb) / .14); filter: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .mpop { animation: cal-in .22s steps(4, end); }
+  .mb-chip { animation: chip-in .18s steps(3, end); }
+  @keyframes chip-in { 0% { opacity: 0; transform: translateX(-4px); } 100% { opacity: 1; transform: none; } }
+}
 </style>
 </head>
 <body>
@@ -490,7 +521,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363847982}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795364071862}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -540,7 +571,7 @@ const BUILTIN = {
     { id: "bien", prop: "BIENENSTOCK", title: "✨🧾 BIENENSTOCK…", opts: ["STEVEN", "CHRISTIANE", "BEN", "NYMH"], parent: "back", parentOpt: "BIENENSTOCK" },
   ],
   tasks: { title: "🗡️ WAS SOLL GETAN WERDEN?", opts: ["planen", "recherchieren", "umsetzen", "organisieren", "bestimmen", "kontaktieren", "kontrollieren", "bewerten", "entfernen", "sichten", "sammeln", "zuweisen"] },
-  who: { title: "🐝 WER WIRD ES IN DIE HAND NEHMEN?", opts: ["STEVEN", "BEN", "NYMH", "CHRISTIANE"] },
+  who: { title: "🐝 WER WIRD SICH DRUM KÜMMERN?", opts: ["STEVEN", "BEN", "NYMH", "CHRISTIANE"] },
   deadline: { title: "DEADLINE" },
   journal: { title: "🧾✍️ JOURNAL", desc: "Hier ist Platz für Notizen, Hinweise, Fragen, Mitschriften uvm." },
   link: { title: "🔗 LINK", desc: "Link zu Entwurf, Referenz, Inspiration oder Cloud-Datei (Bilder, PDF, ZIP)." },
@@ -668,7 +699,7 @@ sndLabel();
 sndBtn.addEventListener("click", () => { Snd.set(!Snd.on); sndLabel(); if (Snd.on) Snd.yes(); });
 document.addEventListener("click", (e) => {
   const b = e.target.closest && e.target.closest("button, a.btn");
-  if (!b || b.id === "save" || b.id === "snd" || b.id === "pw-ok" ) return;
+  if (!b || b.id === "save" || b.id === "snd" || b.id === "pw-ok" || b.classList.contains("mp-o")) return;
   Snd.click();
 }, true);
 form.addEventListener("change", (e) => {
@@ -912,7 +943,68 @@ document.addEventListener("pointerdown", (e) => { if (calPop && !calPop.contains
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && calPop) { e.preventDefault(); e.stopPropagation(); calShut(true); } }, true);
 addEventListener("resize", calPlace); addEventListener("scroll", calPlace, true);
 
+/* ---- Mehrfachauswahl: Button + Mini-Popup (Zweierspalten), Auswahl darunter ---- */
+const MULTI = [];
+let mPop = null, mCur = null;
+function multiList(name, values, secId, extra, label) {
+  const g = { label: label || "Auswählen", wrap: el("div", "multi") };
+  g.btn = el("button", "field multibtn"); g.btn.type = "button"; g.btn.setAttribute("aria-haspopup", "dialog"); g.btn.setAttribute("aria-expanded", "false");
+  g.btn.append(el("span", "mb-label", g.label), el("span", "mb-count", "0/" + values.length));
+  g.count = g.btn.lastChild;
+  g.chips = el("div", "mb-chips"); g.chips.hidden = true;
+  g.store = el("div", "mstore"); g.store.hidden = true; g.store.appendChild(optionList(name, values, "checkbox", secId, extra));
+  g.btn.addEventListener("click", () => multiOpen(g));
+  g.wrap.append(g.btn, g.chips, g.store);
+  MULTI.push(g);
+  return g.wrap;
+}
+function multiRefresh(g) {
+  const inps = [...g.store.querySelectorAll("input")], sel = inps.filter((i) => i.checked);
+  g.count.textContent = sel.length + "/" + inps.length;
+  g.btn.classList.toggle("has", sel.length > 0);
+  g.chips.textContent = "";
+  sel.forEach((i) => g.chips.appendChild(el("span", "mb-chip", i.value)));
+  g.chips.hidden = sel.length === 0;
+  if (mPop && mCur === g) { mPop.querySelectorAll(".mp-o").forEach((b, k) => { b.classList.toggle("on", inps[k].checked); b.setAttribute("aria-checked", String(inps[k].checked)); }); const c = mPop.querySelector(".mp-cnt"); if (c) c.textContent = sel.length + " von " + inps.length + " gewählt"; }
+}
+function multiRefreshAll() { MULTI.forEach(multiRefresh); }
+function multiShut(refocus) {
+  if (mPop) { mPop.remove(); mPop = null; }
+  if (mCur) { mCur.btn.setAttribute("aria-expanded", "false"); if (refocus) mCur.btn.focus(); mCur = null; }
+}
+function multiPlace() {
+  if (!mPop || !mCur) return;
+  const r = mCur.btn.getBoundingClientRect(), w = mPop.offsetWidth, h = mPop.offsetHeight;
+  const left = Math.min(Math.max(8, r.left), Math.max(8, innerWidth - w - 8));
+  let top = r.bottom + 6; if (top + h > innerHeight - 8) top = (r.top - h - 6 > 8) ? r.top - h - 6 : Math.max(8, innerHeight - h - 8);
+  mPop.style.left = left + "px"; mPop.style.top = top + "px"; mPop.style.minWidth = Math.min(Math.max(r.width, 260), innerWidth - 16) + "px";
+}
+function multiOpen(g) {
+  if (mCur === g) { multiShut(true); return; }
+  multiShut(); calShut();
+  mCur = g; g.btn.setAttribute("aria-expanded", "true");
+  const inps = [...g.store.querySelectorAll("input")];
+  mPop = el("div", "mpop"); mPop.setAttribute("role", "dialog"); mPop.setAttribute("aria-label", g.label);
+  const inn = el("div", "mpop-in"), grid = el("div", "mp-grid");
+  inps.forEach((i) => {
+    const b = el("button", "mp-o"); b.type = "button"; b.setAttribute("role", "checkbox");
+    b.append(el("span", "mp-box"), el("span", "mp-lbl", i.value));
+    b.addEventListener("click", () => { i.checked = !i.checked; i.dispatchEvent(new Event("change", { bubbles: true })); });
+    grid.appendChild(b);
+  });
+  const foot = el("div", "mp-foot"), cnt = el("span", "mp-cnt"), done = el("button", "mp-done", "Fertig"); done.type = "button";
+  done.addEventListener("click", () => multiShut(true)); foot.append(cnt, done);
+  inn.append(grid, foot); mPop.appendChild(inn); document.body.appendChild(mPop);
+  Snd.open(); multiRefresh(g); multiPlace();
+  const f = grid.querySelector(".mp-o"); if (f) f.focus();
+}
+document.addEventListener("pointerdown", (e) => { if (mPop && !mPop.contains(e.target) && !(mCur && mCur.btn.contains(e.target))) multiShut(); }, true);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && mPop) { e.preventDefault(); e.stopPropagation(); multiShut(true); } }, true);
+addEventListener("resize", multiPlace); addEventListener("scroll", multiPlace, true);
+form.addEventListener("change", (e) => { const g = MULTI.find((x) => x.store.contains(e.target)); if (g) { multiRefresh(g); } });
+
 function buildForm() {
+  multiShut(); MULTI.length = 0;
   form.textContent = "";
   const r1 = el("div", "row r1"), r2 = el("div", "row r2"), r3 = el("div", "row r3");
   form.append(r1, r2, r3);
@@ -930,16 +1022,15 @@ function buildForm() {
   for (const s of SECTIONS) {
     const { c, inn } = card(s.title);
     if (s.desc) inn.appendChild(el("p", "q-desc", s.desc));
-    inn.append(el("p", "q-hint", "(Wähle beliebig viele Optionen aus)"), optionList(s.prop, s.opts, "checkbox", s.id));
+    inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(s.prop, s.opts, s.id, null, "Auswählen"));
     const sw = wrap(c, { open: false, nest: !!s.parent, id: s.id });
-    if (s.opts.length > 8) sw.classList.add("span2");
     r2.appendChild(sw);
   }
   /* TASKS, ZUSTÄNDIG */
-  for (const [key, name, row] of [["who", "ZUSTÄNDIG", r1], ["tasks", "TASKS", r3]]) {
+  for (const [key, name, row, lbl] of [["who", "ZUSTÄNDIG", r1, "Verantwortlich"], ["tasks", "TASKS", r3, "Aufgaben"]]) {
     const m = model[key], { c, inn } = card(m.title);
     if (m.desc) inn.appendChild(el("p", "q-desc", m.desc));
-    inn.append(el("p", "q-hint", "(Wähle beliebig viele Optionen aus)"), optionList(name, m.opts, "checkbox", key));
+    inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(name, m.opts, key, null, lbl));
     row.appendChild(wrap(c, { open: true }));
   }
   const col2 = el("div", "col"); r3.appendChild(col2);
@@ -949,8 +1040,8 @@ function buildForm() {
     const { c, inn } = card(x.title || x.prop, { req: !!x.required });
     if (x.desc) inn.appendChild(el("p", "q-desc", x.desc));
     if (x.type === "multi_select" || x.type === "select") {
-      inn.append(el("p", "q-hint", x.type === "select" ? "(Wähle bis zu 1 Option aus)" : "(Wähle beliebig viele Optionen aus)"),
-        optionList(x.prop, x.opts || [], x.type === "select" ? "radio" : "checkbox", null, x.prop));
+      inn.append(el("p", "q-hint", x.type === "select" ? "(Wähle bis zu 1 Option aus)" : "(Mehrfachauswahl)"),
+        x.type === "select" ? optionList(x.prop, x.opts || [], "radio", null, x.prop) : multiList(x.prop, x.opts || [], null, x.prop, "Auswählen"));
     } else if (x.type === "checkbox") {
       inn.appendChild(optionList(x.prop, ["Ja"], "checkbox", null, x.prop));
     } else {
@@ -1005,6 +1096,7 @@ function buildForm() {
   }
   extraSecs.forEach((x) => r3.appendChild(x));
   indexModel();
+  multiRefreshAll();
 }
 function renderFiles() {
   const ul = $("x-files"); if (!ul) return;
@@ -1041,6 +1133,7 @@ function restoreState(s) {
   form.querySelectorAll("input[type=checkbox], input[type=radio]").forEach((i) => { i.checked = set.has(i.name + "\u0000" + i.value); });
   for (const [id, v] of Object.entries(s.vals)) { const e = $(id); if (e) e.value = v; }
   if (journal) journal.dispatchEvent(new Event("input"));
+  multiRefreshAll();
   updateAll(true);
 }
 function rebuildForm(keep) {
@@ -1098,7 +1191,7 @@ form.addEventListener("submit", (e) => e.preventDefault());
 /* ---- Leeren ---- */
 const dlgClear = $("confirm");
 function resetForm() {
-  form.reset(); calShut(); { const h = $("d-end"); if (h) h.value = ""; } calShow(); pendingFiles = []; renderFiles(); updateAll();
+  form.reset(); multiShut(); calShut(); { const h = $("d-end"); if (h) h.value = ""; } calShow(); pendingFiles = []; renderFiles(); multiRefreshAll(); updateAll();
   if (journal) journal.dispatchEvent(new Event("input"));
   say("Alle Felder geleert.");
 }

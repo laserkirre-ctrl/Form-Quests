@@ -234,6 +234,18 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   dialog[open] .dlg-in { animation: dlg-wipe .32s steps(8, end) 1; }
   @keyframes dlg-wipe { from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } }
 }
+
+/* Themen-Leiste */
+.themes { display: flex; align-items: center; gap: 6px; margin-right: 4px; }
+.themes .sw { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 0; cursor: pointer;
+  background: radial-gradient(circle, var(--sb) 0 24%, var(--sw) 26%);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); transition: transform .15s; }
+.themes .sw:hover { transform: scale(1.18); filter: none; }
+.themes .sw[aria-pressed="true"] { transform: scale(1.3); background: radial-gradient(circle, #fff 0 22%, var(--sb) 24% 40%, var(--sw) 42%); }
+.themes .sw::after { display: none; }
+#th-list { list-style: none; margin: 0 0 8px; padding: 0; }
+#th-list li { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+#th-list li span { flex: 1; }
 </style>
 </head>
 <body>
@@ -243,6 +255,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   <div class="stripes" aria-hidden="true"></div>
   <p class="hint" id="hint">Quest ausfüllen und speichern.</p>
   <div class="actions">
+    <div class="themes" id="themes" role="group" aria-label="Thema"></div>
     <button type="button" id="snd" aria-pressed="true">Ton: an</button>
     <button type="button" id="admin-btn">Admin</button>
     <button type="button" id="clear">Leeren</button>
@@ -275,8 +288,19 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
       <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_top">Quest anschauen</a>
     </div>
     <div class="actions">
-      <button type="button" id="dn-close">Schließen</button>
-      <button type="button" id="dn-new" class="primary" autofocus>Neue Quest</button>
+      <button type="button" id="dn-close" class="primary" autofocus>Schließen</button>
+    </div>
+  </div></div>
+</dialog>
+
+<dialog id="choice" aria-labelledby="ch-title">
+  <div class="dlg"><div class="dlg-in">
+    <div class="stripes" aria-hidden="true"></div>
+    <h2 id="ch-title">Wie geht es weiter?</h2>
+    <p>„Neu anfangen“ leert alle Felder. „Entwurf bearbeiten“ behält alle Eingaben.</p>
+    <div class="actions">
+      <button type="button" id="ch-edit">Entwurf bearbeiten</button>
+      <button type="button" id="ch-new" class="primary" autofocus>Neu anfangen</button>
     </div>
   </div></div>
 </dialog>
@@ -321,6 +345,14 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
       </div>
       <div class="presets" id="presets"></div>
       <div id="crows"></div>
+      <h3>💾 Thema speichern</h3>
+      <p>Aktuelle Farben als eigenes Thema ablegen. Es erscheint danach oben in der Leiste.</p>
+      <div class="row">
+        <input class="field" id="th-name" type="text" maxlength="20" placeholder="Name des Themas" spellcheck="false" aria-label="Name des Themas">
+        <button type="button" id="th-save" class="primary">Thema speichern</button>
+      </div>
+      <ul class="diff" id="th-list"></ul>
+      <p class="meta" id="th-info"></p>
       <div class="row">
         <button type="button" id="c-reset">Auf Standard zurücksetzen</button>
         <button type="button" id="c-save" class="primary">Farben speichern</button>
@@ -361,7 +393,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361000000}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360211546}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -546,8 +578,28 @@ async function saveCfg(patch) {
   return { shared: false };
 }
 
+const THEME_KEY = "quest-theme";
+let themeName = lsGet(THEME_KEY);
+function allThemes() {
+  const l = Object.entries(PRESETS).map(([name, colors]) => ({ name, colors, builtin: true }));
+  for (const t of (cfg.themes || [])) l.push({ name: t.name, colors: t.colors || {} });
+  return l;
+}
+function activeTheme() { return themeName ? (allThemes().find((t) => t.name === themeName) || null) : null; }
+function effectiveColors() { const t = activeTheme(); return t ? t.colors : (cfg.colors || {}); }
+function setTheme(n) { themeName = n; if (n) lsSet(THEME_KEY, n); else { try { localStorage.removeItem(THEME_KEY); } catch (e) {} } }
+function renderThemes() {
+  const box = $("themes"); box.textContent = ""; const act = activeTheme();
+  for (const t of allThemes()) {
+    const b = el("button", "sw"); b.type = "button"; b.title = t.name; b.setAttribute("aria-label", "Thema " + t.name);
+    b.setAttribute("aria-pressed", String(!!act && act.name === t.name));
+    b.style.setProperty("--sw", t.colors["--lime"] || "#c1f130"); b.style.setProperty("--sb", t.colors["--panel"] || "#141d15");
+    b.addEventListener("click", () => { setTheme(t.name); applyColors(); renderThemes(); });
+    box.appendChild(b);
+  }
+}
 function applyColors() {
-  const root = document.documentElement, c = cfg.colors || {};
+  const root = document.documentElement, c = (typeof colorsBackup !== "undefined" && colorsBackup !== null) ? (cfg.colors || {}) : effectiveColors();
   for (const d of COLOR_DEFS) { if (c[d.k]) root.style.setProperty(d.k, c[d.k]); else root.style.removeProperty(d.k); }
   const hex = (c["--lime"] || "#c1f130").replace("#", "");
   const n = parseInt(hex.length === 3 ? hex.replace(/./g, "$&$&") : hex, 16);
@@ -900,8 +952,12 @@ async function save() {
 }
 function showDone() { openDlg(doneDlg); }
 saveBtn.addEventListener("click", save);
+const choiceDlg = $("choice");
 $("dn-close").addEventListener("click", () => doneDlg.close());
-$("dn-new").addEventListener("click", () => { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
+doneDlg.addEventListener("close", () => openDlg(choiceDlg));
+$("ch-edit").addEventListener("click", () => { choiceDlg.close(); say("Entwurf bleibt erhalten."); });
+$("ch-new").addEventListener("click", () => { choiceDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
+choiceDlg.addEventListener("click", (e) => { if (e.target === choiceDlg) choiceDlg.close(); });
 doneDlg.addEventListener("click", (e) => { if (e.target === doneDlg) doneDlg.close(); });
 
 /* ---- Admin Area ---- */
@@ -943,7 +999,7 @@ let draft = {}, colorsBackup = null;
 function revertColors() { if (colorsBackup !== null) { cfg.colors = JSON.parse(colorsBackup); colorsBackup = null; applyColors(); } }
 function initColors() {
   if (colorsBackup === null) colorsBackup = JSON.stringify(cfg.colors || {});
-  draft = Object.assign({}, cfg.colors || {});
+  draft = Object.assign({}, effectiveColors());
   const box = $("crows"); box.textContent = "";
   for (const d of COLOR_DEFS) {
     const lab = el("label", "crow"), inp = document.createElement("input");
@@ -958,12 +1014,42 @@ function initColors() {
     pr.appendChild(b);
   }
   $("c-info").textContent = "";
+  renderThemeList();
 }
 function initColorsKeep() { const keep = draft; initColors(); draft = keep; }
 $("c-reset").addEventListener("click", () => { draft = {}; cfg.colors = {}; applyColors(); initColorsKeep(); });
+async function persistThemes(next) {
+  const keep = colorsBackup !== null ? JSON.parse(colorsBackup) : (cfg.colors || {}), prev = cfg.colors;
+  await saveCfg({ themes: next, colors: keep });
+  if (colorsBackup !== null) { cfg.colors = Object.assign({}, prev); }
+  applyColors(); renderThemes(); renderThemeList();
+}
+function renderThemeList() {
+  const ul = $("th-list"); ul.textContent = "";
+  for (const t of (cfg.themes || [])) {
+    const li = el("li"), d = el("button", "sm", "Löschen"); d.type = "button";
+    d.addEventListener("click", async () => {
+      if (themeName === t.name) setTheme(null);
+      await persistThemes((cfg.themes || []).filter((x) => x.name !== t.name));
+      $("th-info").textContent = "Thema „" + t.name + "“ gelöscht."; $("th-info").className = "meta ok";
+    });
+    li.append(el("span", "", t.name), d); ul.appendChild(li);
+  }
+}
+$("th-save").addEventListener("click", async () => {
+  const name = $("th-name").value.trim(), info = $("th-info");
+  if (!name) { info.textContent = "Bitte einen Namen eingeben."; info.className = "meta err"; return; }
+  if (name in PRESETS) { info.textContent = "Name ist für ein Standard-Thema reserviert."; info.className = "meta err"; return; }
+  const next = (cfg.themes || []).filter((t) => t.name !== name).concat([{ name, colors: Object.assign({}, draft) }]);
+  setTheme(name);
+  await persistThemes(next);
+  $("th-name").value = "";
+  info.textContent = "Thema „" + name + "“ gespeichert und oben in der Leiste verfügbar. Für alle: HTML exportieren und verteilen."; info.className = "meta ok";
+});
 $("c-save").addEventListener("click", async () => {
   colorsBackup = null;
   const r = await saveCfg({ colors: Object.assign({}, draft) });
+  setTheme(null); applyColors(); renderThemes();
   $("c-info").textContent = "Im Browser gespeichert. Für alle: HTML exportieren und verteilen.";
   $("c-info").className = "meta ok";
 });
@@ -1039,7 +1125,7 @@ function hintText() { $("hint").textContent = cfg.webhook ? "Quest ausfüllen un
 })();
 
 /* ---- Start ---- */
-applyColors();
+applyColors(); renderThemes();
 buildForm(); updateAll(true);
 hintText();
 </script>

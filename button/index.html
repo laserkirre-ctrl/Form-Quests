@@ -181,10 +181,10 @@ svg.defs { position: absolute; width: 0; height: 0; }
   .wrap[data-fx~="rgb"] .btn:hover .gl::after, .wrap[data-fx~="rgb"] .btn:focus-visible .gl::after { animation: gl-b .55s steps(1, end) infinite; }
   .wrap[data-fx~="rgb"] .btn:hover .lbl, .wrap[data-fx~="rgb"] .btn:focus-visible .lbl { animation: gl-s .55s steps(1, end) infinite; }
   .wrap[data-fx~="jitter"] .btn { animation: jit 4.2s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="jitter"] .btn:hover, .wrap[data-fx~="jitter"] .btn:focus-visible { animation: jit .5s steps(1, end) infinite; }
+  .wrap[data-fx~="jitter"] .btn:hover, .wrap[data-fx~="jitter"] .btn:focus-visible { animation: jit-h .42s steps(1, end) infinite; }
   .wrap[data-fx~="noise"] .btn > .nz { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; mix-blend-mode: difference;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px 160px; animation: nz 4.8s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="noise"] .btn:hover > .nz, .wrap[data-fx~="noise"] .btn:focus-visible > .nz { animation: nz .6s steps(1, end) infinite; }
+  .wrap[data-fx~="noise"] .btn:hover > .nz, .wrap[data-fx~="noise"] .btn:focus-visible > .nz { animation: nz-h .5s steps(1, end) infinite; }
   @keyframes gl-a { 0% { opacity: 1; clip-path: inset(10% 0 62% 0); transform: translate(-3px, 0); } 14% { clip-path: inset(58% 0 12% 0); transform: translate(2px, 0); }
   28% { clip-path: inset(0 0 80% 0); transform: translate(-4px, 1px); } 42% { clip-path: inset(34% 0 36% 0); transform: translate(3px, 0); }
   57% { clip-path: inset(78% 0 0 0); transform: translate(-2px, 0); } 71% { clip-path: inset(22% 0 52% 0); transform: translate(4px, -1px); } 85% { clip-path: inset(48% 0 30% 0); transform: translate(-3px, 0); } }
@@ -195,9 +195,14 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes gl-ia { 0% { opacity: 1; clip-path: inset(14% 0 58% 0); transform: translate(-3px, 0); } 1.5% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); } 3% { clip-path: inset(36% 0 34% 0); transform: translate(-2px, 0); } 4.5%, 100% { opacity: 0; } }
   @keyframes gl-ib { 0% { opacity: 1; clip-path: inset(66% 0 6% 0); transform: translate(3px, 0); } 1.5% { clip-path: inset(8% 0 72% 0); transform: translate(-3px, 0); } 3% { clip-path: inset(44% 0 28% 0); transform: translate(2px, 0); } 4.5%, 100% { opacity: 0; } }
   @keyframes jit { 0% { transform: translate(-3px, 1px) skewX(-7deg); } 1.2% { transform: translate(4px, -1px) skewX(6deg); } 2.4% { transform: translate(-2px, 0) skewX(-3deg); } 3.6% { transform: translate(2px, 1px) skewX(4deg); } 4.8%, 100% { transform: none; } }
+  @keyframes jit-h { 0% { transform: translate(-3px, 1px) skewX(-7deg); } 18% { transform: translate(4px, -1px) skewX(6deg); } 36% { transform: translate(-2px, 0) skewX(-3deg); } 54% { transform: translate(3px, 1px) skewX(5deg); } 72% { transform: translate(-1px, -1px) skewX(-2deg); } 88% { transform: translate(1px, 0) skewX(2deg); } 100% { transform: none; } }
+  @keyframes nz-h { 0% { opacity: .9; background-position: 0 0; clip-path: inset(18% 0 56% 0); } 25% { opacity: .95; background-position: -37px 21px; clip-path: inset(62% 0 10% 0); } 50% { opacity: .85; background-position: 55px -17px; clip-path: inset(4% 0 82% 0); } 75% { opacity: .9; background-position: 12px 40px; clip-path: inset(38% 0 36% 0); } 100% { opacity: .9; background-position: 0 0; clip-path: inset(10% 0 60% 0); } }
+  @keyframes fl-h { 0% { opacity: .3; } 12% { opacity: 1; } 24% { opacity: .45; } 38% { opacity: 1; } 52% { opacity: .25; } 66% { opacity: .9; } 82% { opacity: .5; } 100% { opacity: 1; } }
   @keyframes nz { 0% { opacity: .9; background-position: 0 0; clip-path: inset(18% 0 56% 0); } 1.6% { opacity: .95; background-position: -37px 21px; clip-path: inset(62% 0 10% 0); } 3.2% { opacity: .85; background-position: 55px -17px; clip-path: inset(4% 0 82% 0); } 4.8% { opacity: .9; background-position: 12px 40px; clip-path: inset(38% 0 36% 0); } 6%, 100% { opacity: 0; } }
   @keyframes fl { 0% { opacity: .25; } 1% { opacity: 1; } 2% { opacity: .5; } 3% { opacity: 1; } 4.5% { opacity: .35; } 5.2%, 100% { opacity: 1; } }
-  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 3px rgb(var(--arg) / .3)); } 50% { filter: drop-shadow(0 0 10px rgb(var(--arg) / .65)); } }
+  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 calc(3px * var(--gk, 1)) rgb(var(--arg) / calc(.3 * var(--ga, 1)))); } 50% { filter: drop-shadow(0 0 calc(10px * var(--gk, 1)) rgb(var(--arg) / calc(.65 * var(--ga, 1)))); } }
+  .wrap[data-fx~="glow"]:has(.btn:hover), .wrap[data-fx~="glow"]:has(.btn:focus-visible) { --gdur: .9s; --gk: 1.9; --ga: 1.4; }
+  .wrap[data-fx~="flicker"]:has(.btn:hover), .wrap[data-fx~="flicker"]:has(.btn:focus-visible) { --fln: fl-h; --fdur: .55s; }
 }
 
 
@@ -544,15 +549,17 @@ a.btn.wp { cursor: pointer; }
 .wpw { max-width: 100%; }
 
 /* Lauftext */
-.wp.mqb { padding: .35em 0; }
+.wp.mqb { padding: .35em .9em; }
 .wp .mq { width: 100%; overflow: hidden; white-space: nowrap; }
-.wp .mqf { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.wp .mqf { -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); }
 .mqt { display: inline-flex; width: max-content; will-change: transform; animation-duration: var(--mqd, 12s); animation-timing-function: linear; animation-iteration-count: infinite; animation-name: none; }
 .mqg { display: inline-flex; flex: none; }
 .mqi { padding: 0 .4em; color: var(--tx); }
 .wp.f-solid .mqi { color: var(--ink); }
 .wp:not(.f-solid) .mqi { color: var(--ac); }
-.mqs { color: var(--tx); opacity: .55; padding: 0 .4em; }
+.mqs { color: var(--tx); opacity: .55; padding: 0 .4em; display: inline-flex; align-items: center; }
+.mqs .ico { display: inline-flex; }
+.mqs .ico svg { width: 1em; height: 1em; }
 .mqp:hover .mqt { animation-play-state: paused; }
 @keyframes mq-l { from { transform: translateX(0); } to { transform: translateX(calc(-1 * var(--mqw, 50%))); } }
 @keyframes mq-r { from { transform: translateX(calc(-1 * var(--mqw, 50%))); } to { transform: translateX(0); } }
@@ -843,6 +850,10 @@ select option { background: #101510; color: #dbe8c8; }
 input[type=number] { max-width: 9em; }
 .wcs[hidden] { display: none; }
 
+.sepsel { display: grid; gap: 8px; }
+.seg.sepic button { padding: 5px 7px; display: inline-flex; }
+.seg.sepic button svg { width: 20px; height: 20px; }
+
 </style>
 </head>
 <body>
@@ -1091,14 +1102,14 @@ function buildButton(cfg, host) {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNow);
   }
   wrap.style.setProperty("--gd", (-Math.random() * 4).toFixed(2) + "s");
-  if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow 2.6s ease-in-out infinite"); if (fx.includes("flicker")) an.push("fl 6.5s steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
+  if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow var(--gdur, 2.6s) ease-in-out infinite"); if (fx.includes("flicker")) an.push("var(--fln, fl) var(--fdur, 6.5s) steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
   return b;
 }
 
 /* Streifen-Glitch (Verschiebungsfilter) in zufälligen Schüben, wenn „Streifen“ gewählt ist */
 function startBursts(getBtn) {
   const t = $("vt"), d = $("vd"), hu = $("vh");
-  const active = () => { const e = getBtn(); return e && e.isConnected && e.parentElement.dataset.fx.split(" ").includes("tear") ? e : null; };
+  const active = () => { const e = getBtn(); return e && e.isConnected && !e._th && e.parentElement.dataset.fx.split(" ").includes("tear") ? e : null; };
   const later = () => setTimeout(burst, rnd(2800, 7000));
   function burst() {
     const e = active();
@@ -1113,6 +1124,17 @@ function startBursts(getBtn) {
     })();
   }
   setTimeout(burst, rnd(1200, 3000));
+  /* Hover: Streifen-Schübe laufen, solange die Maus über dem Element steht (Button, Widget, Auswahl-Vorschau) */
+  document.addEventListener("pointerover", (ev) => {
+    const e = ev.target.closest && ev.target.closest(".btn"); if (!e || e._th || reduced() || !e.parentElement || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) return;
+    e._th = true;
+    (function step() {
+      if (!e.isConnected || !e.matches(":hover") || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) { e.style.filter = ""; e._th = false; return; }
+      t.setAttribute("seed", String(Math.floor(rnd(1, 9999)))); d.setAttribute("scale", rnd(16, 44).toFixed(0)); hu.setAttribute("values", rnd(-20, 20).toFixed(0));
+      e.style.filter = "url(#vhs)";
+      setTimeout(() => { if (Math.random() < 0.35) { e.style.filter = ""; setTimeout(step, rnd(40, 110)); } else step(); }, rnd(70, 150));
+    })();
+  });
 }
 
 function cfgFromParams(q) {
@@ -1188,7 +1210,7 @@ function wShell(type, cfg, o, host) {
   if (fitFrame || type === "lauftext") { wrap.style.cssText += ";display:flex;flex:1 1 auto;align-self:" + (fitFrame ? "stretch" : "center") + ";max-width:none;min-width:0"; b.style.flex = "1 1 auto"; b.style.maxWidth = "none"; b.style.minWidth = "0"; }
   if (fitFrame) b.classList.add("fitf");
   wrap.style.setProperty("--gd", (-Math.random() * 4).toFixed(2) + "s");
-  if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow 2.6s ease-in-out infinite"); if (fx.includes("flicker")) an.push("fl 6.5s steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
+  if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow var(--gdur, 2.6s) ease-in-out infinite"); if (fx.includes("flicker")) an.push("var(--fln, fl) var(--fdur, 6.5s) steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
   /* Skalierende Widgets: Inhalt passt sich dem Rahmen an (Schrift = Größe des Inhalts) */
   if (fitFrame && WSCALE[type] && !cfg.demo && typeof ResizeObserver === "function") {
     const fitNow = () => {
@@ -1208,11 +1230,11 @@ function wShell(type, cfg, o, host) {
 function wLauftext(sh) {
   const { body, o, host, cfg, b } = sh;
   const text = (o.text !== undefined && o.text !== "" ? o.text : "Willkommen in der Welt von Quest & Würfel").replace(/\s+/g, " ").slice(0, 300);
-  const sep = o.sep !== undefined ? o.sep.slice(0, 6) : "✦", dir = o.dir === "right" ? "right" : "left";
+  const sep = o.sep !== undefined ? o.sep.slice(0, 24) : "✦", dir = o.dir === "right" ? "right" : "left";
   const speed = { slow: 36, mid: 72, fast: 130 }[o.speed] || 72, fade = o.fade !== "0", pause = o.pause !== "0";
   body.classList.add("mq"); if (fade) body.classList.add("mqf"); if (pause) body.classList.add("mqp");
   const track = el("div", "mqt"), mk = () => { const g = el("span", "mqg"); return g; };
-  const fillGroup = (g, n) => { g.textContent = ""; for (let i = 0; i < n; i++) { g.appendChild(el("span", "mqi", text)); if (sep) g.appendChild(el("span", "mqs", sep)); } };
+  const fillGroup = (g, n) => { g.textContent = ""; for (let i = 0; i < n; i++) { g.appendChild(el("span", "mqi", text)); if (sep) { const sp = el("span", "mqs"); if (/^i:[a-z0-9-]+$/.test(sep) && ICONS[sep.slice(2)]) sp.appendChild(iconNode(sep.slice(2))); else sp.textContent = sep.slice(0, 6); g.appendChild(sp); } } };
   const g1 = mk(), g2 = mk(); track.append(g1, g2); body.appendChild(track);
   b.classList.add("mqb");
   const layout = () => {
@@ -1422,7 +1444,7 @@ if (q.has("url") || q.has("w")) {
   { const sc = (q.get("scheme") || "auto").toLowerCase(); if (sc === "light" || sc === "dark") document.documentElement.style.colorScheme = sc; }
   host.style.cssText = "width:100%;height:100%;display:flex;align-items:center;justify-content:" + (JUST[cfg.align] || "flex-start");
   const wtype = (q.get("w") || "button").toLowerCase();
-  if (WTYPES.includes(wtype)) { host.style.justifyContent = JUST[cfg.align] || "flex-start"; buildWidget(wtype, cfg, Object.fromEntries(q), host); document.title = WLABEL[wtype]; }
+  if (WTYPES.includes(wtype)) { host.style.justifyContent = JUST[cfg.align] || "flex-start"; buildWidget(wtype, cfg, Object.fromEntries(q), host); document.title = WLABEL[wtype]; startBursts(() => host.querySelector(".btn")); }
   else if (wtype !== "button") { host.textContent = "Widget „" + wtype + "“ folgt."; host.style.color = "#888"; host.style.fontSize = "13px"; }
   else { const btn = buildButton(cfg, host); document.title = cfg.label || "Button"; startBursts(() => btn); }
 } else {
@@ -1798,7 +1820,7 @@ function applyPage() {
   const YN = (a, b) => [["1", a], ["0", b]];
   const F = (k, label, kind, x) => Object.assign({ k, label, kind, def: "" }, x || {});
   const WSCHEMA = {
-    lauftext: [F("text", "Text", "area", { max: 300, ph: "Lauftext, z. B. Willkommen in der Welt von Quest & Würfel", hint: "Leer = Beispieltext. Zeilenumbrüche werden zu Leerzeichen." }), F("speed", "Tempo", "seg", { items: [["slow", "Langsam"], ["mid", "Mittel"], ["fast", "Schnell"]], def: "mid" }), F("dir", "Richtung", "seg", { items: [["left", "Nach links"], ["right", "Nach rechts"]], def: "left" }), F("sep", "Trennzeichen", "text", { max: 6, def: "✦", ph: "z. B. ✦", hint: "Steht zwischen den Wiederholungen. Leer = keins." }), F("fade", "Kanten ausblenden", "seg", { items: YN("An", "Aus"), def: "1" }), F("pause", "Pause bei Hover", "seg", { items: YN("An", "Aus"), def: "1" })],
+    lauftext: [F("text", "Text", "area", { max: 300, ph: "Lauftext, z. B. Willkommen in der Welt von Quest & Würfel", hint: "Leer = Beispieltext. Zeilenumbrüche werden zu Leerzeichen." }), F("speed", "Tempo", "seg", { items: [["slow", "Langsam"], ["mid", "Mittel"], ["fast", "Schnell"]], def: "mid" }), F("dir", "Richtung", "seg", { items: [["left", "Nach links"], ["right", "Nach rechts"]], def: "left" }), F("sep", "Trennzeichen", "sep", { def: "✦", hint: "Steht zwischen den Wiederholungen. Zeichen oder flaches Symbol." }), F("fade", "Kanten ausblenden", "seg", { items: YN("An", "Aus"), def: "1", hint: "An: Text wird links und rechts sanft transparent. Aus: Text wird hart am Rand abgeschnitten." }), F("pause", "Pause bei Hover", "seg", { items: YN("An", "Aus"), def: "1" })],
     banner: [F("title", "Titel", "text", { max: 80, ph: "z. B. Neue Quest verfügbar" }), F("text", "Text", "area", { max: 300, ph: "Beschreibung, mehrere Zeilen möglich" }), F("bar", "Akzentleiste", "seg", { items: [["left", "Links"], ["top", "Oben"], ["none", "Keine"]], def: "left" })],
     textfeld: [F("title", "Überschrift", "text", { max: 80, ph: "optional" }), F("text", "Text", "area", { max: 700, ph: "Dein Text. Neue Zeile = neuer Absatz.", rows: 6 }), F("lh", "Zeilenabstand", "seg", { items: [["tight", "Eng"], ["mid", "Normal"], ["loose", "Weit"]], def: "mid" }), F("type", "Tipp-Animation", "seg", { items: [["0", "Aus"], ["1", "Schreibmaschine"]], def: "0", hint: "Text tippt sich selbst; Klick zeigt ihn sofort." })],
     uhr: [F("mode", "Anzeige", "seg", { items: [["digital", "Digital"], ["analog", "Analog"]], def: "digital" }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("h12", "Format", "seg", { items: [["0", "24 Stunden"], ["1", "12 Stunden"]], def: "0", hint: "Nur bei digitaler Anzeige." }), F("date", "Datum", "seg", { items: [["none", "Keins"], ["short", "Kurz"], ["long", "Lang"]], def: "short" }), F("name", "Name", "text", { max: 30, ph: "optional, z. B. Berlin" })],
@@ -1820,6 +1842,18 @@ function applyPage() {
           ctl = document.createElement("div"); ctl.className = "seg";
           const redraw = () => { ctl.textContent = ""; f.items.forEach(([v, l]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = l; b.setAttribute("aria-pressed", String(X[t][f.k] === v)); b.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); }); ctl.appendChild(b); }); };
           redraw();
+        } else if (f.kind === "sep") {
+          ctl = document.createElement("div"); ctl.className = "sepsel";
+          const CH = [["✦", "✦"], ["◆", "◆"], ["●", "●"], ["★", "★"], ["·", "·"], ["|", "|"], ["/", "/"], ["—", "—"], ["", "Keins"]];
+          const IC = ["star", "sparkles", "sparkle", "gem", "heart", "skull", "sword", "swords", "dices", "crown", "flame", "zap", "moon", "sun", "flag", "ghost", "anchor", "feather", "shield", "wand-sparkles"];
+          const redraw = () => {
+            ctl.textContent = ""; const cur = X[t][f.k];
+            const r1 = document.createElement("div"); r1.className = "seg"; const r2 = document.createElement("div"); r2.className = "seg sepic";
+            CH.forEach(([v, l]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = l; b.setAttribute("aria-pressed", String(cur === v)); b.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); }); r1.appendChild(b); });
+            IC.forEach((n) => { const b = document.createElement("button"); b.type = "button"; b.title = n; b.appendChild(iconNode(n)); b.setAttribute("aria-pressed", String(cur === "i:" + n)); b.addEventListener("click", () => { X[t][f.k] = "i:" + n; redraw(); render(); }); r2.appendChild(b); });
+            ctl.append(r1, r2);
+          };
+          redraw(); ctl._redraw = redraw;
         } else if (f.kind === "tz") {
           ctl = document.createElement("select"); TZS.forEach(([v, l]) => { const op = document.createElement("option"); op.value = v; op.textContent = l; ctl.appendChild(op); }); ctl.value = X[t][f.k];
           ctl.addEventListener("change", () => { X[t][f.k] = ctl.value; render(); });
@@ -1883,7 +1917,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:39"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:04"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

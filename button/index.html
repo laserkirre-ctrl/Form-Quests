@@ -310,7 +310,7 @@ function buildButton(cfg, host) {
   if (fx.includes("noise")) { const n = document.createElement("span"); n.className = "nz"; b.appendChild(n); }
   wrap.appendChild(b); host.appendChild(wrap);
   /* Randabstand (Platz für Glühen/Zittern) und optional Rahmen ausfüllen */
-  const pad = (cfg.pad && cfg.pad !== "auto" && !isNaN(+cfg.pad)) ? Math.max(0, Math.min(40, Math.round(+cfg.pad))) : ((fx.includes("glow") || fx.includes("jitter") || fx.includes("tear")) ? 12 : 0);
+  const pad = (cfg.pad && cfg.pad !== "auto" && !isNaN(+cfg.pad)) ? Math.max(0, Math.min(40, Math.round(+cfg.pad))) : ((fx.includes("glow") || fx.includes("jitter") || fx.includes("tear")) ? 20 : 0);
   host.style.boxSizing = "border-box"; host.style.padding = pad + "px";
   if (cfg.fit === "frame") { wrap.style.display = "flex"; wrap.style.flex = "1 1 auto"; wrap.style.maxWidth = "none"; wrap.style.alignSelf = "stretch"; b.style.flex = "1 1 auto"; b.style.maxWidth = "none"; }
   wrap.style.setProperty("--gd", (-Math.random() * 4).toFixed(2) + "s");
@@ -394,7 +394,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Schreibweise</span><div class="seg" id="g-caps"></div></div>' +
     '<div class="row"><span class="lab">Ausrichtung</span><div class="seg" id="g-align"></div></div>' +
     '<div class="row"><span class="lab">Größe im Rahmen</span><div class="seg" id="g-fit"></div><p class="hint2">„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, egal wie klein er ist.</p></div>' +
-    '<div class="row"><span class="lab">Randabstand</span><div class="seg" id="g-pad"></div><p class="hint2">Platz um den Button, damit Glühen und Zittern nicht abgeschnitten werden. Auto: 12 px bei Glühen, Zittern oder Streifen, sonst 0.</p></div>' +
+    '<div class="row"><span class="lab">Randabstand</span><div class="seg" id="g-pad"></div><p class="hint2">Platz um den Button, damit Glühen und Zittern nicht abgeschnitten werden. Auto: 20 px bei Glühen, Zittern oder Streifen, sonst 0. Rahmen in Notion = Button + Randabstand.</p></div>' +
     '<h3 class="sub3">Animation</h3>' +
     '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl, keine Auswahl = ruhiger Button.</p></div>' +
     '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div></div>' +

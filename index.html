@@ -371,6 +371,32 @@ main { width: min(100%, 1240px); }
   .mb-chip { animation: chip-in .18s steps(3, end); }
   @keyframes chip-in { 0% { opacity: 0; transform: translateX(-4px); } 100% { opacity: 1; transform: none; } }
 }
+
+/* Kompakter Zuschnitt (22.11.) */
+header { padding: 6px clamp(14px, 3vw, 28px); gap: 6px 16px; }
+h1 { font-size: 1.1rem; }
+header .stripes { height: 9px; }
+header button { padding: 4px 12px; font-size: .88rem; }
+main { padding-top: 10px; }
+.row { margin: 8px 0; }
+.row .card-in { padding: 9px 12px 11px; }
+.card-wrap { padding-bottom: 8px; }
+.row .q-title { font-size: 1.02rem; margin: 0 0 2px; letter-spacing: .05em; line-height: 1.2; }
+.row .q-title.orn { font-size: .95rem; letter-spacing: .2em; margin-bottom: 6px; }
+.row .q-desc { font-size: .86rem; margin: 0 0 2px; line-height: 1.3; }
+.row .q-hint { font-size: .76rem; margin: 0 0 5px; }
+.row .dates { margin-top: 3px; }
+.row .dfield { gap: 2px; }
+.row .dlabel { font-size: .76rem; }
+.row .field { font-size: .9rem; padding: 6px 10px; }
+.row .multi { margin-top: 3px; }
+.row .multibtn { min-height: 34px; font-size: .88rem; }
+.row .mb-count { font-size: .74rem; }
+.row .mb-chips { margin-top: 5px; }
+.row .opt { padding: 5px 10px; font-size: .88rem; }
+.row .opts { gap: 4px; }
+.row.r1, .row.r2 { align-items: start; }
+.row.r3 textarea.field { min-height: 64px; overflow: hidden; resize: none; line-height: 1.35; }
 </style>
 </head>
 <body>
@@ -456,16 +482,16 @@ main { width: min(100%, 1240px); }
 
     <div id="ad-menu">
       <div class="menu">
-        <button type="button" data-open="colors">🎨 Farbschemata</button>
-        <button type="button" data-open="password">🔑 Passwort ändern</button>
-        <button type="button" data-open="webhook">🔗 Webhook (Speichern)</button>
+        <button type="button" data-open="colors">Farbschemata</button>
+        <button type="button" data-open="password">Passwort ändern</button>
+        <button type="button" data-open="webhook">Webhook (Speichern)</button>
         <button type="button" data-open="export">⬇ HTML exportieren</button>
       </div>
       <div class="actions"><button type="button" id="ad-close">Schließen</button></div>
     </div>
 
     <section class="pane" data-pane="colors" hidden>
-      <h3>🎨 Farbschemata</h3>
+      <h3>Farbschemata</h3>
       <p>Jede Farbe mit Beispiel, wofür sie im Formular steht. Änderungen sind sofort sichtbar.</p>
       <div class="pv" aria-hidden="true">
         <b>KARTENTITEL</b><i>Fließtext der Frage</i><u>(Wähle beliebig viele Optionen aus)</u>
@@ -475,7 +501,7 @@ main { width: min(100%, 1240px); }
       </div>
       <div class="presets" id="presets"></div>
       <div id="crows"></div>
-      <h3>💾 Thema speichern</h3>
+      <h3>Thema speichern</h3>
       <p>Aktuelle Farben als eigenes Thema ablegen. Es erscheint danach oben in der Leiste.</p>
       <div class="row">
         <input class="field" id="th-name" type="text" maxlength="20" placeholder="Name des Themas" spellcheck="false" aria-label="Name des Themas">
@@ -492,7 +518,7 @@ main { width: min(100%, 1240px); }
     </section>
 
     <section class="pane" data-pane="password" hidden>
-      <h3>🔑 Passwort ändern</h3>
+      <h3>Passwort ändern</h3>
       <input class="field" id="pwc-new" type="password" autocomplete="new-password" placeholder="Neues Passwort (mind. 6 Zeichen)" aria-label="Neues Passwort">
       <input class="field" id="pwc-rep" type="password" autocomplete="new-password" placeholder="Wiederholen" aria-label="Passwort wiederholen">
       <p class="meta" id="pwc-info"></p>
@@ -501,7 +527,7 @@ main { width: min(100%, 1240px); }
     </section>
 
     <section class="pane" data-pane="webhook" hidden>
-      <h3>🔗 Webhook</h3>
+      <h3>Webhook</h3>
       <p>Adresse, an die gespeicherte Quests gesendet werden.</p>
       <input class="field" id="wh-url" type="url" placeholder="https://…" spellcheck="false" aria-label="Webhook-Adresse">
       <input class="field" id="wh-secret" type="text" placeholder="Geheimwort (optional, wird mitgesendet)" spellcheck="false" aria-label="Geheimwort">
@@ -523,7 +549,9 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364513098}</script>
+<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795365918390}</script>
+
+<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795365918390}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -832,7 +860,9 @@ function wrap(card, { open, nest, id }) {
   cw.appendChild(card); clip.appendChild(cw); sec.appendChild(clip);
   return sec;
 }
+const stripEmoji = (t) => String(t).replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, "").replace(/\s+/g, " ").trim();
 function card(titleText, opts = {}) {
+  titleText = stripEmoji(titleText);
   const c = el("section", "card"), inn = el("div", "card-in");
   const scan = el("span", "scan"); scan.setAttribute("aria-hidden", "true");
   const h = el("h2", "q-title" + (opts.orn ? " orn" : ""));
@@ -1078,7 +1108,9 @@ function buildForm() {
       timer = setTimeout(step, 140);
     });
     journal.addEventListener("blur", () => { stop(); ghost.classList.remove("on"); });
-    journal.addEventListener("input", sync); }
+    const grow = () => { journal.style.height = "auto"; journal.style.height = Math.max(journal.scrollHeight + 2, 64) + "px"; };
+    journal.addEventListener("input", () => { sync(); grow(); });
+    setTimeout(grow, 0); }
   /* UPLOAD (derzeit deaktiviert) */
   if (!model.noUpload) {
     const { c, inn } = fieldCard(model.upload.title, model.upload.desc);

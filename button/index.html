@@ -464,7 +464,6 @@ function buildButton(cfg, host) {
   if (text) { const lbl = document.createElement("span"); lbl.className = "lbl gl"; lbl.textContent = text; lbl.dataset.text = text; line.appendChild(lbl); }
   main.appendChild(line);
   if (cfg.sub) { const s = document.createElement("span"); s.className = "sub"; s.textContent = cfg.sub; main.appendChild(s); }
-  if (!href) { const s = document.createElement("span"); s.className = "sub"; s.textContent = "Ziel fehlt oder nicht erlaubt"; main.appendChild(s); }
   b.appendChild(main);
   if (fx.includes("noise")) { const n = document.createElement("span"); n.className = "nz"; b.appendChild(n); }
   wrap.appendChild(b); host.appendChild(wrap);
@@ -539,8 +538,8 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><label for="g-sub">Untertitel</label><input type="text" id="g-sub" maxlength="60" placeholder="optional" autocomplete="off"></div>' +
     '<div class="row"><span class="lab">Symbol</span><div class="seg"><button type="button" class="icobtn" id="g-ico"></button></div></div>' +
     '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="text" id="g-url" spellcheck="false" placeholder="https://… oder name@beispiel.de" autocomplete="off" inputmode="url"></div></div>' +
-    '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
     '<p class="msg" id="g-msg"></p>' +
+    '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
     '<h3 class="sub3">Aussehen</h3>' +
     '<div class="row"><span class="lab">Farbe</span><div class="seg"><button type="button" class="diy" id="g-diy"></button></div><p class="hint2">Theme oben wählen. DIY überschreibt einzelne Farben des Themes.</p></div>' +
     '<div class="row"><span class="lab">Füllung</span><div class="seg" id="g-fill"></div></div>' +
@@ -562,7 +561,7 @@ if (q.has("url") || q.has("w")) {
     '</section>' +
     '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
-    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Adresse erscheint hier"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div><p class="msg" id="g-outnote"></p>' +
+    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Adresse erscheint hier"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div>' +
     '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
     '</div></aside></div></div>' +
@@ -727,7 +726,7 @@ if (q.has("url") || q.has("w")) {
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align];
     btn = buildButton(cfg, prev); btn.addEventListener("click", (e) => { if (!okUrl(cfg.url)) e.preventDefault(); });
     const raw = cfg.url, ok = !!okUrl(raw), href = ok ? okUrl(raw) : "";
-    $("g-msg").textContent = !raw ? "" : ok ? "" : "Ziel-Adresse nicht erlaubt oder unvollständig (https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";
+    $("g-msg").textContent = ok ? "" : !raw ? "Ziel fehlt: Der Button ist deaktiviert, bis eine gültige Ziel-Adresse eingetragen ist." : "Ziel nicht erlaubt oder unvollständig: Der Button ist deaktiviert (erlaubt: https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";
     const hint = $("g-openhint");
     if (ok && href.startsWith("mailto:")) { hint.textContent = "Bei E-Mail ohne Wirkung: öffnet das Mailprogramm. In Notion ungetestet."; hint.className = "hint2 warn"; }
     else if (S.open === "tab") { hint.textContent = OPENHINT.tab; hint.className = "hint2"; }
@@ -748,7 +747,6 @@ if (q.has("url") || q.has("w")) {
     DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
     $("g-out").value = location.origin + location.pathname + "?" + p.toString();
     $("g-copy").disabled = false;
-    $("g-outnote").textContent = ok ? "" : "Ziel-Adresse " + (raw ? "ungültig" : "fehlt") + ": Der Button ist damit deaktiviert, bis eine gültige Adresse eingetragen ist.";
   }
   ["g-label", "g-sub", "g-url"].forEach((id) => $(id).addEventListener("input", render));
   $("g-copy").addEventListener("click", async () => {

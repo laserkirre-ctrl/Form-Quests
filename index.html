@@ -199,8 +199,11 @@ dialog.wide { width: min(94vw, 660px); }
 /* Effekte */
 #fx { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;
   background: repeating-linear-gradient(0deg, rgb(0 0 0 / .07) 0 1px, transparent 1px 3px); }
-#fx::after { content: ""; position: absolute; left: 0; right: 0; top: -140px; height: 140px;
-  background: linear-gradient(180deg, transparent, rgb(var(--lime-rgb) / .05), transparent); }
+#fx::before, #fx::after { content: ""; position: absolute; left: 0; right: 0; top: -120px; }
+#fx::after { height: 64px;
+  background: repeating-linear-gradient(0deg, rgb(var(--lime-rgb) / .13) 0 2px, transparent 2px 5px);
+  border-top: 2px solid rgb(var(--lime-rgb) / .22); border-bottom: 1px solid rgb(var(--lime-rgb) / .12); }
+#fx::before { height: 3px; background: rgb(var(--lime-rgb) / .3); box-shadow: 0 0 10px rgb(var(--lime-rgb) / .5); opacity: 0; }
 button, a.btn { position: relative; overflow: hidden; }
 button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 38%; pointer-events: none;
   transform: translateX(-140%) skewX(-22deg); background: linear-gradient(90deg, transparent, rgb(255 255 255 / .28), transparent); }
@@ -210,8 +213,11 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
 @media (prefers-reduced-motion: no-preference) {
   header .stripes { background-size: 13px 100%; animation: stripes 1.1s linear infinite; }
   @keyframes stripes { to { background-position: 13px 0; } }
-  #fx::after { animation: beam 9s linear infinite; }
-  @keyframes beam { to { transform: translateY(calc(100vh + 280px)); } }
+  #fx::after { animation: beam 7s steps(17, end) infinite, flick 1.7s steps(1, end) infinite; }
+  #fx::before { animation: tear 5.3s steps(23, end) infinite; }
+  @keyframes beam { to { transform: translateY(calc(100vh + 240px)); } }
+  @keyframes flick { 0% { opacity: 1; } 9% { opacity: .35; } 14% { opacity: 1; } 52% { opacity: .55; } 57% { opacity: 1; } 83% { opacity: .25; } 88% { opacity: .9; } }
+  @keyframes tear { 0% { opacity: 0; } 4% { opacity: 1; } 8% { opacity: 0; } 40% { opacity: 0; } 44% { opacity: 1; } 48% { opacity: 0; } 100% { transform: translateY(calc(100vh + 240px)); opacity: 0; } }
   button:hover::after, a.btn:hover::after { animation: sweep .65s ease-out 1; }
   @keyframes sweep { to { transform: translateX(380%) skewX(-22deg); } }
   .card.reveal .card-in { animation: boot .5s steps(1, end) 1; }
@@ -288,19 +294,8 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
       <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_top">Quest anschauen</a>
     </div>
     <div class="actions">
-      <button type="button" id="dn-close" class="primary" autofocus>Schließen</button>
-    </div>
-  </div></div>
-</dialog>
-
-<dialog id="choice" aria-labelledby="ch-title">
-  <div class="dlg"><div class="dlg-in">
-    <div class="stripes" aria-hidden="true"></div>
-    <h2 id="ch-title">Wie geht es weiter?</h2>
-    <p>„Neu anfangen“ leert alle Felder. „Entwurf bearbeiten“ behält alle Eingaben.</p>
-    <div class="actions">
-      <button type="button" id="ch-edit">Entwurf bearbeiten</button>
-      <button type="button" id="ch-new" class="primary" autofocus>Neu anfangen</button>
+      <button type="button" id="dn-close">Schließen</button>
+      <button type="button" id="dn-new" class="primary" autofocus>Neue Quest</button>
     </div>
   </div></div>
 </dialog>
@@ -393,7 +388,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360255236}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360595835}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -960,12 +955,8 @@ function goTo(url) {
   setTimeout(() => { if (!left) { const w = window.open(url, "_blank", "noopener"); if (!w) say("Link wird hier blockiert. Formular direkt im Browser öffnen.", "err"); } }, 450);
 }
 for (const id of ["dn-pin", "dn-wiki", "dn-view"]) $(id).addEventListener("click", (e) => { e.preventDefault(); goTo($(id).href); });
-const choiceDlg = $("choice");
 $("dn-close").addEventListener("click", () => doneDlg.close());
-doneDlg.addEventListener("close", () => openDlg(choiceDlg));
-$("ch-edit").addEventListener("click", () => { choiceDlg.close(); say("Entwurf bleibt erhalten."); });
-$("ch-new").addEventListener("click", () => { choiceDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
-choiceDlg.addEventListener("click", (e) => { if (e.target === choiceDlg) choiceDlg.close(); });
+$("dn-new").addEventListener("click", () => { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
 doneDlg.addEventListener("click", (e) => { if (e.target === doneDlg) doneDlg.close(); });
 
 /* ---- Admin Area ---- */

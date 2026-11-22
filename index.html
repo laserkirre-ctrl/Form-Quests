@@ -41,6 +41,11 @@ button:hover { filter: brightness(1.12); }
 button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
 button:disabled { opacity: .5; cursor: progress; }
 button.danger { background: var(--warn); border-color: var(--warn); color: #1a0606; font-weight: 500; }
+
+#savedock { position: fixed; left: 0; top: 0; z-index: 30; will-change: transform; }
+#savedock { filter: drop-shadow(0 4px 14px rgb(0 0 0 / .5)); }
+#savedock button { padding: 12px 20px; }
+@media (hover: none) { #savedock { left: auto !important; right: 12px; top: auto !important; bottom: 12px; transform: none !important; } }
 a.btn { display: inline-block; font: inherit; font-size: 1rem; text-decoration: none; text-align: center; cursor: pointer; border-radius: 3px; padding: 8px 16px;
   border: 1px solid var(--lime); background: transparent; color: var(--lime);
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
@@ -190,15 +195,15 @@ dialog.wide { width: min(94vw, 660px); }
 <header>
   <h1>QUEST</h1>
   <div class="stripes" aria-hidden="true"></div>
-  <p class="hint" id="hint">Quest ausfüllen. Speichern legt einen neuen Eintrag im PinBoard an.</p>
+  <p class="hint" id="hint">Quest ausfüllen und speichern.</p>
   <div class="actions">
     <button type="button" id="admin-btn">Admin</button>
     <button type="button" id="clear">Leeren</button>
-    <button type="button" id="save" class="primary">Speichern</button>
   </div>
 </header>
 <p class="status" id="status" role="status" aria-live="polite"></p>
 <main><form id="form" autocomplete="off" novalidate></form></main>
+<div id="savedock"><button type="button" id="save" class="primary">Speichern</button></div>
 
 <dialog id="confirm" aria-labelledby="cf-title" aria-describedby="cf-text">
   <div class="dlg"><div class="dlg-in">
@@ -218,29 +223,13 @@ dialog.wide { width: min(94vw, 660px); }
     <h2 id="dn-title">Quest ist angepinnt.</h2>
     <p id="dn-text">Und wie geht es weiter?</p>
     <div class="choices">
-      <a class="btn" id="dn-pin" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da5028052bd9e000cbc4485e3" target="_blank" rel="noopener">Zum Pinboard</a>
-      <a class="btn" id="dn-wiki" href="https://app.notion.com/p/303bca9da50280c3898fc309eb1b618e" target="_blank" rel="noopener">Zum Wiki</a>
-      <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_blank" rel="noopener">Quest anschauen</a>
+      <a class="btn" id="dn-pin" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da5028052bd9e000cbc4485e3" target="_top">Zum Pinboard</a>
+      <a class="btn" id="dn-wiki" href="https://app.notion.com/p/303bca9da50280c3898fc309eb1b618e" target="_top">Zum Wiki</a>
+      <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_top">Quest anschauen</a>
     </div>
-    <p class="meta" id="dn-link" hidden></p>
     <div class="actions">
       <button type="button" id="dn-close">Schließen</button>
       <button type="button" id="dn-new" class="primary" autofocus>Neue Quest</button>
-    </div>
-  </div></div>
-</dialog>
-
-<dialog id="tgdlg" aria-labelledby="tg-title">
-  <div class="dlg"><div class="dlg-in">
-    <div class="stripes" aria-hidden="true"></div>
-    <h2 id="tg-title">Ziel: PinBoard</h2>
-    <p>Link oder ID der Datenbank PinBoard einfügen (Workspace Mr. Strauch). Leer lassen = automatisch suchen.</p>
-    <input class="field" id="tg-input" type="text" placeholder="https://www.notion.so/… oder collection://…" spellcheck="false">
-    <p class="meta" id="tg-info"></p>
-    <div class="actions">
-      <button type="button" id="tg-cancel">Abbrechen</button>
-      <button type="button" id="tg-find">Automatisch suchen</button>
-      <button type="button" id="tg-ok" class="primary" autofocus>Übernehmen</button>
     </div>
   </div></div>
 </dialog>
@@ -267,12 +256,9 @@ dialog.wide { width: min(94vw, 660px); }
     <div id="ad-menu">
       <div class="menu">
         <button type="button" data-open="colors">🎨 Farbschemata</button>
-        <button type="button" data-open="sync" id="m-sync">🔄 Form aktualisieren</button>
-        <button type="button" data-open="support">💬 Support</button>
         <button type="button" data-open="password">🔑 Passwort ändern</button>
-        <button type="button" data-open="target" id="m-target">📍 Ziel-Datenbank</button>
-        <button type="button" data-open="webhook" id="m-webhook">🔗 Webhook (Speichern)</button>
-        <button type="button" data-open="export" id="m-export">⬇ HTML exportieren</button>
+        <button type="button" data-open="webhook">🔗 Webhook (Speichern)</button>
+        <button type="button" data-open="export">⬇ HTML exportieren</button>
       </div>
       <div class="actions"><button type="button" id="ad-close">Schließen</button></div>
     </div>
@@ -296,33 +282,6 @@ dialog.wide { width: min(94vw, 660px); }
       <button type="button" class="back" data-back>‹ Zurück</button>
     </section>
 
-    <section class="pane" data-pane="sync" hidden>
-      <h3>🔄 Form aktualisieren</h3>
-      <p>Liest Spalten, Optionen, Titel und Beschreibungen aus PINBOARD und der Notion-Formularansicht. Bedingungen (was wann erscheint) lassen sich nicht auslesen. Neue Felder erscheinen immer sichtbar.</p>
-      <div class="row"><button type="button" id="s-run" class="primary">Mit Notion abgleichen</button></div>
-      <p class="meta" id="s-info"></p>
-      <ul class="diff" id="s-diff"></ul>
-      <div class="row" id="s-apply-row" hidden>
-        <button type="button" id="s-apply" class="primary">Änderungen übernehmen</button>
-        <button type="button" id="s-undo">Auf Standard zurück</button>
-      </div>
-      <button type="button" class="back" data-back>‹ Zurück</button>
-    </section>
-
-    <section class="pane" data-pane="support" hidden>
-      <h3>💬 Support</h3>
-      <p>Frage oder Auftrag an Claude formulieren.</p>
-      <textarea class="field" id="sp-text" placeholder="Was soll angepasst oder geklärt werden?" aria-label="Support-Text"></textarea>
-      <div class="row">
-        <button type="button" id="sp-desktop" class="primary">In Claude Desktop öffnen</button>
-        <button type="button" id="sp-copy">Text kopieren + Projekt öffnen</button>
-        <button type="button" id="sp-ask" hidden>Hier fragen</button>
-      </div>
-      <p class="meta" id="sp-info"></p>
-      <div class="out" id="sp-out" hidden></div>
-      <button type="button" class="back" data-back>‹ Zurück</button>
-    </section>
-
     <section class="pane" data-pane="password" hidden>
       <h3>🔑 Passwort ändern</h3>
       <input class="field" id="pwc-new" type="password" autocomplete="new-password" placeholder="Neues Passwort (mind. 6 Zeichen)" aria-label="Neues Passwort">
@@ -332,16 +291,9 @@ dialog.wide { width: min(94vw, 660px); }
       <button type="button" class="back" data-back>‹ Zurück</button>
     </section>
 
-    <section class="pane" data-pane="target" hidden>
-      <h3>📍 Ziel-Datenbank</h3>
-      <p>Datenbank, in die gespeichert wird (Notion-Verbindung in claude.ai).</p>
-      <div class="row"><button type="button" id="tg-open" class="primary">Ziel ändern</button></div>
-      <button type="button" class="back" data-back>‹ Zurück</button>
-    </section>
-
     <section class="pane" data-pane="webhook" hidden>
-      <h3>🔗 Webhook (Speichern außerhalb von claude.ai)</h3>
-      <p>Adresse des Relay-Dienstes (Make, Zapier, n8n, Pipedream), der Einträge nach Notion schreibt.</p>
+      <h3>🔗 Webhook</h3>
+      <p>Adresse, an die gespeicherte Quests gesendet werden.</p>
       <input class="field" id="wh-url" type="url" placeholder="https://…" spellcheck="false" aria-label="Webhook-Adresse">
       <input class="field" id="wh-secret" type="text" placeholder="Geheimwort (optional, wird mitgesendet)" spellcheck="false" aria-label="Geheimwort">
       <p class="meta" id="wh-info"></p>
@@ -362,20 +314,15 @@ dialog.wide { width: min(94vw, 660px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795358581552}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795360000000}</script>
 <script>
 "use strict";
-const IN_CLAUDE = !!(window.claude && typeof window.claude.use === "function");
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
 
 /* ---- Konfiguration ---- */
-const SERVER = "Notion";
 const DB_ID = "420bca9d-a502-805c-b643-d5d4b6dc6238";                       // Datenbank PINBOARD
-const DEFAULT_TARGET = "collection://420bca9d-a502-80ad-b8b0-000b213aba1a"; // Datenquelle PINBOARD (Workspace Mr. Strauch)
-const TARGET_KEY = "quest-ziel-v2";
 const CFG_KEY = "quest-cfg-v1";
 const PW_DEFAULT = "222064a88004125d656a5734f47ebd33bb5807d3b818b635e0d81cfc33dbeb8b";
-const SUPPORT_PROJECT = "01a1f07a-d4e4-77c4-9d16-8b00009adc28";
 const UP_EXT = ["txt", "md", "csv", "tsv", "json", "xml", "svg", "html", "css", "yaml", "yml", "ics", "gpx"];
 const UP_MAX = 200 * 1024, UP_COUNT = 5;
 
@@ -438,18 +385,6 @@ function two(n) { return String(n).padStart(2, "0"); }
 function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 function openDlg(d) { if (typeof d.showModal === "function") { if (!d.open) d.showModal(); } else d.setAttribute("open", ""); }
-function payloadOf(r) {
-  let p = r && (r.payload !== undefined ? r.payload : r.content);
-  if (typeof p === "string") { try { p = JSON.parse(p); } catch (e) {} }
-  return p;
-}
-function textOf(r) {
-  const p = payloadOf(r);
-  if (typeof p === "string") return p;
-  if (Array.isArray(p)) return p.map((x) => (x && x.text) || (typeof x === "string" ? x : "")).join("\n");
-  if (p && typeof p.text === "string") return p.text;
-  return JSON.stringify(p || "");
-}
 function sha256(str) {
   const primes = []; for (let n = 2; primes.length < 64; n++) if (primes.every((p) => n % p)) primes.push(n);
   const frac = (x) => Math.floor((x - Math.floor(x)) * 4294967296) >>> 0;
@@ -478,15 +413,13 @@ function sha256(str) {
 }
 const pwHash = (pw) => sha256("quest|" + pw);
 
-/* ---- Einstellungen (geteilt über db in claude.ai, sonst Browser/Datei) ---- */
+/* ---- Einstellungen ---- */
 function readBaked() { try { return JSON.parse($("baked").textContent || "{}") || {}; } catch (e) { return {}; } }
 function readLocalCfg() { try { return JSON.parse(lsGet(CFG_KEY) || "{}") || {}; } catch (e) { return {}; } }
 let cfg = (() => { const b = readBaked(), l = readLocalCfg(); return (l.rev || 0) > (b.rev || 0) ? l : b; })();
-let dbRef = null;
 async function saveCfg(patch) {
   cfg = Object.assign({}, cfg, patch, { rev: Date.now() });
   lsSet(CFG_KEY, JSON.stringify(cfg));
-  if (dbRef) { try { await dbRef.set({ cfg: JSON.stringify(cfg) }); } catch (e) { return { shared: false, error: e }; } return { shared: true }; }
   return { shared: false };
 }
 
@@ -501,7 +434,7 @@ function applyColors() {
 /* ---- Modell (Grundstand + Abgleich mit Notion) ---- */
 function mergedModel() {
   const m = JSON.parse(JSON.stringify(BUILTIN)), f = cfg.form;
-  m.noUpload = !IN_CLAUDE;
+  m.noUpload = true;
   if (!f) return m;
   const ov = (t, s) => {
     if (!s) return;
@@ -636,7 +569,7 @@ function buildForm() {
     const w = el("div", "dates"); w.style.marginTop = "8px";
     w.innerHTML = '<input class="field" type="url" id="x-link" placeholder="https://…" spellcheck="false" aria-label="Link">';
     inn.appendChild(w); form.appendChild(wrap(c, { open: true })); }
-  /* UPLOAD (nur mit Notion-Verbindung über claude.ai) */
+  /* UPLOAD (derzeit deaktiviert) */
   if (!model.noUpload) {
     const { c, inn } = fieldCard(model.upload.title, model.upload.desc);
     inn.appendChild(el("p", "q-hint", "Nur Textdateien (" + UP_EXT.map((e) => "." + e).join(" ") + "), je bis 200 KB, max. " + UP_COUNT + " Dateien. Bilder, PDF und ZIP über das Link-Feld."));
@@ -750,57 +683,6 @@ $("cf-cancel").addEventListener("click", () => dlgClear.close());
 $("cf-ok").addEventListener("click", () => { dlgClear.close(); resetForm(); });
 dlgClear.addEventListener("click", (e) => { if (e.target === dlgClear) dlgClear.close(); });
 
-/* ---- Notion ---- */
-let mcpP = null;
-function getMcp() {
-  if (!mcpP) mcpP = IN_CLAUDE ? window.claude.use("mcp").catch(() => null) : Promise.resolve(null);
-  return mcpP;
-}
-function parseTarget(raw) {
-  raw = (raw || "").trim(); if (!raw) return null;
-  const c = raw.match(/collection:\/\/([0-9a-f-]{32,36})/i);
-  if (c) return { type: "data_source_id", data_source_id: c[1] };
-  const m = raw.match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/i);
-  if (m) return { type: "database_id", database_id: m[0] };
-  return null;
-}
-async function discover(mcp) {
-  const r1 = await mcp.callTool(SERVER, "notion-search", { query: "PINBOARD" });
-  const p1 = payloadOf(r1);
-  const arr = (p1 && Array.isArray(p1.results)) ? p1.results : [];
-  const dbs = arr.filter((x) => x && x.type === "database" && /pinboard/i.test(x.title || ""));
-  const hit = dbs.find((x) => /^\s*pinboard\s*$/i.test(x.title)) || dbs[0];
-  if (!hit) return null;
-  const r2 = await mcp.callTool(SERVER, "notion-fetch", { id: hit.id });
-  const m = JSON.stringify(payloadOf(r2) || "").match(/collection:\/\/([0-9a-f-]{36})/i);
-  return m ? "collection://" + m[1] : hit.id;
-}
-function storedTarget() { return lsGet(TARGET_KEY) || DEFAULT_TARGET || ""; }
-
-function errInfo(e) {
-  const code = e && e.code;
-  switch (code) {
-    case "server_not_connected": return { msg: "Notion ist nicht verbunden. In claude.ai unter Einstellungen → Connectors Notion hinzufügen (Workspace Mr. Strauch).", retry: true };
-    case "needs_reauth": return { msg: "Die Notion-Verbindung ist abgelaufen. In claude.ai unter Einstellungen → Connectors neu verbinden.", retry: true };
-    case "selection_required": return { msg: "Mehrere Notion-Verbindungen vorhanden. Bitte in claude.ai eine auswählen.", retry: true };
-    case "not_in_manifest": return { msg: "Zugriff auf Notion wurde für diese Seite nicht erlaubt.", retry: true };
-    case "approval_required": return { msg: "Notion-Zugriff braucht deine Freigabe. Seite in claude.ai öffnen und erlauben.", retry: true };
-    case "blocked_by_policy": return { msg: "Die Organisation blockiert diesen Notion-Zugriff.", retry: false };
-    case "not_granted": case "capability_disabled": case "capability_removed":
-      return { msg: "Speichern über die Notion-Verbindung geht nur, wenn die Seite in claude.ai geöffnet ist.", retry: false };
-    case "tool_error": {
-      let m = (e.message || "").toString().replace(/\s+/g, " ").trim();
-      if (m.length > 280) m = m.slice(0, 280) + " …";
-      if (/object_not_found|Could not find (database|page)/.test(String((e && (e.message || e.body)) || "")))
-        return { msg: "PinBoard nicht erreichbar: Die Notion-Verbindung liegt in einem anderen Workspace als PinBoard. Link-Freigabe reicht nicht. In claude.ai Notion-Connector mit Workspace Mr. Strauch neu verbinden.", retry: true };
-      return { msg: "Notion hat den Eintrag abgelehnt: " + (m || "unbekannter Fehler") + " (Ziel/Spalten in PinBoard prüfen).", retry: true };
-    }
-    case "server_unavailable": case "upstream_error": case "cancelled":
-      return { msg: "Unklar, ob der Eintrag gespeichert wurde. Erst im PinBoard nachsehen, dann erneut speichern.", retry: true, ambiguous: true };
-    default: return { msg: "Speichern fehlgeschlagen" + (e && e.message ? ": " + String(e.message).slice(0, 200) : "."), retry: true };
-  }
-}
-
 /* ---- Felder → Notion ---- */
 function entryName(kap) { const n = new Date(); return two(n.getDate()) + "." + two(n.getMonth() + 1) + "." + two(n.getFullYear() % 100) + " · " + kap; }
 function todayStr() { const n = new Date(); return n.getFullYear() + "-" + two(n.getMonth() + 1) + "-" + two(n.getDate()); }
@@ -827,16 +709,6 @@ function buildFields(st) {
   const lk = $("x-link") ? $("x-link").value.trim() : ""; if (lk) F.push({ prop: "LINK", type: "url", value: lk });
   return F;
 }
-function toMcpProps(F) {
-  const P = {};
-  for (const f of F) {
-    if (f.type === "date") { P["date:" + f.prop + ":start"] = f.value; P["date:" + f.prop + ":is_datetime"] = 0; }
-    else if (f.type === "multi") P[f.prop] = JSON.stringify(f.value);
-    else if (f.type === "checkbox") P[f.prop] = "__YES__";
-    else P[f.prop] = f.value;
-  }
-  return P;
-}
 function chunks(s) { const o = []; for (let i = 0; i < s.length && o.length < 90; i += 2000) o.push({ text: { content: s.slice(i, i + 2000) } }); return o; }
 function toApiProps(F) {
   const P = {};
@@ -855,7 +727,7 @@ function toApiProps(F) {
   return P;
 }
 async function sendWebhook(F, files) {
-  const payload = { secret: cfg.secret || "", database_id: DB_ID, created: new Date().toISOString(), properties: toApiProps(F), notion_mcp: toMcpProps(F), files: files || [] };
+  const payload = { secret: cfg.secret || "", database_id: DB_ID, created: new Date().toISOString(), properties: toApiProps(F), files: files || [] };
   const body = new URLSearchParams(); body.set("payload", JSON.stringify(payload)); body.set("secret", cfg.secret || ""); body.set("body", JSON.stringify({ parent: { database_id: DB_ID }, properties: payload.properties }));
   await fetch(cfg.webhook, { method: "POST", mode: "no-cors", body });
 }
@@ -887,80 +759,22 @@ async function save() {
   const st = readState();
   if (!validate(st)) return;
   const F = buildFields(st);
+  if (!cfg.webhook) { say("Speichern ist noch nicht eingerichtet (Admin Area → Webhook).", "err"); return; }
   saving = true; saveBtn.disabled = true; say("Quest wird gespeichert …");
   try {
-    const mcp = await getMcp();
-    if (mcp) {
-      let target = parseTarget(storedTarget());
-      if (!target) {
-        say("PinBoard wird gesucht …");
-        let found = null;
-        try { found = await discover(mcp); } catch (e) { say(errInfo(e).msg, "err"); return; }
-        target = parseTarget(found);
-        if (!target) { say("PinBoard nicht gefunden. Verbindung auf den Workspace Mr. Strauch prüfen oder Ziel in der Admin Area setzen.", "err"); return; }
-        lsSet(TARGET_KEY, found);
-      }
-      const props = toMcpProps(F);
-      if (pendingFiles.length) {
-        say("Dateien werden hochgeladen …");
-        const ids = [];
-        for (const f of pendingFiles) {
-          const r = await mcp.callTool(SERVER, "notion-create-attachment", { content: f.content, filename: f.name });
-          const p = payloadOf(r);
-          const id = (p && p.file_upload_id) || (JSON.stringify(p || "").match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i) || [])[0];
-          if (!id) throw { code: "tool_error", message: "Upload von „" + f.name + "“ ohne Datei-ID." };
-          ids.push(id);
-        }
-        props.UPLOAD = ids.map((id) => ({ type: "file_upload", file_upload: { id } }));
-        say("Quest wird gespeichert …");
-      }
-      const res = await mcp.callTool(SERVER, "notion-create-pages", { parent: target, pages: [{ properties: props }] });
-      const url = (JSON.stringify(payloadOf(res) || "").match(/https:\/\/[a-z.]*notion\.(?:so|com)\/[^\s"\\<>]+/i) || [])[0];
-      showDone("");
-      say("Gespeichert.", "ok");
-    } else {
-      if (!cfg.webhook) { say("Kein Webhook eingerichtet. Admin Area → Webhook, oder die Seite in claude.ai öffnen.", "err"); return; }
-      await sendWebhook(F, []);
-      showDone("Die Zustellung kann technisch nicht bestätigt werden. Fehlt die Quest nach wenigen Minuten im Pinboard, den Relay prüfen.");
-      say("Gesendet.", "ok");
-    }
+    await sendWebhook(F, []);
+    showDone();
+    say("Gespeichert.", "ok");
   } catch (e) {
     console.error(e);
-    if (!IN_CLAUDE) say("Senden fehlgeschlagen. Verbindung und Webhook-Adresse prüfen.", "err"); else say(errInfo(e).msg, "err");
+    say("Senden fehlgeschlagen. Verbindung prüfen und erneut versuchen.", "err");
   } finally { saving = false; saveBtn.disabled = false; }
 }
-function showDone(note) {
-  const link = $("dn-link");
-  link.textContent = note || ""; link.hidden = !note;
-  openDlg(doneDlg);
-}
+function showDone() { openDlg(doneDlg); }
 saveBtn.addEventListener("click", save);
 $("dn-close").addEventListener("click", () => doneDlg.close());
 $("dn-new").addEventListener("click", () => { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); });
 doneDlg.addEventListener("click", (e) => { if (e.target === doneDlg) doneDlg.close(); });
-
-/* ---- Ziel-Dialog ---- */
-const tgDlg = $("tgdlg"), tgIn = $("tg-input"), tgInfo = $("tg-info");
-function openTarget() { tgIn.value = storedTarget(); tgInfo.textContent = ""; tgInfo.className = "meta"; openDlg(tgDlg); }
-$("tg-open").addEventListener("click", openTarget);
-$("tg-cancel").addEventListener("click", () => tgDlg.close());
-tgDlg.addEventListener("click", (e) => { if (e.target === tgDlg) tgDlg.close(); });
-$("tg-ok").addEventListener("click", () => {
-  const v = tgIn.value.trim();
-  if (!v) { try { localStorage.removeItem(TARGET_KEY); } catch (e) {} tgDlg.close(); say("Ziel zurückgesetzt (Standard-PinBoard)."); return; }
-  if (!parseTarget(v)) { tgInfo.textContent = "Keine gültige ID oder URL erkannt."; tgInfo.className = "meta err"; return; }
-  lsSet(TARGET_KEY, v); tgDlg.close(); say("Ziel gespeichert.", "ok");
-});
-$("tg-find").addEventListener("click", async () => {
-  tgInfo.className = "meta"; tgInfo.textContent = "Suche …";
-  const mcp = await getMcp();
-  if (!mcp) { tgInfo.textContent = "Nur in claude.ai mit Notion-Verbindung möglich."; tgInfo.className = "meta err"; return; }
-  try {
-    const f = await discover(mcp);
-    if (f) { tgIn.value = f; tgInfo.textContent = "Gefunden. Mit „Übernehmen“ speichern."; }
-    else { tgInfo.textContent = "PinBoard in dieser Notion-Verbindung nicht gefunden (falscher Workspace?)."; tgInfo.className = "meta err"; }
-  } catch (e) { tgInfo.textContent = errInfo(e).msg; tgInfo.className = "meta err"; }
-});
 
 /* ---- Admin Area ---- */
 const pwDlg = $("pwdlg"), adDlg = $("admin");
@@ -972,13 +786,11 @@ function showPane(name) {
   $("ad-title").textContent = "Admin Area";
   if (name === "colors") initColors();
   if (name === "webhook") { $("wh-url").value = cfg.webhook || ""; $("wh-secret").value = cfg.secret || ""; $("wh-info").textContent = ""; }
-  if (name === "sync") { $("s-info").textContent = cfg.formAt ? "Letzter Abgleich: " + new Date(cfg.formAt).toLocaleString("de-DE") : "Noch nicht abgeglichen (Grundstand aktiv)."; $("s-diff").textContent = ""; $("s-apply-row").hidden = true; }
-  if (name === "support") { $("sp-info").textContent = ""; $("sp-out").hidden = true; }
   if (name === "export") $("ex-info").textContent = "";
   if (name === "password") { $("pwc-new").value = ""; $("pwc-rep").value = ""; $("pwc-info").textContent = ""; }
 }
 function openAdmin() {
-  if (unlocked) { $("m-target").hidden = !IN_CLAUDE; $("m-sync").hidden = !IN_CLAUDE; $("m-webhook").hidden = IN_CLAUDE; $("m-export").hidden = IN_CLAUDE; showPane(null); openDlg(adDlg); return; }
+  if (unlocked) { showPane(null); openDlg(adDlg); return; }
   $("pw-input").value = ""; $("pw-err").textContent = ""; openDlg(pwDlg); setTimeout(() => $("pw-input").focus(), 50);
 }
 $("admin-btn").addEventListener("click", openAdmin);
@@ -1024,7 +836,7 @@ $("c-reset").addEventListener("click", () => { draft = {}; cfg.colors = {}; appl
 $("c-save").addEventListener("click", async () => {
   colorsBackup = null;
   const r = await saveCfg({ colors: Object.assign({}, draft) });
-  $("c-info").textContent = IN_CLAUDE ? (r.shared ? "Gespeichert für alle." : "Nur in diesem Browser gespeichert (keine geteilte Datenbank erreichbar).") : "Im Browser gespeichert. Für alle: HTML exportieren und verteilen.";
+  $("c-info").textContent = "Im Browser gespeichert. Für alle: HTML exportieren und verteilen.";
   $("c-info").className = "meta ok";
 });
 
@@ -1034,7 +846,7 @@ $("pwc-ok").addEventListener("click", async () => {
   if (a.length < 6) { info.textContent = "Mindestens 6 Zeichen."; info.className = "meta err"; return; }
   if (a !== b) { info.textContent = "Eingaben stimmen nicht überein."; info.className = "meta err"; return; }
   const r = await saveCfg({ pw: pwHash(a) });
-  info.textContent = IN_CLAUDE ? (r.shared ? "Passwort geändert (gilt für alle)." : "Nur in diesem Browser geändert.") : "Passwort geändert (Browser). Beim Export wird es in die Datei übernommen.";
+  info.textContent = "Passwort geändert (Browser). Beim Export wird es in die Datei übernommen.";
   info.className = "meta ok";
 });
 
@@ -1065,156 +877,43 @@ $("ex-go").addEventListener("click", () => {
   $("ex-info").textContent = "Datei erzeugt."; $("ex-info").className = "meta ok";
 });
 
-/* Support */
-function supportText() { return "[Projekt: PnP - Notion] Support-Anfrage aus dem Quest-Formular:\n\n" + $("sp-text").value.trim(); }
-function openLink(href) { const a = document.createElement("a"); a.href = href; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove(); }
-function needText() { if (!$("sp-text").value.trim()) { $("sp-info").textContent = "Bitte zuerst einen Text eingeben."; $("sp-info").className = "meta err"; return false; } return true; }
-$("sp-desktop").addEventListener("click", async () => {
-  if (!needText()) return;
-  const t = supportText();
-  try { await navigator.clipboard.writeText(t); } catch (e) {}
-  openLink("claude://claude.ai/new?q=" + encodeURIComponent(t));
-  $("sp-info").textContent = "Claude Desktop sollte sich mit vorausgefülltem Text öffnen (Absenden per Klick). Der Chat liegt außerhalb des Projekts; der Text ist zusätzlich in der Zwischenablage. Öffnet sich nichts: Desktop-App installiert?"; $("sp-info").className = "meta";
-});
-$("sp-copy").addEventListener("click", async () => {
-  if (!needText()) return;
-  let ok = false; try { await navigator.clipboard.writeText(supportText()); ok = true; } catch (e) {}
-  openLink("claude://claude.ai/project/" + SUPPORT_PROJECT);
-  $("sp-info").textContent = ok ? "Text kopiert. Im Projekt „PnP - Notion“ einen neuen Chat starten und einfügen." : "Kopieren nicht möglich: Text manuell markieren und kopieren. Projekt wird geöffnet."; $("sp-info").className = "meta";
-});
-let sampleFn = null, ctl = null;
-if (IN_CLAUDE) window.claude.use("sample").then((s) => { if (s) { sampleFn = s; $("sp-ask").hidden = false; } }).catch(() => {});
-$("sp-ask").addEventListener("click", async () => {
-  if (!sampleFn || !needText()) return;
-  const out = $("sp-out"), btn = $("sp-ask"); out.hidden = false; out.textContent = "Claude denkt …"; btn.disabled = true;
-  const ctx = "Kapitel: " + model.kapitel.opts.join(", ") + ". Abschnitte: " + SECTIONS.map((s) => s.prop).join(", ") + ". Zusatzfelder: " + (model.extras.map((x) => x.prop).join(", ") || "keine") + ".";
-  try {
-    const r = await sampleFn("Du hilfst bei einem Quest-Formular für ein Pen-and-Paper-Projekt (speichert Einträge in die Notion-Datenbank PINBOARD). Antworte auf Deutsch, knapp, in Stichpunkten. Formularstand: " + ctx + "\n\nFrage:\n" + $("sp-text").value.trim(),
-      { onText: ({ text }) => { out.textContent = text; }, cache: false });
-    out.textContent = r.text;
-  } catch (e) { out.textContent = e.text || "Anfrage nicht möglich (" + (e.code || "Fehler") + ")."; }
-  finally { btn.disabled = false; }
-});
-
-/* Form aktualisieren */
-function getSchemaAndQuestions(text) {
-  const a = text.indexOf("<data-source-state>"), b = text.indexOf("</data-source-state>");
-  if (a < 0 || b < 0) throw new Error("Schema nicht gefunden");
-  const schema = JSON.parse(text.slice(a + 19, b).trim()).schema;
-  let questions = null;
-  const re = /<view url="[^"]*">\s*(\{[\s\S]*?\})\s*<\/view>/g; let m;
-  while ((m = re.exec(text))) { try { const v = JSON.parse(m[1]); if (v.type === "form_editor" && Array.isArray(v.questions)) { questions = v.questions; break; } } catch (e) {} }
-  return { schema, questions };
-}
-function pick(schema, qs, prop, useTitle) {
-  const sc = schema[prop], q = qs[prop];
-  const o = { gone: !sc };
-  if (sc && Array.isArray(sc.options)) o.opts = sc.options.map((x) => x.name);
-  if (useTitle !== false && q && q.name && q.name.trim()) o.title = q.name.trim();
-  if (q && q.description && q.description.trim()) o.desc = q.description.trim();
-  return o;
-}
-function buildSnapshot({ schema, questions }) {
-  const qs = {}; (questions || []).forEach((q) => { if (q && q.property) qs[q.property] = q; });
-  const f = { sections: {}, extras: [] };
-  f.kapitel = pick(schema, qs, "KAPITEL", false);
-  for (const s of BUILTIN.sections) f.sections[s.id] = pick(schema, qs, s.prop);
-  f.tasks = pick(schema, qs, "TASKS"); f.who = pick(schema, qs, "ZUSTÄNDIG");
-  f.deadline = pick(schema, qs, "DEADLINE"); f.journal = pick(schema, qs, "JOURNAL");
-  const order = questions ? questions.map((q) => q.property) : Object.keys(schema);
-  for (const prop of order) {
-    if (KNOWN_PROPS.has(prop) || !schema[prop] || !EXTRA_TYPES.includes(schema[prop].type)) continue;
-    const q = qs[prop], sc = schema[prop];
-    f.extras.push({ prop, type: sc.type, title: (q && q.name && q.name.trim()) || prop, desc: (q && q.description && q.description.trim()) || "", required: !!(q && q.required), opts: Array.isArray(sc.options) ? sc.options.map((x) => x.name) : [] });
-  }
-  return f;
-}
-function diffModels(a, b) {
-  const L = [], opt = (name, x, y) => {
-    const add = y.opts.filter((o) => !x.opts.includes(o)), del = x.opts.filter((o) => !y.opts.includes(o));
-    if (add.length) L.push(name + ": neu " + add.join(", "));
-    if (del.length) L.push(name + ": entfernt " + del.join(", "));
-    if (x.title !== y.title && name !== "KAPITEL") L.push(name + ": Titel „" + y.title + "“");
-    if (!x.gone && y.gone) L.push(name + ": Spalte nicht mehr vorhanden, Abschnitt wird ausgeblendet");
-  };
-  opt("KAPITEL", a.kapitel, b.kapitel);
-  a.sections.forEach((s, i) => opt(s.prop, s, b.sections[i]));
-  opt("TASKS", a.tasks, b.tasks); opt("ZUSTÄNDIG", a.who, b.who);
-  const ae = a.extras.map((x) => x.prop), be = b.extras.map((x) => x.prop);
-  be.filter((p) => !ae.includes(p)).forEach((p) => L.push("Neues Feld: " + p));
-  ae.filter((p) => !be.includes(p)).forEach((p) => L.push("Feld entfernt: " + p));
-  return L;
-}
-let pendingSnap = null;
-$("s-run").addEventListener("click", async () => {
-  const info = $("s-info"), ul = $("s-diff"); ul.textContent = ""; $("s-apply-row").hidden = true; info.className = "meta";
-  const mcp = await getMcp();
-  if (!mcp) { info.textContent = "Nur in claude.ai mit Notion-Verbindung möglich."; info.className = "meta err"; return; }
-  info.textContent = "Lese PINBOARD …";
-  try {
-    const r = await mcp.callTool(SERVER, "notion-fetch", { id: DB_ID });
-    const parsed = getSchemaAndQuestions(textOf(r));
-    const snap = buildSnapshot(parsed);
-    const old = cfg.form; cfg.form = snap; const next = mergedModel(); cfg.form = old;
-    const lines = diffModels(model, next);
-    pendingSnap = snap;
-    info.textContent = parsed.questions ? "Formularansicht gelesen." : "Formularansicht nicht gefunden: nur Spalten und Optionen verglichen.";
-    if (!lines.length) { const li = el("li", "", "Keine Unterschiede zum aktuellen Stand."); ul.appendChild(li); info.className = "meta ok"; }
-    else { lines.forEach((t) => ul.appendChild(el("li", "", t))); $("s-apply-row").hidden = false; }
-  } catch (e) {
-    info.textContent = (e && e.code) ? errInfo(e).msg : "Auslesen fehlgeschlagen: " + (e && e.message ? e.message : "unbekannter Fehler") + ". Grundstand bleibt aktiv.";
-    info.className = "meta err";
-  }
-});
-$("s-apply").addEventListener("click", async () => {
-  if (!pendingSnap) return;
-  const r = await saveCfg({ form: pendingSnap, formAt: Date.now() });
-  applyCfg(true); pendingSnap = null; $("s-apply-row").hidden = true;
-  $("s-info").textContent = r.shared ? "Übernommen (gilt für alle)." : "Übernommen (nur dieser Browser)."; $("s-info").className = "meta ok";
-});
-$("s-undo").addEventListener("click", async () => {
-  await saveCfg({ form: null, formAt: 0 }); applyCfg(true); pendingSnap = null; $("s-apply-row").hidden = true; $("s-diff").textContent = "";
-  $("s-info").textContent = "Grundstand wiederhergestellt."; $("s-info").className = "meta ok";
-});
-
 /* ---- Anwenden ---- */
 function applyCfg(rebuild) {
   applyColors();
   const next = mergedModel();
   if (JSON.stringify(next) !== JSON.stringify(model)) { model = next; indexModel(); rebuildForm(rebuild); }
 }
-function hintText() {
-  const h = $("hint");
-  if (IN_CLAUDE) h.textContent = "Quest ausfüllen. Speichern legt einen neuen Eintrag im PinBoard an.";
-  else h.textContent = cfg.webhook ? "Quest ausfüllen. Speichern sendet den Eintrag über den Relay ins PinBoard." : "Quest ausfüllen. Hinweis: Webhook fehlt (Admin Area), Speichern noch nicht möglich.";
-}
+function hintText() { $("hint").textContent = cfg.webhook ? "Quest ausfüllen und speichern." : "Quest ausfüllen. Speichern ist noch nicht eingerichtet (Admin Area → Webhook)."; }
+
+/* ---- Speichern-Button: rechts neben der Form, Höhe folgt dem Mauszeiger ---- */
+(function () {
+  const dock = $("savedock"), main = document.querySelector("main"), head = document.querySelector("header");
+  if (window.matchMedia("(hover: none)").matches) return;
+  let targetY = window.innerHeight * 0.45, curY = targetY, raf = 0;
+  function place() {
+    const w = dock.offsetWidth, h = dock.offsetHeight, r = main.getBoundingClientRect();
+    const minY = head.getBoundingClientRect().bottom + 8, maxY = Math.max(minY, window.innerHeight - h - 8);
+    const x = Math.max(8, Math.min(r.right + 18, window.innerWidth - w - 12));
+    const y = Math.max(minY, Math.min(curY - h / 2, maxY));
+    dock.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
+  }
+  function tick() {
+    const d = targetY - curY;
+    curY = (reduced() || Math.abs(d) < 0.5) ? targetY : curY + d * 0.18;
+    place();
+    raf = curY === targetY ? 0 : requestAnimationFrame(tick);
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+  window.addEventListener("mousemove", (e) => { targetY = e.clientY; kick(); }, { passive: true });
+  window.addEventListener("resize", place);
+  window.addEventListener("scroll", place, { passive: true });
+  place();
+})();
 
 /* ---- Start ---- */
 applyColors();
 buildForm(); update(true);
 hintText();
-if (IN_CLAUDE) {
-  window.claude.use("db").then((db) => {
-    if (!db) return;
-    const ref = db.doc("config/main"); dbRef = ref;
-    ref.onSnapshot((snap) => {
-      if (!snap.exists) return;
-      try {
-        const c = JSON.parse(snap.data().cfg);
-        if ((c.rev || 0) > (cfg.rev || 0)) { cfg = c; lsSet(CFG_KEY, JSON.stringify(cfg)); applyCfg(true); }
-      } catch (e) {}
-    }, () => {});
-  }).catch(() => {});
-  (async () => {
-    const mcp = await getMcp();
-    if (!mcp) { say("Hinweis: Speichern über die Notion-Verbindung geht nur, wenn die Seite in claude.ai geöffnet ist."); return; }
-    try {
-      const l = await mcp.listTools(SERVER);
-      if (!l.servers || !l.servers.length) say("Notion ist nicht verbunden. In claude.ai unter Einstellungen → Connectors hinzufügen.", "err");
-      else if (l.servers[0].authStatus === "needs_reauth") say("Die Notion-Verbindung ist abgelaufen. In claude.ai neu verbinden.", "err");
-    } catch (e) {}
-  })();
-}
 </script>
 </body>
 </html>

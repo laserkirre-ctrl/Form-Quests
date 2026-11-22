@@ -82,6 +82,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .ico[class*="an-"] svg g, .ico[class*="an-"] svg path { transform-box: view-box; }
 .an-x-sanduhr .sb, .an-x-sanduhr .st { fill: currentColor; stroke: none; }
 .an-x-sanduhr .sm { stroke-dasharray: 1.2 1.6; }
+.ico .fi { stroke-width: 1.5; }
 .an-x-zauber .wh { stroke-dasharray: 14; stroke-dashoffset: 14; opacity: 0; }
 .an-x-schwerter .sp { opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
@@ -103,8 +104,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
   .an-x-glocke .g0 { transform-origin: 12px 3px; animation: ia-tremble 2.2s ease-in-out infinite; }
   .an-x-glocke .g1 { animation: ia-wave 2.2s steps(1, end) infinite; }
   /* Rakete: Flamme flackert, Körper rumpelt */
-  .an-x-rakete .g0 { transform-origin: 9px 17px; animation: ia-flame .45s steps(1, end) infinite; }
-  .an-x-rakete .g1 { animation: ia-rumble .12s linear infinite alternate; }
+  .an-x-rakete .g0 { animation: ia-fwd 1.5s ease-in-out infinite; }
+  .an-x-rakete .g1 { transform-box: fill-box; transform-origin: 100% 0; animation: ia-flame .5s ease-in-out infinite; }
   /* Feder fällt */
   .an-x-feder .g0 { transform-origin: 12px 12px; animation: ia-fall 3.4s ease-in-out infinite; }
   /* Funken */
@@ -127,7 +128,16 @@ svg.defs { position: absolute; width: 0; height: 0; }
   /* Schwerter schlagen aneinander */
   .an-x-schwerter .g0 { transform-origin: 19px 19px; animation: ia-swa 1.9s ease-in-out infinite; }
   .an-x-schwerter .g1 { transform-origin: 5px 19px; animation: ia-swb 1.9s ease-in-out infinite; }
+  .an-x-flamme .g0 { transform-box: fill-box; transform-origin: 50% 100%; animation: ia-blaze 1.3s ease-in-out infinite; }
+  .an-x-flamme .g1 { transform-box: fill-box; transform-origin: 50% 100%; animation: ia-blaze-i .9s ease-in-out infinite; }
+  .an-x-funk .g0 { transform-origin: 12px 9px; animation: ia-core 1.8s ease-in-out infinite; }
+  .an-x-funk .g1 { transform-origin: 12px 9px; animation: ia-wv 1.8s ease-out infinite; }
+  .an-x-funk .g2 { transform-origin: 12px 9px; animation: ia-wv 1.8s ease-out .45s infinite; }
   .an-x-schwerter .sp { transform-origin: 12px 5px; animation: ia-spk 1.9s ease-out infinite; }
+  @keyframes ia-blaze { 0%, 100% { transform: scale(1, 1) skewX(0); } 20% { transform: scale(.96, 1.07) skewX(-3deg); } 45% { transform: scale(1.03, .95) skewX(2deg); } 70% { transform: scale(.97, 1.09) skewX(3deg); } }
+  @keyframes ia-blaze-i { 0%, 100% { transform: scale(.85, .8); opacity: .55; } 30% { transform: scale(1.1, 1.25); opacity: 1; } 60% { transform: scale(.9, .9); opacity: .7; } 85% { transform: scale(1.05, 1.15); opacity: 1; } }
+  @keyframes ia-core { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.25); } 30% { transform: scale(1); } }
+  @keyframes ia-wv { 0% { opacity: .1; transform: scale(.86); } 18% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(1.08); } 75%, 100% { opacity: 0; transform: scale(1.14); } }
   @keyframes ia-spin { to { transform: rotate(360deg); } }
   @keyframes ia-pulse { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.22); } 30% { transform: scale(1); } 45% { transform: scale(1.14); } 60% { transform: scale(1); } }
   @keyframes ia-pump { 0%, 70%, 100% { transform: scale(1); } 12% { transform: scale(1.3); } 26% { transform: scale(.96); } 40% { transform: scale(1.2); } 55% { transform: scale(1); } }
@@ -143,8 +153,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes ia-shine { 0%, 100% { transform: scale(.82); opacity: .35; } 50% { transform: scale(1.2); opacity: 1; } }
   @keyframes ia-tremble { 0%, 32%, 100% { transform: rotate(0); } 3% { transform: rotate(-10deg); } 7% { transform: rotate(9deg); } 11% { transform: rotate(-8deg); } 15% { transform: rotate(7deg); } 19% { transform: rotate(-5deg); } 23% { transform: rotate(4deg); } 27% { transform: rotate(-2deg); } }
   @keyframes ia-wave { 0%, 32%, 100% { opacity: 1; } 5% { opacity: .2; } 10% { opacity: 1; } 15% { opacity: .2; } 20% { opacity: 1; } 25% { opacity: .2; } 30% { opacity: 1; } }
-  @keyframes ia-flame { 0% { transform: scale(.88); opacity: .6; } 25% { transform: scale(1.14); opacity: 1; } 50% { transform: scale(.94); opacity: .8; } 75% { transform: scale(1.2); opacity: 1; } }
-  @keyframes ia-rumble { from { transform: translate(.35px, -.25px); } to { transform: translate(-.35px, .25px); } }
+  @keyframes ia-flame { 0%, 100% { transform: scale(.8) rotate(0); opacity: .75; } 25% { transform: scale(1.04, 1.12) rotate(-6deg); opacity: 1; } 50% { transform: scale(.88, .84) rotate(4deg); opacity: .85; } 75% { transform: scale(1, 1.14) rotate(6deg); opacity: 1; } }
+  @keyframes ia-fwd { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(.9px, -.9px); } }
   @keyframes ia-fall { 0% { transform: translate(-1px, -8px) rotate(-12deg); opacity: 0; } 12% { opacity: 1; } 35% { transform: translate(3px, -2px) rotate(16deg); } 60% { transform: translate(-3px, 3px) rotate(-16deg); opacity: 1; } 85% { transform: translate(2px, 8px) rotate(12deg); opacity: .4; } 100% { transform: translate(0, 10px) rotate(0); opacity: 0; } }
   @keyframes ia-spark-big { 0%, 100% { transform: scale(.88); } 50% { transform: scale(1.14); } }
   @keyframes ia-spark-s { 0%, 100% { transform: scale(.2); opacity: .15; } 50% { transform: scale(1.25); opacity: 1; } }
@@ -157,9 +167,9 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes ia-hg-bot { 0% { transform: scaleY(0); } 60%, 100% { transform: scaleY(1); } }
   @keyframes ia-hg-flow { 0%, 3% { opacity: 0; } 6%, 56% { opacity: 1; } 60%, 100% { opacity: 0; } }
   @keyframes ia-hg-dash { to { stroke-dashoffset: -2.8; } }
-  @keyframes ia-swa { 0%, 100% { transform: rotate(0); } 34% { transform: rotate(-9deg); } 46%, 54% { transform: rotate(16deg); } 80% { transform: rotate(0); } }
-  @keyframes ia-swb { 0%, 100% { transform: rotate(0); } 34% { transform: rotate(9deg); } 46%, 54% { transform: rotate(-16deg); } 80% { transform: rotate(0); } }
-  @keyframes ia-spk { 0%, 45% { opacity: 0; transform: scale(.3); } 49% { opacity: 1; transform: scale(1.1); } 64% { opacity: 0; transform: scale(1.5); } 100% { opacity: 0; } }
+  @keyframes ia-swa { 0%, 100% { transform: rotate(0); } 26% { transform: rotate(-6deg); } 38% { transform: rotate(3deg); } 44%, 50% { transform: rotate(3deg); } 66% { transform: rotate(-1deg); } 84% { transform: rotate(0); } }
+  @keyframes ia-swb { 0%, 100% { transform: rotate(0); } 26% { transform: rotate(6deg); } 38% { transform: rotate(-3deg); } 44%, 50% { transform: rotate(-3deg); } 66% { transform: rotate(1deg); } 84% { transform: rotate(0); } }
+  @keyframes ia-spk { 0%, 37% { opacity: 0; transform: scale(.3); } 41% { opacity: 1; transform: scale(1.05); } 58% { opacity: 0; transform: scale(1.5); } 100% { opacity: 0; } }
 }
 
 /* Glitch-Ebenen (RGB-Split) */
@@ -376,23 +386,25 @@ const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Ban
 const LEGACY_STYLE = { solid: { fill: "solid" }, outline: { fill: "outline" }, ghost: { fill: "ghost" }, double: { fill: "outline", frame: "double" }, square: { shape: "square" }, round: { shape: "round" }, pill: { shape: "pill" } };
 /* Animierte flache Symbole: [Schlüssel, Name, Lucide-Symbol, Animation]; "x-…" = eigene Teile-Animation (ANIM_X) */
 const ANIMS = [["zahnrad", "Zahnrad dreht", "settings", "spin"], ["laden", "Laden", "loader-circle", "spin"], ["sync", "Aktualisieren", "refresh-cw", "spin"], ["sonne", "Sonne glänzt", "sun", "x-sonne"],
-  ["herz", "Herz pumpt", "heart", "pump"], ["puls", "Herzschlag", "heart-pulse", "pulse"], ["funk", "Funkturm", "radio-tower", "pulse"], ["glocke", "Glocke zittert", "bell-ring", "x-glocke"],
+  ["herz", "Herz pumpt", "heart", "pump"], ["puls", "Herzschlag", "heart-pulse", "pulse"], ["funk", "Funkwellen", "radio-tower", "x-funk"], ["glocke", "Glocke zittert", "bell-ring", "x-glocke"],
   ["warnung", "Warnung glüht", "triangle-alert", "glowpulse"], ["pfeil", "Pfeil springt", "arrow-down", "bounce"], ["pin", "Pin hüpft", "map-pin", "bounce"], ["rakete", "Rakete mit Flamme", "rocket", "x-rakete"],
   ["geist", "Geist schwebt", "ghost", "float"], ["feder", "Fallende Feder", "feather", "x-feder"], ["auge", "Auge blinzelt", "eye", "blink"], ["blitz", "Blitz flackert", "zap", "flash"],
-  ["flamme", "Flamme flackert", "flame", "flicker"], ["funken", "Funken sprühen", "sparkles", "x-funken"], ["stern", "Stern funkelt", "star", "x-stern"], ["zauber", "Zauberstab: Whoosh + Funken", "wand-sparkles", "x-zauber"],
+  ["flamme", "Flamme lodert", "flame", "x-flamme"], ["funken", "Funken sprühen", "sparkles", "x-funken"], ["stern", "Stern funkelt", "star", "x-stern"], ["zauber", "Zauberstab: Whoosh + Funken", "wand-sparkles", "x-zauber"],
   ["anker", "Anker pendelt", "anchor", "swing"], ["schaedel", "Totenkopf lacht", "skull", "laugh"], ["sanduhr", "Sanduhr: Sand + Drehen", "hourglass", "x-sanduhr"], ["schwerter", "Schwerter schlagen, Funken", "swords", "x-schwerter"]];
 /* Teile-Gruppen (Indizes der Lucide-Elemente) und Zusatzformen für eigene Animationen */
 const PART_RE = /<(?:path|circle|line|polyline|polygon|rect|ellipse)\b[^>]*>/g;
 const ANIM_X = {
   sonne: { groups: [[0], [1, 2, 3, 4, 5, 6, 7, 8]] },
   glocke: { groups: [[0, 2], [1, 3]] },
-  rakete: { groups: [[0, 1], [2, 3]] },
+  funk: { groups: [[2, 5, 6], [1, 3], [0, 4]] },
+  flamme: { groups: [[0]], extra: '<path class="g1 fi" d="M9.7 20A2.3 2.3 0 0 0 14.3 20C14.88 17.97 13.27 15.94 12 14.2C10.73 15.94 9.12 17.97 9.7 20z"/>' },
+  rakete: { groups: [[0, 2, 3]], extra: '<path class="g1" d="M10.56 16.56A2.2 2.2 0 0 0 7.44 13.44C5.1 15.02 4.22 18.06 3.4 20.6C5.94 19.78 8.98 18.9 10.56 16.56z"/>' },
   feder: { groups: [[0, 1, 2]] },
   funken: { groups: [[0], [1, 2], [3]] },
   stern: { groups: [[0]], extra: '<g class="g1"><path d="M21 1.5v3"/><path d="M19.5 3h3"/></g><g class="g2"><path d="M3 19v3"/><path d="M1.5 20.5h3"/></g>' },
   zauber: { groups: [[0, 1], [2, 3, 4, 5, 6, 7]], extra: '<path class="wh" pathLength="14" d="M8.5 2.2A18 18 0 0 1 16 5.8"/>' },
   sanduhr: { groups: [[0, 1, 2, 3]], wrap: "rot", extra: '<path class="st" d="M8.5 5h7L12 9.5z"/><path class="sb" d="M15.5 19h-7L12 14.5z"/><path class="sm" d="M12 10.5V17"/>' },
-  schwerter: { groups: [[0, 1, 3, 4], [2, 5, 6, 7]], extra: '<g class="sp"><path d="M12 1.5v2.5"/><path d="M8.8 2.8l1.6 1.6"/><path d="M15.2 2.8l-1.6 1.6"/><path d="M7 6.5h2.5"/><path d="M14.5 6.5H17"/></g>' },
+  schwerter: { groups: [[0, 1, 3, 4], [2, 5, 6, 7]], extra: '<g class="sp"><path d="M12 1.2v2.6"/><path d="M8.6 2.6l1.7 1.7"/><path d="M15.4 2.6l-1.7 1.7"/><path d="M9 6.8H6.6"/><path d="M15 6.8h2.4"/></g>' },
 };
 const pick = (list, v, d) => (list.some((x) => x[0] === v) ? v : d);
 const FX = [["rgb", "RGB-Split"], ["tear", "Streifen"], ["jitter", "Zittern"], ["noise", "Rauschen"], ["flicker", "Flackern"], ["glow", "Glühen"]];

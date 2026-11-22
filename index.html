@@ -203,11 +203,6 @@ dialog.wide { width: min(94vw, 660px); }
 #fx i { position: absolute; display: block; pointer-events: none; }
 #fx .vig { inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / .38) 100%); }
 #fx .grain { inset: -40px; opacity: .17; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='1' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 -.3'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 180px 180px; }
-#fx .band { left: 0; right: 0; top: -140px; height: 110px; opacity: 0; mix-blend-mode: screen;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='120'%3E%3Cfilter id='n' x='0' y='0' width='100%' height='100%'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003 0.45' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 3 -1.15'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 480px 110px;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
-          mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent); }
-#fx .tear { left: 0; right: 0; top: -10px; height: 2px; opacity: 0; background: rgb(255 255 255 / .35); box-shadow: 0 0 6px rgb(var(--lime-rgb) / .5); }
 .dlg { position: relative; }
 .dlg::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: repeating-linear-gradient(0deg, rgb(0 0 0 / .22) 0 1px, transparent 1px 3px); }
@@ -223,24 +218,6 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   @keyframes stripes { to { background-position: 13px 0; } }
   #fx .grain { animation: grain .7s steps(1, end) infinite; }
   @keyframes grain { 0% { transform: translate(0, 0); } 17% { transform: translate(-23px, 11px); } 33% { transform: translate(17px, -29px); } 50% { transform: translate(-9px, 31px); } 67% { transform: translate(27px, 7px); } 83% { transform: translate(-31px, -17px); } }
-  #fx .band { animation: band 13s steps(1, end) infinite; }
-  @keyframes band {
-    0%, 100% { opacity: 0; transform: translateY(0); }
-    5% { opacity: .2; transform: translateY(14vh); } 7% { opacity: .3; transform: translateY(19vh) translateX(-14px); }
-    9% { opacity: .16; transform: translateY(24vh) translateX(9px); } 11% { opacity: 0; }
-    34% { opacity: .18; transform: translateY(58vh); } 35.5% { opacity: .3; transform: translateY(63vh) translateX(12px); }
-    37% { opacity: .22; transform: translateY(66vh); } 38.5% { opacity: .1; transform: translateY(70vh) translateX(-8px); } 40% { opacity: 0; }
-    71% { opacity: .22; transform: translateY(84vh); } 72.5% { opacity: .32; transform: translateY(90vh) translateX(-10px); }
-    74% { opacity: .2; transform: translateY(96vh); } 76% { opacity: 0; }
-  }
-  #fx .tear { animation: tear 9s steps(1, end) infinite; }
-  @keyframes tear {
-    0%, 100% { opacity: 0; } 22% { opacity: 1; transform: translateY(41vh); } 22.4% { opacity: 0; }
-    22.8% { opacity: 1; transform: translateX(14px) translateY(41.4vh); } 23.2% { opacity: 0; }
-    61% { opacity: 1; transform: translateY(77vh) translateX(-18px); } 61.5% { opacity: 0; }
-  }
-  main { animation: shake 11s steps(1, end) infinite; }
-  @keyframes shake { 0%, 100% { transform: none; } 47% { transform: translateX(-2px); } 47.4% { transform: translateX(3px); } 47.8% { transform: translateX(-1px); } 48.2% { transform: none; } }
   button:hover::after, a.btn:hover::after { animation: sweep .65s ease-out 1; }
   @keyframes sweep { to { transform: translateX(380%) skewX(-22deg); } }
   .card.reveal .card-in { animation: boot .5s steps(1, end) 1; }
@@ -275,10 +252,58 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
 #th-list { list-style: none; margin: 0 0 8px; padding: 0; }
 #th-list li { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
 #th-list li span { flex: 1; }
+
+/* Button-Glitch (RGB-Split + Schnitt-Streifen) */
+.gl::before, .gl::after { content: attr(data-text); position: absolute; inset: 0; width: auto; height: auto; transform: none;
+  display: flex; align-items: center; justify-content: center; padding: inherit; background: none; pointer-events: none;
+  font: inherit; letter-spacing: inherit; opacity: 0; mix-blend-mode: normal; }
+.gl::before { color: #ff2a5f; }
+.gl::after { color: #19e6ff; }
+.gl-h { position: relative; }
+.gl-h::before, .gl-h::after { content: attr(data-text); position: absolute; left: 0; top: 0; pointer-events: none; opacity: 0; white-space: pre-wrap; }
+.gl-h::before { color: #ff2a5f; }
+.gl-h::after { color: #19e6ff; }
+@media (prefers-reduced-motion: no-preference) {
+  .gl:hover::before, .gl:focus-visible::before { animation: gl-a .55s steps(1, end) infinite; }
+  .gl:hover::after, .gl:focus-visible::after { animation: gl-b .55s steps(1, end) infinite; }
+  .gl:active::before { animation-duration: .2s; } .gl:active::after { animation-duration: .2s; }
+  .gl:hover, .gl:focus-visible { animation: gl-s .55s steps(1, end) infinite; }
+  #save.gl::before { animation: gl-ia 5.5s steps(1, end) infinite; } #save.gl::after { animation: gl-ib 5.5s steps(1, end) infinite; }
+  #save.gl:hover::before { animation: gl-a .55s steps(1, end) infinite; } #save.gl:hover::after { animation: gl-b .55s steps(1, end) infinite; }
+  .gl-h::before { animation: gl-ha 7.3s steps(1, end) var(--gd, 0s) infinite; } .gl-h::after { animation: gl-hb 7.3s steps(1, end) var(--gd, 0s) infinite; }
+  @keyframes gl-a { 0% { opacity: 1; clip-path: inset(10% 0 62% 0); transform: translate(-3px, 0); } 14% { clip-path: inset(58% 0 12% 0); transform: translate(2px, 0); }
+    28% { clip-path: inset(0 0 80% 0); transform: translate(-4px, 1px); } 42% { clip-path: inset(34% 0 36% 0); transform: translate(3px, 0); }
+    57% { clip-path: inset(78% 0 0 0); transform: translate(-2px, 0); } 71% { clip-path: inset(22% 0 52% 0); transform: translate(4px, -1px); } 85% { clip-path: inset(48% 0 30% 0); transform: translate(-3px, 0); } }
+  @keyframes gl-b { 0% { opacity: 1; clip-path: inset(64% 0 8% 0); transform: translate(3px, 0); } 14% { clip-path: inset(6% 0 70% 0); transform: translate(-3px, 0); }
+    28% { clip-path: inset(40% 0 30% 0); transform: translate(4px, 0); } 42% { clip-path: inset(82% 0 0 0); transform: translate(-3px, 1px); }
+    57% { clip-path: inset(18% 0 56% 0); transform: translate(3px, 0); } 71% { clip-path: inset(52% 0 22% 0); transform: translate(-4px, 0); } 85% { clip-path: inset(0 0 84% 0); transform: translate(2px, 0); } }
+  @keyframes gl-s { 0% { text-shadow: 2px 0 rgb(255 42 95 / .7), -2px 0 rgb(25 230 255 / .7); } 33% { text-shadow: -2px 0 rgb(255 42 95 / .7), 2px 0 rgb(25 230 255 / .7); } 66% { text-shadow: 1px 1px rgb(255 42 95 / .6), -3px 0 rgb(25 230 255 / .6); } }
+  @keyframes gl-ia { 0% { opacity: 1; clip-path: inset(14% 0 58% 0); transform: translate(-3px, 0); } 1.5% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); } 3% { clip-path: inset(36% 0 34% 0); transform: translate(-2px, 0); } 4.5%, 100% { opacity: 0; } }
+  @keyframes gl-ib { 0% { opacity: 1; clip-path: inset(66% 0 6% 0); transform: translate(3px, 0); } 1.5% { clip-path: inset(8% 0 72% 0); transform: translate(-3px, 0); } 3% { clip-path: inset(44% 0 28% 0); transform: translate(2px, 0); } 4.5%, 100% { opacity: 0; } }
+  @keyframes gl-ha { 0% { opacity: 1; clip-path: inset(12% 0 55% 0); transform: translate(-4px, 0); } 1.2% { clip-path: inset(58% 0 8% 0); transform: translate(4px, 0); } 2.4% { clip-path: inset(30% 0 40% 0); transform: translate(-3px, 0); } 3.6%, 100% { opacity: 0; } }
+  @keyframes gl-hb { 0% { opacity: 1; clip-path: inset(60% 0 10% 0); transform: translate(4px, 0); } 1.2% { clip-path: inset(6% 0 72% 0); transform: translate(-4px, 0); } 2.4% { clip-path: inset(42% 0 28% 0); transform: translate(3px, 0); } 3.6%, 100% { opacity: 0; } }
+}
 </style>
 </head>
 <body>
-<div id="fx" aria-hidden="true"><i class="vig"></i><i class="grain"></i><i class="band"></i><i class="tear"></i></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="vhs" x="-4%" y="0" width="108%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence id="vt" type="fractalNoise" baseFrequency="0 0.028" numOctaves="1" seed="3" result="n"/>
+    <feComponentTransfer in="n" result="m">
+      <feFuncR type="discrete" tableValues="0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.5 0.5 0.5 0.5 0.5 0.5 0.9 0.9 0.9 0.9 0.9 0.9 0.9"/>
+      <feFuncG type="linear" slope="0" intercept="0.5"/>
+      <feFuncB type="linear" slope="0" intercept="0.5"/>
+      <feFuncA type="linear" slope="0" intercept="1"/>
+    </feComponentTransfer>
+    <feDisplacementMap id="vd" in="SourceGraphic" in2="m" scale="26" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feColorMatrix id="vh" in="d" type="hueRotate" values="0" result="hu"/>
+    <feColorMatrix in="hu" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+    <feOffset in="r" dx="3" dy="0" result="r2"/>
+    <feColorMatrix in="hu" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="gb"/>
+    <feBlend in="r2" in2="gb" mode="screen"/>
+  </filter>
+</svg>
+<div id="fx" aria-hidden="true"><i class="vig"></i><i class="grain"></i></div>
 <header>
   <h1>QUEST</h1>
   <div class="stripes" aria-hidden="true"></div>
@@ -411,7 +436,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361022572}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795361386650}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -481,7 +506,7 @@ function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.
 function two(n) { return String(n).padStart(2, "0"); }
 function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-function openDlg(d) { if (typeof d.showModal === "function") { if (!d.open) { d.showModal(); if (typeof Snd !== "undefined") Snd.open(); } } else d.setAttribute("open", ""); }
+function openDlg(d) { if (typeof d.showModal === "function") { if (!d.open) { d.showModal(); if (typeof Snd !== "undefined") Snd.open(); if (typeof glTitle === "function") glTitle(d); } } else d.setAttribute("open", ""); }
 function sha256(str) {
   const primes = []; for (let n = 2; primes.length < 64; n++) if (primes.every((p) => n % p)) primes.push(n);
   const frac = (x) => Math.floor((x - Math.floor(x)) * 4294967296) >>> 0;
@@ -599,6 +624,38 @@ form.addEventListener("change", (e) => {
   const lab = t.closest(".opt"); if (lab && !reduced()) { lab.classList.remove("pulse"); void lab.offsetWidth; lab.classList.add("pulse"); }
 });
 form.addEventListener("keydown", (e) => { if (e.target && e.target.matches && e.target.matches("input.field, textarea.field") && e.key.length === 1) Snd.key(); });
+
+
+/* ---- Button-Glitch: Ebene mit Beschriftung bereitstellen ---- */
+function glInit(b) {
+  if (b.classList.contains("gl")) return;
+  b.classList.add("gl"); b.dataset.text = b.textContent.trim();
+}
+glInit($("save"));
+document.addEventListener("pointerover", (e) => { const b = e.target.closest && e.target.closest("dialog button, dialog a.btn"); if (b) glInit(b); }, true);
+document.addEventListener("focusin", (e) => { const b = e.target.closest && e.target.closest("dialog button, dialog a.btn"); if (b) glInit(b); }, true);
+function glTitle(d) {
+  const h = d.querySelector("h2"); if (!h) return;
+  h.classList.add("gl-h"); h.dataset.text = h.textContent;
+  h.style.setProperty("--gd", (-Math.random() * 7).toFixed(2) + "s"); /* Zufallsversatz je Titel */
+}
+
+/* ---- Haupt-Glitch: Streifen der Seite springen seitlich (Verschiebungs-Filter) ---- */
+(function () {
+  const t = $("vt"), d = $("vd"), hu = $("vh"), els = [document.querySelector("header"), document.querySelector("main")];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const on = () => els.forEach((e) => { e.style.filter = "url(#vhs)"; });
+  const off = () => els.forEach((e) => { e.style.filter = ""; });
+  function frame() { t.setAttribute("seed", String(Math.floor(rnd(1, 9999)))); d.setAttribute("scale", rnd(26, 48).toFixed(0)); hu.setAttribute("values", rnd(-20, 20).toFixed(0)); }
+  function later() { setTimeout(burst, rnd(3500, 9000)); }
+  function burst() {
+    if (reduced() || document.hidden || document.querySelector("dialog[open]")) { later(); return; }
+    let n = 2 + Math.floor(Math.random() * 3);
+    (function step() { if (n-- <= 0) { off(); later(); return; } frame(); on(); setTimeout(() => { if (Math.random() < 0.4) { off(); setTimeout(step, rnd(40, 90)); } else step(); }, rnd(60, 130)); })();
+  }
+  window.__glitchNow = burst;
+  later();
+})();
 
 /* ---- Speichern-Button nur mit gewähltem Kapitel ---- */
 const dockEl = $("savedock");

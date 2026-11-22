@@ -104,7 +104,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   .an-x-rakete .g1 { transform-box: view-box; transform-origin: 0 0; animation: ia-rk-flame .9s ease-in-out infinite; }
   .an-x-rakete .g1 .fi { stroke-width: 1.5; transform-origin: 0 0; animation: ia-rk-in .7s ease-in-out infinite; }
   /* Feder fällt */
-  .an-x-feder .g0 { transform-origin: 12px 12px; animation: ia-fall 4.4s ease-in-out infinite; }
+  .an-x-feder .g0 { transform-origin: 12px 12px; animation: ia-fall 5.4s linear infinite; }
   /* Funken */
   .an-x-funken .g0 { transform-origin: 12px 12px; animation: ia-spark-big 2s ease-in-out infinite; }
   .an-x-funken .g1 { transform-origin: 20px 4px; animation: ia-spark-s 2s ease-in-out .3s infinite; }
@@ -153,7 +153,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes ia-rk-in { 0%, 100% { transform: scale(.85, .8); } 40% { transform: scale(1.05, 1.2); } 70% { transform: scale(.92, .9); } }
   @keyframes ia-flame { 0%, 100% { transform: scale(.8) rotate(0); opacity: .75; } 25% { transform: scale(1.04, 1.12) rotate(-6deg); opacity: 1; } 50% { transform: scale(.88, .84) rotate(4deg); opacity: .85; } 75% { transform: scale(1, 1.14) rotate(6deg); opacity: 1; } }
   @keyframes ia-fwd { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(.9px, -.9px); } }
-  @keyframes ia-fall { 0% { opacity: 0; transform: translate(0, -15px) rotate(0); } 8% { opacity: 1; } 16% { transform: translate(-4.2px, -10px) rotate(-22deg); } 30% { transform: translate(4.2px, -5px) rotate(22deg); } 44% { transform: translate(-3.8px, -.8px) rotate(-19deg); } 58% { transform: translate(3.2px, 1.6px) rotate(16deg); } 70% { transform: translate(-1.8px, 2.4px) rotate(-9deg); } 80% { opacity: 1; transform: translate(.4px, 2.8px) rotate(3deg); } 86% { opacity: 1; transform: translate(0, 2.8px) rotate(0); } 100% { opacity: 0; transform: translate(0, 5px) rotate(0); } }
+  @keyframes ia-fall { 0% { opacity: 0.00; transform: translate(0.00px, -12.00px) rotate(8.8deg); } 2% { opacity: 0.20; transform: translate(0.92px, -11.15px) rotate(12.6deg); } 4% { opacity: 0.40; transform: translate(2.17px, -10.50px) rotate(14.2deg); } 6% { opacity: 0.60; transform: translate(3.55px, -10.18px) rotate(12.9deg); } 8% { opacity: 0.80; transform: translate(4.84px, -10.19px) rotate(6.8deg); } 10% { opacity: 1.00; transform: translate(5.80px, -10.40px) rotate(0.0deg); } 12% { opacity: 1.00; transform: translate(6.18px, -10.61px) rotate(-6.8deg); } 14% { opacity: 1.00; transform: translate(5.26px, -10.62px) rotate(-12.9deg); } 16% { opacity: 1.00; transform: translate(3.82px, -10.30px) rotate(-17.8deg); } 18% { opacity: 1.00; transform: translate(2.01px, -9.65px) rotate(-20.9deg); } 20% { opacity: 1.00; transform: translate(0.00px, -8.80px) rotate(-22.0deg); } 22% { opacity: 1.00; transform: translate(-2.01px, -7.95px) rotate(-20.9deg); } 24% { opacity: 1.00; transform: translate(-3.82px, -7.30px) rotate(-17.8deg); } 26% { opacity: 1.00; transform: translate(-5.26px, -6.98px) rotate(-12.9deg); } 28% { opacity: 1.00; transform: translate(-6.18px, -6.99px) rotate(-6.8deg); } 30% { opacity: 1.00; transform: translate(-6.50px, -7.20px) rotate(-0.0deg); } 32% { opacity: 1.00; transform: translate(-6.18px, -7.41px) rotate(6.8deg); } 34% { opacity: 1.00; transform: translate(-5.26px, -7.42px) rotate(12.9deg); } 36% { opacity: 1.00; transform: translate(-3.82px, -7.10px) rotate(17.8deg); } 38% { opacity: 1.00; transform: translate(-2.01px, -6.45px) rotate(20.9deg); } 40% { opacity: 1.00; transform: translate(-0.00px, -5.60px) rotate(22.0deg); } 42% { opacity: 1.00; transform: translate(2.01px, -4.75px) rotate(20.9deg); } 44% { opacity: 1.00; transform: translate(3.82px, -4.10px) rotate(17.8deg); } 46% { opacity: 1.00; transform: translate(5.26px, -3.78px) rotate(12.9deg); } 48% { opacity: 1.00; transform: translate(6.18px, -3.79px) rotate(6.8deg); } 50% { opacity: 1.00; transform: translate(6.50px, -4.00px) rotate(0.0deg); } 52% { opacity: 1.00; transform: translate(6.18px, -4.21px) rotate(-6.8deg); } 54% { opacity: 1.00; transform: translate(5.26px, -4.22px) rotate(-12.9deg); } 56% { opacity: 1.00; transform: translate(3.82px, -3.90px) rotate(-17.8deg); } 58% { opacity: 1.00; transform: translate(2.01px, -3.25px) rotate(-20.9deg); } 60% { opacity: 1.00; transform: translate(0.00px, -2.40px) rotate(-22.0deg); } 62% { opacity: 1.00; transform: translate(-2.01px, -1.55px) rotate(-20.9deg); } 64% { opacity: 1.00; transform: translate(-3.82px, -0.90px) rotate(-17.8deg); } 66% { opacity: 1.00; transform: translate(-5.26px, -0.58px) rotate(-12.9deg); } 68% { opacity: 1.00; transform: translate(-6.18px, -0.59px) rotate(-6.8deg); } 70% { opacity: 1.00; transform: translate(-6.50px, -0.80px) rotate(-0.0deg); } 72% { opacity: 1.00; transform: translate(-6.18px, -1.01px) rotate(6.8deg); } 74% { opacity: 1.00; transform: translate(-5.26px, -1.02px) rotate(12.9deg); } 76% { opacity: 1.00; transform: translate(-3.82px, -0.70px) rotate(17.8deg); } 78% { opacity: 1.00; transform: translate(-2.01px, -0.05px) rotate(20.9deg); } 80% { opacity: 1.00; transform: translate(-0.00px, 0.80px) rotate(22.0deg); } 82% { opacity: 1.00; transform: translate(2.01px, 1.65px) rotate(20.9deg); } 84% { opacity: 1.00; transform: translate(3.69px, 2.27px) rotate(17.2deg); } 86% { opacity: 1.00; transform: translate(4.59px, 2.51px) rotate(11.3deg); } 88% { opacity: 1.00; transform: translate(4.58px, 2.47px) rotate(5.0deg); } 90% { opacity: 1.00; transform: translate(3.79px, 2.40px) rotate(0.0deg); } 92% { opacity: 0.90; transform: translate(2.58px, 2.50px) rotate(-2.8deg); } 94% { opacity: 0.65; transform: translate(1.36px, 2.82px) rotate(-3.4deg); } 96% { opacity: 0.35; transform: translate(0.48px, 3.25px) rotate(-2.2deg); } 98% { opacity: 0.10; transform: translate(0.07px, 3.66px) rotate(-0.7deg); } 100% { opacity: 0.00; transform: translate(0.00px, 4.00px) rotate(-0.0deg); } }
   @keyframes ia-spark-big { 0%, 100% { transform: scale(.88); } 50% { transform: scale(1.14); } }
   @keyframes ia-spark-s { 0%, 100% { transform: scale(.2); opacity: .15; } 50% { transform: scale(1.25); opacity: 1; } }
   @keyframes ia-starpop { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(14deg); } }
@@ -211,6 +211,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .an-x-ziel .g2, .an-x-umschlag .g2 { opacity: 0; }
 .an-x-handschlag .g2 { opacity: 1; }
 .an-x-handschlag .g3 { opacity: 0; }
+.an-x-kolben .g1, .an-x-kolben .g2, .an-x-kolben .g3, .an-x-kolben .g4, .an-x-krone .g1, .an-x-krone .g2, .an-x-krone .g3, .an-x-diamant .g3, .an-x-diamant .g4, .an-x-diamant .g5, .an-x-fisch .g3, .an-x-fisch .g4 { opacity: 0; }
 .an-x-koffer .s1, .an-x-koffer .s2, .an-x-koffer .s3 { opacity: 0; }
 .an-x-bluete .fl { fill: currentColor; stroke-width: 1; }
 .an-x-haende svg { stroke-width: 1.5; }
@@ -332,6 +333,62 @@ svg.defs { position: absolute; width: 0; height: 0; }
   .an-x-puls .g0 { transform-origin: 12px 12.4px; animation: ia-hb 3.6s ease-in-out infinite; }
   @keyframes ia-ecg { 0%, 8% { stroke-dashoffset: 39; } 40%, 72% { stroke-dashoffset: 0; } 90%, 100% { stroke-dashoffset: -39; } }
   @keyframes ia-hb { 0%, 15% { transform: scale(1); } 19% { transform: scale(1.15); } 23% { transform: scale(.96); } 27% { transform: scale(1.09); } 32% { transform: scale(1); } 52% { transform: scale(1.025); } 62%, 71% { transform: scale(1); } 75% { transform: scale(1.12); } 80% { transform: scale(.97); } 85%, 100% { transform: scale(1); } }
+
+  /* Bild: Sonne geht auf (federnd) und hinter dem Hügel unter, Strahlen drehen */
+  .an-x-bild .g1 { animation: ia-sun 4.6s ease-in-out infinite; }
+  .an-x-bild .g2 { transform-origin: 9px 9px; animation: ia-rays 4.6s ease-in-out infinite; }
+  @keyframes ia-sun { 0%, 4% { transform: translate(-3px, 15px); } 24% { transform: translate(.4px, -1.8px); } 30% { transform: translate(0, .8px); } 35%, 60% { transform: translate(0, 0); } 64% { transform: translate(.2px, -1px); } 88%, 100% { transform: translate(3px, 15px); } }
+  @keyframes ia-rays { 0%, 34% { opacity: 0; transform: rotate(0) scale(.5); } 42% { opacity: 1; transform: rotate(20deg) scale(1.15); } 48% { transform: rotate(30deg) scale(1); } 62% { opacity: 1; transform: rotate(70deg) scale(1); } 68%, 100% { opacity: 0; transform: rotate(80deg) scale(.5); } }
+  /* Megafon: Stoß, Actionlines schießen heraus */
+  .an-x-megafon .g0 { transform-origin: 6px 10px; animation: ia-mgb 1.6s ease-in-out infinite; }
+  .an-x-megafon .g1 { transform-origin: 24.6px 5px; animation: ia-mgl 1.6s ease-out infinite; }
+  .an-x-megafon .g2 { transform-origin: 25.2px 10px; animation: ia-mgl 1.6s ease-out .07s infinite; }
+  .an-x-megafon .g3 { transform-origin: 24.6px 15px; animation: ia-mgl 1.6s ease-out .14s infinite; }
+  @keyframes ia-mgb { 0%, 38%, 100% { transform: scale(1) rotate(0); } 6% { transform: scale(1.1) rotate(-5deg); } 14% { transform: scale(.97) rotate(2deg); } 22% { transform: scale(1.04) rotate(-1deg); } 30% { transform: scale(1) rotate(0); } }
+  @keyframes ia-mgl { 0%, 4% { opacity: 0; transform: translate(-1.2px, 0) scale(.2); } 14% { opacity: 1; transform: translate(.9px, 0) scale(1.3); } 24% { opacity: 1; transform: translate(0, 0) scale(1); } 52% { opacity: 1; } 68%, 100% { opacity: 0; transform: translate(1.8px, 0) scale(1.1); } }
+  /* Kolben: Blasen steigen auf und platzen im Hals */
+  .an-x-kolben .g1 { --dx: 1.8px; --dy: -14px; animation-delay: 0s; } .an-x-kolben .g2 { --dx: -2px; --dy: -13.5px; animation-delay: .55s; }
+  .an-x-kolben .g3 { --dx: .4px; --dy: -12px; animation-delay: 1.1s; } .an-x-kolben .g4 { --dx: 1.2px; --dy: -15px; animation-delay: 1.7s; }
+  .an-x-kolben .g1, .an-x-kolben .g2, .an-x-kolben .g3, .an-x-kolben .g4 { transform-box: fill-box; transform-origin: center; animation-name: ia-bb; animation-duration: 2.4s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+  @keyframes ia-bb { 0% { opacity: 0; transform: translate(0, 0) scale(.4); } 10% { opacity: 1; transform: translate(0, 0) scale(1); } 35% { transform: translate(calc(var(--dx) * -.6), calc(var(--dy) * .35)) scale(1.05); } 62% { transform: translate(calc(var(--dx) * 1.1), calc(var(--dy) * .7)) scale(1); } 88% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1.15); } 100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) - 1.4px)) scale(1.7); } }
+  /* Funkeln: Krone und Diamant (Sterne poppen der Reihe nach, Körper federt mit) */
+  .an-x-krone .g0 { transform-origin: 12px 14px; animation: ia-crb 3s ease-in-out infinite; }
+  .an-x-krone .g1, .an-x-krone .g2, .an-x-krone .g3, .an-x-diamant .g3, .an-x-diamant .g4, .an-x-diamant .g5 { transform-box: fill-box; transform-origin: center; animation: ia-tw 3s ease-in-out infinite; }
+  .an-x-krone .g2 { animation-delay: .1s; } .an-x-krone .g1 { animation-delay: 1s; } .an-x-krone .g3 { animation-delay: 1.9s; }
+  .an-x-diamant .g4 { animation-delay: .1s; } .an-x-diamant .g3 { animation-delay: 1s; } .an-x-diamant .g5 { animation-delay: 1.9s; }
+  .an-x-diamant .g0, .an-x-diamant .g1, .an-x-diamant .g2 { transform-origin: 12px 12.5px; animation: ia-crb 3s ease-in-out infinite; }
+  .an-x-diamant .g1 { animation: ia-crb 3s ease-in-out infinite, ia-gf 3s linear infinite; }
+  @keyframes ia-crb { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.07); } 16% { transform: scale(.985); } 22% { transform: scale(1.02); } 28% { transform: scale(1); } 43% { transform: scale(1.035); } 49% { transform: scale(1); } 76% { transform: scale(1.035); } 82% { transform: scale(1); } }
+  @keyframes ia-tw { 0%, 6% { opacity: 0; transform: scale(0) rotate(-60deg); } 18% { opacity: 1; transform: scale(1.3) rotate(0); } 30% { opacity: 1; transform: scale(1) rotate(15deg); } 40% { opacity: 1; transform: scale(1.1) rotate(25deg); } 52%, 100% { opacity: 0; transform: scale(0) rotate(80deg); } }
+  @keyframes ia-gf { 0%, 100% { opacity: 1; } 14% { opacity: .2; } 24% { opacity: 1; } 44% { opacity: .35; } 54% { opacity: 1; } }
+  /* Schere: öffnet weit, schnappt mehrfach zu, bleibt federnd offen */
+  .an-x-schere .g0 { transform-origin: 12px 12px; animation: ia-scA 3.8s ease-in-out infinite; }
+  .an-x-schere .g1 { transform-origin: 12px 12px; animation: ia-scB 3.8s ease-in-out infinite; }
+  @keyframes ia-scA { 0%, 6% { transform: rotate(0); } 14% { transform: rotate(14deg); } 21% { transform: rotate(-32deg); } 25% { transform: rotate(-26deg); } 33% { transform: rotate(12deg); } 40% { transform: rotate(-32deg); } 44% { transform: rotate(-27deg); } 52% { transform: rotate(10deg); } 58% { transform: rotate(-32deg); } 62% { transform: rotate(-27deg); } 72% { transform: rotate(9deg); } 80% { transform: rotate(-2deg); } 86%, 100% { transform: rotate(0); } }
+  @keyframes ia-scB { 0%, 6% { transform: rotate(0); } 14% { transform: rotate(-14deg); } 21% { transform: rotate(32deg); } 25% { transform: rotate(26deg); } 33% { transform: rotate(-12deg); } 40% { transform: rotate(32deg); } 44% { transform: rotate(27deg); } 52% { transform: rotate(-10deg); } 58% { transform: rotate(32deg); } 62% { transform: rotate(27deg); } 72% { transform: rotate(-9deg); } 80% { transform: rotate(2deg); } 86%, 100% { transform: rotate(0); } }
+  /* Käfer: Beine laufen im Dreibein-Takt, Körper wippt, Fühler wackeln */
+  .an-x-kaefer .g0 { transform-origin: 12px 14px; animation: ia-kb2 .8s ease-in-out infinite; }
+  .an-x-kaefer .g1 { transform-origin: 12px 7px; animation: ia-ant .8s ease-in-out infinite; }
+  .an-x-kaefer .g2 { transform-origin: 17.45px 8.97px; animation: ia-leg .8s ease-in-out infinite; }
+  .an-x-kaefer .g3 { transform-origin: 18px 13px; animation: ia-leg .8s ease-in-out -.4s infinite; }
+  .an-x-kaefer .g4 { transform-origin: 17.19px 17px; animation: ia-leg .8s ease-in-out infinite; }
+  .an-x-kaefer .g5 { transform-origin: 6.55px 8.97px; animation: ia-legL .8s ease-in-out -.4s infinite; }
+  .an-x-kaefer .g6 { transform-origin: 6px 13px; animation: ia-legL .8s ease-in-out infinite; }
+  .an-x-kaefer .g7 { transform-origin: 6.81px 17px; animation: ia-legL .8s ease-in-out -.4s infinite; }
+  @keyframes ia-kb2 { 0%, 100% { transform: translate(-.35px, 0) rotate(-1.8deg); } 50% { transform: translate(.35px, -.4px) rotate(1.8deg); } }
+  @keyframes ia-ant { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+  @keyframes ia-leg { 0%, 100% { transform: rotate(-17deg); } 50% { transform: rotate(17deg); } }
+  @keyframes ia-legL { 0%, 100% { transform: rotate(17deg); } 50% { transform: rotate(-17deg); } }
+  /* Fisch: Schwanz schlägt, Körper stößt vor, Blasen steigen aus dem Maul */
+  .an-x-fisch .fs { transform-origin: 12px 12px; animation: ia-fs 1.1s ease-in-out infinite; }
+  .an-x-fisch .g1 { transform-origin: 7px 12px; animation: ia-tail 1.1s ease-in-out .1s infinite; }
+  .an-x-fisch .g2 { transform-origin: 12px 12px; animation: ia-fin 1.1s ease-in-out infinite; }
+  .an-x-fisch .g3, .an-x-fisch .g4 { transform-box: fill-box; transform-origin: center; animation: ia-fb 2.4s ease-out infinite; }
+  .an-x-fisch .g4 { animation-delay: 1.2s; }
+  @keyframes ia-fs { 0%, 100% { transform: translate(-1.2px, .5px) rotate(-3deg); } 40% { transform: translate(1.6px, -.5px) rotate(2deg); } }
+  @keyframes ia-tail { 0%, 100% { transform: rotate(-17deg); } 50% { transform: rotate(17deg); } }
+  @keyframes ia-fin { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg); } }
+  @keyframes ia-fb { 0%, 8% { opacity: 0; transform: translate(0, 0) scale(.4); } 18% { opacity: 1; transform: translate(0, 0) scale(1); } 70% { opacity: 1; transform: translate(.8px, -6px) scale(1.1); } 90%, 100% { opacity: 0; transform: translate(.4px, -8px) scale(1.5); } }
 }
 
 /* ---------- Generator ---------- */
@@ -474,6 +531,9 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 
 .stamp { text-align: center; color: var(--muted); font-size: 11px; letter-spacing: .08em; margin: 18px 0 10px; opacity: .7; }
 
+/* Vorschau bei „Rahmen ausfüllen“: feste Rahmengröße (per Ecke ziehbar), damit die Schrift mitwachsen kann */
+.prev.ff, .side .prev.ff, .stage .prev.ff { height: 120px; width: 100%; max-width: 100%; }
+
 </style>
 </head>
 <body>
@@ -528,7 +588,7 @@ const ANIMS = [["zahnrad", "Zahnrad dreht", "settings", "spin"], ["laden", "Lade
   ["dokusuche", "Dokument-Lupe scannt", "file-search", "x-dokusuche"], ["barcode", "Barcode wird gescannt", "barcode", "x-barcode"], ["handschlag", "Hände greifen und schütteln", "handshake", "x-handschlag"],
   ["daumen", "Daumen hoch", "thumb-up-line", "x-daumen"], ["klick", "Mausklick", "cursor-circles", "x-klick"],
   ["ziel", "Pfeil trifft Ziel", "target-arrow", "x-ziel"], ["bluete", "Blüte wächst und schrumpft", "flower-8", "x-bluete"],
-  ["lupe", "Lupe sucht", "search", "x-lupe"], ["raute", "Raute wackelt", "hash", "x-raute"], ["uhr", "Uhr: Zeiger drehen", "clock", "x-uhr"], ];
+  ["lupe", "Lupe sucht", "search", "x-lupe"], ["raute", "Raute wackelt", "hash", "x-raute"], ["uhr", "Uhr: Zeiger drehen", "clock", "x-uhr"], ["bild", "Bild: Sonne geht auf und unter", "image", "x-bild"], ["megafon", "Megafon mit Actionlines", "megaphone", "x-megafon"], ["kolben", "Kolben sprudelt", "flask-conical", "x-kolben"], ["krone", "Krone funkelt", "crown", "x-krone"], ["diamant", "Diamant funkelt", "gem", "x-diamant"], ["schere", "Schere öffnet und schließt", "scissors", "x-schere"], ["kaefer", "Käfer krabbelt", "bug", "x-kaefer"], ["fisch", "Fisch schwimmt", "fish", "x-fisch"], ];
 /* Teile-Gruppen (Indizes der Lucide-Elemente) und Zusatzformen für eigene Animationen */
 const PART_RE = /<(?:path|circle|line|polyline|polygon|rect|ellipse)\b[^>]*>/g;
 const ANIM_X = {
@@ -556,6 +616,14 @@ const ANIM_X = {
   lupe: { groups: [[0, 1]] },
   raute: { groups: [[0, 1, 2, 3]] },
   uhr: { groups: [[0]], extra: '<path class="g1" d="M12 12V6.4"/><path class="g2" d="M12 12l3.2 1.9"/>' },
+  bild: { groups: [[0, 2]], extra: '<defs><clipPath id="__ID__"><polygon points="3,3 21,3 21,15 17.9,11.9 15.1,11.9 6,21 3,21"/></clipPath></defs><g clip-path="url(#__ID__)"><g class="g1"><circle cx="9" cy="9" r="2"/><g class="g2"><path stroke-width="1.4" d="M9 4.2v1.4M9 12.4v1.4M4.2 9h1.4M12.4 9h1.4M5.6 5.6l1 1M12.4 5.6l-1 1M5.6 12.4l1-1M12.4 12.4l-1-1"/></g></g></g>' },
+  megafon: { groups: [[0, 1, 2]], big: "translate(0 3) scale(.75)", extra: '<g class="g1"><path stroke-width="2.2" d="M24.6 5l2.9-2.5"/></g><g class="g2"><path stroke-width="2.2" d="M25.2 10h4"/></g><g class="g3"><path stroke-width="2.2" d="M24.6 15l2.9 2.5"/></g>' },
+  kolben: { groups: [[0, 1, 2]], extra: '<g class="g1"><circle cx="9.6" cy="18.6" r="1.2" stroke-width="1.4"/></g><g class="g2"><circle cx="14.2" cy="19" r="1" stroke-width="1.4"/></g><g class="g3"><circle cx="12" cy="17" r=".9" stroke-width="1.4"/></g><g class="g4"><circle cx="10.4" cy="20" r=".8" stroke-width="1.4"/></g>' },
+  krone: { groups: [[0, 1]], big: "translate(1.7 2.9) scale(.86)", extra: '<g class="g1"><g transform="translate(2.91 0.58)"><path fill="currentColor" stroke-width=".7" d="M0 -2.2C0.33 -0.88 0.88 -0.33 2.2 0C0.88 0.33 0.33 0.88 0 2.2C-0.33 0.88 -0.88 0.33 -2.2 0C-0.88 -0.33 -0.33 -0.88 0 -2.2z"/></g></g><g class="g2"><g transform="translate(11.98 -0.35)"><path fill="currentColor" stroke-width=".7" d="M0 -2.9C0.43 -1.16 1.16 -0.43 2.9 0C1.16 0.43 0.43 1.16 0 2.9C-0.43 1.16 -1.16 0.43 -2.9 0C-1.16 -0.43 -0.43 -1.16 0 -2.9z"/></g></g><g class="g3"><g transform="translate(21.05 0.58)"><path fill="currentColor" stroke-width=".7" d="M0 -2.2C0.33 -0.88 0.88 -0.33 2.2 0C0.88 0.33 0.33 0.88 0 2.2C-0.33 0.88 -0.88 0.33 -2.2 0C-0.88 -0.33 -0.33 -0.88 0 -2.2z"/></g></g>' },
+  diamant: { groups: [[1], [0], [2]], big: "translate(1.9 2.9) scale(.84)", extra: '<g class="g3"><g transform="translate(2.02 0.83)"><path fill="currentColor" stroke-width=".7" d="M0 -2.4C0.36 -0.96 0.96 -0.36 2.4 0C0.96 0.36 0.36 0.96 0 2.4C-0.36 0.96 -0.96 0.36 -2.4 0C-0.96 -0.36 -0.36 -0.96 0 -2.4z"/></g></g><g class="g4"><g transform="translate(22.26 1.55)"><path fill="currentColor" stroke-width=".7" d="M0 -3C0.45 -1.2 1.2 -0.45 3 0C1.2 0.45 0.45 1.2 0 3C-0.45 1.2 -1.2 0.45 -3 0C-1.2 -0.45 -0.45 -1.2 0 -3z"/></g></g><g class="g5"><g transform="translate(22.5 16.55)"><path fill="currentColor" stroke-width=".7" d="M0 -2C0.3 -0.8 0.8 -0.3 2 0C0.8 0.3 0.3 0.8 0 2C-0.3 0.8 -0.8 0.3 -2 0C-0.8 -0.3 -0.3 -0.8 0 -2z"/></g></g>' },
+  schere: { groups: [[0, 1, 4], [2, 3]] },
+  kaefer: { groups: [[0, 1, 10], [2, 9], [4], [5], [3], [7], [8], [6]] },
+  fisch: { groups: [[0, 1, 2], [3], [4, 5]], wrap: "fs", extra: '<g class="g3"><circle cx="21.4" cy="10.4" r="1" stroke-width="1.3"/></g><g class="g4"><circle cx="20.4" cy="9" r=".7" stroke-width="1.2"/></g>' },
 };
 const pick = (list, v, d) => (list.some((x) => x[0] === v) ? v : d);
 const FX = [["rgb", "RGB-Split"], ["tear", "Streifen"], ["jitter", "Zittern"], ["noise", "Rauschen"], ["flicker", "Flackern"], ["glow", "Glühen"]];
@@ -685,6 +753,21 @@ function buildButton(cfg, host) {
   const pad = (cfg.pad && cfg.pad !== "auto" && !isNaN(+cfg.pad)) ? Math.max(0, Math.min(40, Math.round(+cfg.pad))) : ((fx.includes("glow") || fx.includes("jitter") || fx.includes("tear")) ? 20 : 0);
   host.style.boxSizing = "border-box"; host.style.padding = pad + "px";
   if (cfg.fit === "frame") { wrap.style.display = "flex"; wrap.style.flex = "1 1 auto"; wrap.style.maxWidth = "none"; wrap.style.alignSelf = "stretch"; b.style.flex = "1 1 auto"; b.style.maxWidth = "none"; }
+  /* Rahmen ausfüllen: Schrift und Symbol wachsen/schrumpfen mit dem Rahmen (Notion-Block) mit */
+  if (host._fitRO) { host._fitRO.disconnect(); host._fitRO = null; }
+  if (cfg.fit === "frame" && !cfg.demo && typeof ResizeObserver === "function") {
+    const fitNow = () => {
+      const hw = host.clientWidth - 2 * pad, hh = host.clientHeight - 2 * pad; if (hw < 24 || hh < 14 || !b.isConnected) return;
+      let f = 16; b.style.fontSize = f + "px";
+      for (let i = 0; i < 4; i++) {
+        const w0 = main.offsetWidth, h0 = main.offsetHeight; if (!w0 || !h0) return;
+        const s = Math.min((hw * .8 - 12) / w0, hh * .62 / h0); f = Math.max(8, Math.min(240, f * s)); b.style.fontSize = f.toFixed(1) + "px";
+        if (Math.abs(s - 1) < .02) break;
+      }
+    };
+    host._fitRO = new ResizeObserver(fitNow); host._fitRO.observe(host); fitNow();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNow);
+  }
   wrap.style.setProperty("--gd", (-Math.random() * 4).toFixed(2) + "s");
   if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow 2.6s ease-in-out infinite"); if (fx.includes("flicker")) an.push("fl 6.5s steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
   return b;
@@ -764,7 +847,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Schriftgröße</span><div class="seg" id="g-size"></div><p class="hint2">Der Button ist so groß wie die Schrift plus 5 px Rand rundum.</p></div>' +
     '<div class="row"><span class="lab">Schreibweise</span><div class="seg" id="g-caps"></div></div>' +
     '<div class="row"><span class="lab">Ausrichtung</span><div class="seg" id="g-align"></div></div>' +
-    '<div class="row"><span class="lab">Größe im Rahmen</span><div class="seg" id="g-fit"></div><p class="hint2">„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, egal wie klein er ist.</p></div>' +
+    '<div class="row"><span class="lab">Größe im Rahmen</span><div class="seg" id="g-fit"></div><p class="hint2">„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, Schrift und Symbol wachsen und schrumpfen mit dem Rahmen mit (Einstellung „Größe“ gilt dann nicht).</p></div>' +
     '<div class="row"><span class="lab">Randabstand</span><div class="seg" id="g-pad"></div><p class="hint2">Platz um den Button, damit Glühen und Zittern nicht abgeschnitten werden. Auto: 20 px bei Glühen, Zittern oder Streifen, sonst 0. Rahmen in Notion = Button + Randabstand.</p></div>' +
     '<h3 class="sub3">Animation</h3>' +
     '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl, keine Auswahl = ruhiger Button.</p></div>' +
@@ -794,7 +877,9 @@ if (q.has("url") || q.has("w")) {
   const SCHEMEHINT = { dark: "Notion läuft im Dunkelmodus: Hintergrund des Widgets bleibt transparent.", light: "Notion läuft im Hellmodus: Hintergrund des Widgets bleibt transparent.", auto: "Folgt der Systemeinstellung. Nur transparent, wenn Notion dieselbe Einstellung nutzt; sonst erscheint ein weißer oder schwarzer Kasten." };
 
   /* ---- Theme (Seite und Widgets) ---- */
-  function applyPage() {
+  /* Aus der Symbol-Auswahl (Reiter „Symbole“) ausgeblendet – bleiben für gespeicherte Adressen/Animationen nutzbar */
+const HIDE_STATIC = new Set(["briefcase-business", "toolbox", "high-five", "team-shake", "toolbox-lid", "thumb-fist", "thumb-up-line"]);
+function applyPage() {
     const t = THEMES[S.theme], r = document.documentElement.style;
     r.setProperty("--pa", t.a); r.setProperty("--pp", t.panel); r.setProperty("--pl", t.line); r.setProperty("--ptx", t.text); r.setProperty("--pm", t.mu); r.setProperty("--pb", t.pb); r.setProperty("--pink", t.ink);
   }
@@ -961,7 +1046,7 @@ if (q.has("url") || q.has("w")) {
     const add = (val, node, title) => { const b = document.createElement("button"); b.type = "button"; b.title = title || val; b.setAttribute("aria-label", title || val); b.setAttribute("aria-pressed", String(S.icon === val)); b.appendChild(node);
       b.addEventListener("click", () => { S.icon = val; drawIcoBtn(); drawGrid(); render(); ip.close(); }); g.appendChild(b); };
     if (tab === "e") EMOJIS.forEach((e) => add(e, document.createTextNode(e)));
-    else if (tab === "s") Object.keys(ICONS).forEach((n) => { const s = iconNode(n); add(n, s.firstChild, ICON_LABELS[n] || n); });
+    else if (tab === "s") Object.keys(ICONS).filter((n) => !HIDE_STATIC.has(n)).forEach((n) => { const s = iconNode(n); add(n, s.firstChild, ICON_LABELS[n] || n); });
     else ANIMS.forEach((a) => add("a-" + a[0], iconNode("a-" + a[0]), a[1]));
   }
   $("g-ico").addEventListener("click", () => { drawGrid(); if (ip.showModal) ip.showModal(); else ip.setAttribute("open", ""); });
@@ -978,6 +1063,7 @@ if (q.has("url") || q.has("w")) {
     drawPv();
     const cfg = cfgNow();
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align];
+    prev.classList.toggle("ff", S.fit === "frame");
     btn = buildButton(cfg, prev); btn.addEventListener("click", (e) => { if (!okUrl(cfg.url)) e.preventDefault(); });
     const raw = cfg.url, ok = !!okUrl(raw), href = ok ? okUrl(raw) : "";
     $("g-msg").textContent = ok ? "" : !raw ? "Ziel fehlt: Der Button ist deaktiviert, bis eine gültige Ziel-Adresse eingetragen ist." : "Ziel nicht erlaubt oder unvollständig: Der Button ist deaktiviert (erlaubt: https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";
@@ -987,7 +1073,7 @@ if (q.has("url") || q.has("w")) {
     else if (ok && !peekPossible(href)) { hint.textContent = "Nur mit Link auf einen Datenbank-Eintrag (Adresse enthält p=…). Sonst öffnet ein normaler Tab."; hint.className = "hint2 warn"; }
     else { hint.textContent = OPENHINT[S.open] + " Ungetestet: Notion kann die Ansicht ignorieren."; hint.className = "hint2"; }
     { const pd = parseFloat(getComputedStyle(prev).paddingLeft) || 0, w = Math.ceil(btn.getBoundingClientRect().width + 2 * pd), h = Math.ceil(btn.getBoundingClientRect().height + 2 * pd);
-      $("g-fitnote").textContent = S.fit === "frame" ? "Der Button füllt den Rahmen bis auf den Randabstand (" + pd + " px)." : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Button ab."; }
+      $("g-fitnote").textContent = S.fit === "frame" ? "Der Button füllt den Rahmen bis auf den Randabstand (" + pd + " px); Schrift und Symbol passen sich der Rahmengröße an. Rahmen in Notion beliebig ziehen. Vorschau: Kasten an der Ecke ziehen." : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Button ab."; }
     updateSums();
     $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
     const p = new URLSearchParams(); p.set("w", "button"); p.set("url", ok && isMail(cfg.url) ? href : cfg.url);
@@ -1066,7 +1152,7 @@ if (q.has("url") || q.has("w")) {
     });
   }
   setupCollapse(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 20:39"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 20:49"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

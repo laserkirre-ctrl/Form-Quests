@@ -430,8 +430,7 @@ main { width: min(100%, 1240px); }
       <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_top">Quest anschauen</a>
     </div>
     <div class="actions">
-      <button type="button" id="dn-close">Schließen</button>
-      <button type="button" id="dn-new" class="primary" autofocus>Neue Quest</button>
+      <button type="button" id="dn-close" class="primary" autofocus>Schließen</button>
     </div>
   </div></div>
 </dialog>
@@ -524,7 +523,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364257952}</script>
+<script id="baked" type="application/json">{"webhook":"https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte","secret":"szeifei","rev":1795364434412}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -1312,7 +1311,6 @@ function goTo(url) {
 for (const id of ["dn-pin", "dn-wiki", "dn-view"]) $(id).addEventListener("click", (e) => { e.preventDefault(); goTo($(id).href); });
 function finishDone() { doneDlg.close(); resetForm(); say(""); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); }
 $("dn-close").addEventListener("click", finishDone);
-$("dn-new").addEventListener("click", finishDone);
 doneDlg.addEventListener("click", (e) => { if (e.target === doneDlg) doneDlg.close(); });
 
 /* ---- Admin Area ---- */

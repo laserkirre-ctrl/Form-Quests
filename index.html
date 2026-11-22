@@ -41,6 +41,13 @@ button:hover { filter: brightness(1.12); }
 button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
 button:disabled { opacity: .5; cursor: progress; }
 button.danger { background: var(--warn); border-color: var(--warn); color: #1a0606; font-weight: 500; }
+a.btn { display: inline-block; font: inherit; font-size: 1rem; text-decoration: none; text-align: center; cursor: pointer; border-radius: 3px; padding: 8px 16px;
+  border: 1px solid var(--lime); background: transparent; color: var(--lime);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+a.btn:hover { background: rgb(var(--lime-rgb) / .14); }
+a.btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.dlg .choices { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; }
+.dlg .choices a.btn { flex: 1 1 140px; }
 .status { min-height: 1.4em; margin: 0; padding: 8px clamp(14px, 3vw, 28px) 0; color: var(--muted); font-size: .95rem; text-align: center; }
 .status.err { color: var(--warn); }
 .status.ok { color: var(--lime); }
@@ -208,8 +215,13 @@ dialog.wide { width: min(94vw, 660px); }
 <dialog id="done" aria-labelledby="dn-title">
   <div class="dlg"><div class="dlg-in">
     <div class="stripes" aria-hidden="true"></div>
-    <h2 id="dn-title">Quest gespeichert</h2>
-    <p id="dn-text">Der Eintrag liegt jetzt im PinBoard.</p>
+    <h2 id="dn-title">Quest ist angepinnt.</h2>
+    <p id="dn-text">Und wie geht es weiter?</p>
+    <div class="choices">
+      <a class="btn" id="dn-pin" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da5028052bd9e000cbc4485e3" target="_blank" rel="noopener">Zum Pinboard</a>
+      <a class="btn" id="dn-wiki" href="https://app.notion.com/p/303bca9da50280c3898fc309eb1b618e" target="_blank" rel="noopener">Zum Wiki</a>
+      <a class="btn" id="dn-view" href="https://app.notion.com/p/420bca9da502805cb643d5d4b6dc6238?v=420bca9da50280a48fa4000c1fbe1493" target="_blank" rel="noopener">Quest anschauen</a>
+    </div>
     <p class="meta" id="dn-link" hidden></p>
     <div class="actions">
       <button type="button" id="dn-close">Schließen</button>
@@ -350,7 +362,7 @@ dialog.wide { width: min(94vw, 660px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795357747113}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795358581552}</script>
 <script>
 "use strict";
 const IN_CLAUDE = !!(window.claude && typeof window.claude.use === "function");
@@ -904,12 +916,12 @@ async function save() {
       }
       const res = await mcp.callTool(SERVER, "notion-create-pages", { parent: target, pages: [{ properties: props }] });
       const url = (JSON.stringify(payloadOf(res) || "").match(/https:\/\/[a-z.]*notion\.(?:so|com)\/[^\s"\\<>]+/i) || [])[0];
-      showDone(url, "Der Eintrag liegt jetzt im PinBoard.");
+      showDone("");
       say("Gespeichert.", "ok");
     } else {
       if (!cfg.webhook) { say("Kein Webhook eingerichtet. Admin Area → Webhook, oder die Seite in claude.ai öffnen.", "err"); return; }
       await sendWebhook(F, []);
-      showDone(null, "Der Eintrag wurde an den Relay-Dienst gesendet. Eine Bestätigung ist technisch nicht möglich: erscheint er nicht in wenigen Minuten im PinBoard, den Relay prüfen.");
+      showDone("Die Zustellung kann technisch nicht bestätigt werden. Fehlt die Quest nach wenigen Minuten im Pinboard, den Relay prüfen.");
       say("Gesendet.", "ok");
     }
   } catch (e) {
@@ -917,11 +929,9 @@ async function save() {
     if (!IN_CLAUDE) say("Senden fehlgeschlagen. Verbindung und Webhook-Adresse prüfen.", "err"); else say(errInfo(e).msg, "err");
   } finally { saving = false; saveBtn.disabled = false; }
 }
-function showDone(url, text) {
-  $("dn-text").textContent = text;
+function showDone(note) {
   const link = $("dn-link");
-  link.hidden = !url; link.textContent = "";
-  if (url) { const a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Eintrag in Notion öffnen"; link.appendChild(a); }
+  link.textContent = note || ""; link.hidden = !note;
   openDlg(doneDlg);
 }
 saveBtn.addEventListener("click", save);

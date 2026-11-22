@@ -674,7 +674,7 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 /* Vorschau bei „Rahmen ausfüllen“: feste Rahmengröße (per Ecke ziehbar), damit die Schrift mitwachsen kann */
 .prev.ff, .side .prev.ff, .stage .prev.ff { height: 120px; width: 100%; max-width: 100%; }
 
-.igrid.fita button svg { width: 84%; height: 84%; overflow: visible; }
+.igrid.fita button svg { width: 75%; height: 75%; overflow: visible; }
 .igrid.fita button { overflow: hidden; }
 
 </style>
@@ -1331,7 +1331,7 @@ function applyPage() {
     });
   }
   setupCollapse(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:25"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:28"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

@@ -562,7 +562,7 @@ if (q.has("url") || q.has("w")) {
     '</section>' +
     '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
-    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div>' +
+    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Adresse erscheint hier"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div><p class="msg" id="g-outnote"></p>' +
     '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
     '</div></aside></div></div>' +
@@ -737,7 +737,7 @@ if (q.has("url") || q.has("w")) {
       $("g-fitnote").textContent = S.fit === "frame" ? "Der Button füllt den Rahmen bis auf den Randabstand (" + pd + " px)." : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Button ab."; }
     updateSums();
     $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
-    const p = new URLSearchParams(); p.set("w", "button"); p.set("url", isMail(cfg.url) ? href : cfg.url);
+    const p = new URLSearchParams(); p.set("w", "button"); p.set("url", ok && isMail(cfg.url) ? href : cfg.url);
     if (cfg.label) p.set("label", cfg.label); if (cfg.sub) p.set("sub", cfg.sub); if (cfg.icon) p.set("icon", cfg.icon);
     if (cfg.theme !== "standard") p.set("theme", cfg.theme);
     if (S.fill !== "solid") p.set("fill", S.fill); if (S.shape !== "cut") p.set("shape", S.shape); if (S.frame !== "auto") p.set("frame", S.frame); if (S.pat !== "scan") p.set("pat", S.pat);
@@ -746,8 +746,9 @@ if (q.has("url") || q.has("w")) {
     if (cfg.fx.slice().sort().join() !== FX_DEFAULT.slice().sort().join()) p.set("fx", cfg.fx.length ? cfg.fx.join(",") : "none");
     if (cfg.open !== "tab") p.set("open", cfg.open);
     DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
-    $("g-out").value = ok ? location.origin + location.pathname + "?" + p.toString() : "";
-    $("g-copy").disabled = !ok;
+    $("g-out").value = location.origin + location.pathname + "?" + p.toString();
+    $("g-copy").disabled = false;
+    $("g-outnote").textContent = ok ? "" : "Ziel-Adresse " + (raw ? "ungültig" : "fehlt") + ": Der Button ist damit deaktiviert, bis eine gültige Adresse eingetragen ist.";
   }
   ["g-label", "g-sub", "g-url"].forEach((id) => $(id).addEventListener("input", render));
   $("g-copy").addEventListener("click", async () => {
@@ -757,8 +758,8 @@ if (q.has("url") || q.has("w")) {
   });
   $("g-regen").addEventListener("click", () => {
     render();
-    const m = $("g-regenmsg"), ok = !!$("g-out").value;
-    m.textContent = ok ? "Neu erzeugt aus den aktuellen Einstellungen." : "Ziel-Adresse fehlt oder ist ungültig.";
+    const m = $("g-regenmsg");
+    m.textContent = "Neu erzeugt aus den aktuellen Einstellungen.";
     clearTimeout(m._t); m._t = setTimeout(() => { m.textContent = ""; }, 2400);
   });
   /* ---- Vorhandenes Widget laden ---- */

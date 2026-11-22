@@ -180,8 +180,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
   .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .gl::before, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .gl::before { animation: gl-a .55s steps(1, end) infinite; }
   .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .gl::after, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .gl::after { animation: gl-b .55s steps(1, end) infinite; }
   .wrap[data-fx~="rgb"] .btn.hv-glitch:hover .lbl, .wrap[data-fx~="rgb"] .btn.hv-glitch:focus-visible .lbl { animation: gl-s .55s steps(1, end) infinite; }
-  .wrap[data-fx~="jitter"] .btn { animation: jit 4.2s steps(1, end) var(--gd, 0s) infinite; }
-  .wrap[data-fx~="jitter"] .btn.hv-glitch:hover, .wrap[data-fx~="jitter"] .btn.hv-glitch:focus-visible { animation: jit-h .42s steps(1, end) infinite; }
+  .wrap[data-fx~="jitter"] .btn.jz { animation: jit .32s steps(1, end) 1; }
+  .btn.hv-zittern:hover, .btn.hv-zittern:focus-visible { animation: zit .3s steps(1, end) infinite; }
   .wrap[data-fx~="noise"] .btn > .nz { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; mix-blend-mode: difference;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px 160px; animation: nz 4.8s steps(1, end) var(--gd, 0s) infinite; }
   .wrap[data-fx~="noise"] .btn.hv-glitch:hover > .nz, .wrap[data-fx~="noise"] .btn.hv-glitch:focus-visible > .nz { animation: nz-h .5s steps(1, end) infinite; }
@@ -194,8 +194,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes gl-s { 0% { text-shadow: 2px 0 rgb(255 42 95 / .7), -2px 0 rgb(25 230 255 / .7); } 33% { text-shadow: -2px 0 rgb(255 42 95 / .7), 2px 0 rgb(25 230 255 / .7); } 66% { text-shadow: 1px 1px rgb(255 42 95 / .6), -3px 0 rgb(25 230 255 / .6); } }
   @keyframes gl-ia { 0% { opacity: 1; clip-path: inset(14% 0 58% 0); transform: translate(-3px, 0); } 1.5% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); } 3% { clip-path: inset(36% 0 34% 0); transform: translate(-2px, 0); } 4.5%, 100% { opacity: 0; } }
   @keyframes gl-ib { 0% { opacity: 1; clip-path: inset(66% 0 6% 0); transform: translate(3px, 0); } 1.5% { clip-path: inset(8% 0 72% 0); transform: translate(-3px, 0); } 3% { clip-path: inset(44% 0 28% 0); transform: translate(2px, 0); } 4.5%, 100% { opacity: 0; } }
-  @keyframes jit { 0% { transform: translate(-3px, 1px) skewX(-7deg); } 1.2% { transform: translate(4px, -1px) skewX(6deg); } 2.4% { transform: translate(-2px, 0) skewX(-3deg); } 3.6% { transform: translate(2px, 1px) skewX(4deg); } 4.8%, 100% { transform: none; } }
-  @keyframes jit-h { 0% { transform: translate(-3px, 1px) skewX(-7deg); } 18% { transform: translate(4px, -1px) skewX(6deg); } 36% { transform: translate(-2px, 0) skewX(-3deg); } 54% { transform: translate(3px, 1px) skewX(5deg); } 72% { transform: translate(-1px, -1px) skewX(-2deg); } 88% { transform: translate(1px, 0) skewX(2deg); } 100% { transform: none; } }
+  @keyframes jit { 0% { transform: translate(-3px, 1px) skewX(-7deg); } 20% { transform: translate(4px, -1px) skewX(6deg); } 40% { transform: translate(-2px, 0) skewX(-3deg); } 60% { transform: translate(2px, 1px) skewX(4deg); } 80% { transform: translate(-1px, 0) skewX(-2deg); } 100% { transform: none; } }
+  @keyframes zit { 0% { transform: translate(-2px, 0) skewX(-4deg); } 25% { transform: translate(2px, -1px) skewX(3deg); } 50% { transform: translate(-1px, 1px) skewX(-2deg); } 75% { transform: translate(2px, 0) skewX(3deg); } 100% { transform: none; } }
   @keyframes nz-h { 0% { opacity: .9; background-position: 0 0; clip-path: inset(18% 0 56% 0); } 25% { opacity: .95; background-position: -37px 21px; clip-path: inset(62% 0 10% 0); } 50% { opacity: .85; background-position: 55px -17px; clip-path: inset(4% 0 82% 0); } 75% { opacity: .9; background-position: 12px 40px; clip-path: inset(38% 0 36% 0); } 100% { opacity: .9; background-position: 0 0; clip-path: inset(10% 0 60% 0); } }
   @keyframes fl-h { 0% { opacity: .3; } 12% { opacity: 1; } 24% { opacity: .45; } 38% { opacity: 1; } 52% { opacity: .25; } 66% { opacity: .9; } 82% { opacity: .5; } 100% { opacity: 1; } }
   @keyframes nz { 0% { opacity: .9; background-position: 0 0; clip-path: inset(18% 0 56% 0); } 1.6% { opacity: .95; background-position: -37px 21px; clip-path: inset(62% 0 10% 0); } 3.2% { opacity: .85; background-position: 55px -17px; clip-path: inset(4% 0 82% 0); } 4.8% { opacity: .9; background-position: 12px 40px; clip-path: inset(38% 0 36% 0); } 6%, 100% { opacity: 0; } }
@@ -1116,7 +1116,7 @@ const FILLS = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transpar
 const SHAPES = [["cut", "Geschnitten"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"]];
 const FRAMES = [["auto", "Automatisch"], ["none", "Keiner"], ["thin", "Dünn"], ["thick", "Dick"], ["double", "Doppelt"], ["dashed", "Gestrichelt"], ["dotted", "Gepunktet"]];
 const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], ["grid", "Gitter"], ["diag", "Diagonal"], ["check", "Schachbrett"]];
-const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["glitch", "Glitch"], ["none", "Keiner"]];
+const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["glitch", "Glitch"], ["zittern", "Zittern"], ["none", "Keiner"]];
 const CLICKS = [["press", "Eindrücken"], ["flash", "Aufblitzen"], ["shake", "Rütteln"], ["none", "Keiner"]];
 const SCHEMES = [["dark", "Dunkel"], ["light", "Hell"], ["auto", "Auto"]];
 const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Banner"], ["textfeld", "Textfeld"], ["uhr", "Uhr"], ["countdown", "Countdown"], ["counter", "Counter"], ["kalender", "Kalender"], ["fun", "Würfel-Roboter"]];
@@ -1348,6 +1348,12 @@ function startBursts(getBtn) {
     })();
   }
   setTimeout(burst, rnd(1200, 3000));
+  /* Zittern: zufällige kurze Schübe (bei Hover = Glitch häufiger) */
+  (function jt() {
+    const e = getBtn(), ok = e && e.isConnected && e.parentElement && (e.parentElement.dataset.fx || "").split(" ").includes("jitter");
+    if (ok && !reduced() && !document.hidden) { e.classList.remove("jz"); void e.offsetWidth; e.classList.add("jz"); setTimeout(() => e.classList.remove("jz"), 340); }
+    setTimeout(jt, ok && e.classList.contains("hv-glitch") && e.matches(":hover") ? rnd(400, 1000) : rnd(1800, 6500));
+  })();
   /* Hover: Streifen-Schübe laufen, solange die Maus über dem Element steht (Button, Widget, Auswahl-Vorschau) */
   document.addEventListener("pointerover", (ev) => {
     const e = ev.target.closest && ev.target.closest(".btn.hv-glitch"); if (!e || e._th || reduced() || !e.parentElement || !(e.parentElement.dataset.fx || "").split(" ").includes("tear")) return;
@@ -2741,7 +2747,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:54"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 23:02"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

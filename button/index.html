@@ -899,6 +899,11 @@ a.btn.wp { cursor: pointer; }
 .fcb:disabled { opacity: .3; cursor: default; }
 .fcm { min-width: 1.7em; padding: .2em .3em; }
 
+.fxc { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+.cpm { margin-top: .55em; font-size: 1.05em; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ac); text-align: center; animation: cpmi .5s cubic-bezier(.3, 2, .5, 1) both; }
+@keyframes cpmi { 0% { transform: scale(.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.cdg[hidden], .cdone[hidden], .cpm[hidden], .cmsg[hidden] { display: none !important; }
+
 /* ---------- Generator ---------- */
 body.gen { background: var(--pb); padding: 18px; height: auto; min-height: 100%; }
 .gen main { max-width: 780px; margin: 0 auto; }
@@ -1554,20 +1559,44 @@ function wUhr(sh) {
 
 /* ---------- Countdown ---------- */
 function wCountdown(sh) {
-  const { body, o, host, b } = sh;
-  const tz = tzOk(o.tz) ? (o.tz || "Europe/Berlin") : "Europe/Berlin", sec = o.sec !== "0", full = o.units !== "short", title = (o.title || "").slice(0, 60), done = (o.done !== undefined ? o.done : "Es ist soweit!").slice(0, 60);
-  const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/.exec(o.to || ""); let target = null;
-  if (m) target = wallToDate(+m[1], +m[2], +m[3], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0, tz);
+  const { body, o, host, b } = sh, up = o.mode === "up";
+  const tz = tzOk(o.tz) ? (o.tz || "Europe/Berlin") : "Europe/Berlin", sec = o.sec !== "0", full = o.units !== "short", title = (o.title || "").slice(0, 60);
+  const txt = (v, d) => (v !== undefined ? v : d).slice(0, 80), done = txt(o.done, "Es ist soweit!"), pmsg = txt(o.pmsg, ""), jmsg = txt(o.jmsg, "{n}. Jubiläum!");
+  const fxk = (k) => (FX_KEYS.includes(o[k]) ? o[k] : ""), dur = o.fxd === "0" ? 0 : clampN(o.fxd, 3, 60, 8);
+  const preMs = clampN(o.pre, 0, 999, 0) * (o.preu === "h" ? 3600000 : 86400000), jub = ["w", "m", "y"].includes(o.jub) ? o.jub : "";
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/.exec((up ? o.from : o.to) || ""); let target = null, Y = 0, M = 0, D = 0, hh = 0, mi = 0;
+  if (m) { Y = +m[1]; M = +m[2]; D = +m[3]; hh = m[4] ? +m[4] : 0; mi = m[5] ? +m[5] : 0; target = wallToDate(Y, M, D, hh, mi, tz); }
   if (title) body.appendChild(el("div", "cnm gl", title));
-  if (!target || isNaN(target)) { body.appendChild(el("div", "cmsg", "Zieldatum fehlt")); return; }
+  if (!target || isNaN(target)) { body.appendChild(el("div", "cmsg", up ? "Startdatum fehlt" : "Zieldatum fehlt")); return; }
   const grid = el("div", "cdg"); body.appendChild(grid);
   const units = [["d", "Tage", "T"], ["h", "Stunden", "Std"], ["m", "Minuten", "Min"], ["s", "Sekunden", "Sek"]].filter((u) => sec || u[0] !== "s"), cells = {};
   units.forEach(([k, lg, sh2]) => { const c = el("div", "cdc"), v = el("div", "cdv", "00"), l = el("div", "cdl", full ? lg : sh2); c.append(v, l); grid.appendChild(c); cells[k] = v; });
   const msg = el("div", "cdone gl", done); msg.hidden = true; body.appendChild(msg);
+  const note = el("div", "cpm gl"); note.hidden = true; body.appendChild(note);
   const set = (k, val) => { const t = k === "d" ? String(val).padStart(2, "0") : pad2(val); if (cells[k].textContent !== t) { cells[k].textContent = t; if (!reduced()) { cells[k].classList.remove("pop"); void cells[k].offsetWidth; cells[k].classList.add("pop"); } } };
+  const fired = new Set(), fire = (key, fx) => { if (!fx || fired.has(key)) return; fired.add(key); fxPlay(b, fx, dur); };
+  const showNote = (key, text) => { if (!text) { note.hidden = true; note.dataset.k = ""; return; } if (note.dataset.k !== key) { note.dataset.k = key; note.textContent = text; note.dataset.text = text; note.style.animation = "none"; void note.offsetWidth; note.style.animation = ""; } note.hidden = false; };
+  const dim = (y, mo) => new Date(Date.UTC(y, mo, 0)).getUTCDate();
+  const bound = (k) => (jub === "w" ? wallToDate(Y, M, D + 7 * k, hh, mi, tz) : jub === "m" ? wallToDate(Y, M + k, Math.min(D, dim(Y, M + k)), hh, mi, tz) : wallToDate(Y + k, M, Math.min(D, dim(Y + k, M)), hh, mi, tz));
+  const periods = (now) => { const nd = new Date(now); let k = jub === "w" ? Math.floor((now - target) / 604800000) : jub === "m" ? (nd.getUTCFullYear() - Y) * 12 + (nd.getUTCMonth() + 1 - M) : nd.getUTCFullYear() - Y; k = Math.max(0, k); while (k > 0 && bound(k) > now) k--; while (bound(k + 1) <= now) k++; return k; };
+  const fill = (s) => { set("d", Math.floor(s / 86400)); set("h", Math.floor(s % 86400 / 3600)); set("m", Math.floor(s % 3600 / 60)); if (sec) set("s", s % 60); };
   const upd = () => {
-    let ms = target - Date.now(); if (ms <= 0) { grid.hidden = true; msg.hidden = false; return; } grid.hidden = false; msg.hidden = true;
-    const s = Math.floor(ms / 1000); set("d", Math.floor(s / 86400)); set("h", Math.floor(s % 86400 / 3600)); set("m", Math.floor(s % 3600 / 60)); if (sec) set("s", s % 60);
+    const now = Date.now();
+    if (!up) {
+      const ms = target - now;
+      if (ms <= 0) { grid.hidden = true; msg.hidden = false; showNote("", ""); if (now - target < 86400000) fire("done", fxk("dfx")); return; }
+      grid.hidden = false; msg.hidden = true; fill(Math.floor(ms / 1000));
+      if (preMs && ms <= preMs) { showNote("p", pmsg); fire("pre", fxk("pfx")); } else showNote("", "");
+      return;
+    }
+    const el0 = now - target;
+    if (el0 < 0) { grid.hidden = true; msg.hidden = false; msg.textContent = "Startet noch nicht"; msg.dataset.text = msg.textContent; showNote("", ""); return; }
+    grid.hidden = false; msg.hidden = true; fill(Math.floor(el0 / 1000));
+    if (!jub) { showNote("", ""); return; }
+    const k = periods(now);
+    if (k >= 1 && now - bound(k) < 86400000) { showNote("j" + k, jmsg.replace(/\{n\}/g, String(k))); fire("j" + k, fxk("jfx")); }
+    else if (preMs && bound(k + 1) - now <= preMs) { showNote("p" + (k + 1), pmsg.replace(/\{n\}/g, String(k + 1))); fire("p" + (k + 1), fxk("pfx")); }
+    else showNote("", "");
   };
   upd(); wReg(host, { i: setInterval(() => { if (!document.hidden) upd(); }, 250) });
 }
@@ -1987,6 +2016,170 @@ function wUhrStil(sh, key, tz, o) {
   upd(); wReg(host, { i: setInterval(() => { if (!document.hidden) upd(); }, 250) });
 }
 
+/* Feier-Effekte (Canvas) für den Countdown: fxPlay(b, art, dauerSek) → stop() */
+const FX_LIST = [["", "Keiner"], ["fw", "Feuerwerk"], ["conf", "Konfetti"], ["glit", "Glitzer"], ["party", "Partyzeug"], ["stars", "Sterne"], ["bubbles", "Seifenblasen"], ["crowns", "Funkelnde Kronen"], ["ballsb", "Jubelnde Bälle unten"], ["ballst", "Jubelnde Bälle oben"]];
+const FX_KEYS = FX_LIST.map((x) => x[0]).filter(Boolean);
+function fxPal(b) {
+  const raw = (getComputedStyle(b).getPropertyValue("--ac") || "").trim(); let h = 70, s = 85;
+  const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(raw);
+  if (m) {
+    const x = m[1].length === 3 ? m[1].split("").map((c) => c + c).join("") : m[1], r = parseInt(x.slice(0, 2), 16) / 255, g = parseInt(x.slice(2, 4), 16) / 255, bl = parseInt(x.slice(4, 6), 16) / 255;
+    const mx = Math.max(r, g, bl), mn = Math.min(r, g, bl), d = mx - mn;
+    if (d > 0) { h = mx === r ? ((g - bl) / d) % 6 : mx === g ? (bl - r) / d + 2 : (r - g) / d + 4; h = (h * 60 + 360) % 360; }
+  }
+  const hs = (dh, l) => "hsl(" + Math.round((h + dh + 360) % 360) + "," + s + "%," + l + "%)";
+  return [m ? raw : hs(0, 60), hs(40, 62), hs(-40, 62), hs(150, 66), hs(200, 66), "#ffffff", hs(75, 64)];
+}
+function fxPlay(b, kind, dur) {
+  if (!FX_KEYS.includes(kind) || reduced() || !b || !b.isConnected) return () => {};
+  const old = b.querySelector(":scope > canvas.fxc"); if (old) old.remove();
+  const cv = document.createElement("canvas"); cv.className = "fxc"; cv.setAttribute("aria-hidden", "true"); b.appendChild(cv);
+  const ctx = cv.getContext("2d"), dpr = Math.min(2, window.devicePixelRatio || 1), pal = fxPal(b), R = Math.random, TAU = Math.PI * 2;
+  const rnd = (a, c) => a + R() * (c - a), pick1 = () => pal[Math.floor(R() * pal.length)];
+  let W = 0, H = 0, t = 0, last = 0, raf = 0, dead = false, parts = [], acc = 0, burstAt = 0;
+  const forever = dur === 0, T = forever ? 1e9 : Math.max(2, dur || 8);
+  const fit = () => { const w = b.clientWidth, h = b.clientHeight; if (w !== W || h !== H) { W = w; H = h; cv.width = Math.max(1, Math.round(W * dpr)); cv.height = Math.max(1, Math.round(H * dpr)); } };
+  const U = () => Math.max(.6, Math.min(W, H) / 170); /* Größeneinheit */
+  const star = (x, y, r, rot, pts, inner) => { ctx.beginPath(); for (let i = 0; i < pts * 2; i++) { const a = rot + i * Math.PI / pts - Math.PI / 2, rr = i % 2 ? r * inner : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } ctx.closePath(); };
+  const spark = (x, y, s, col, al) => { ctx.globalAlpha = al; ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(x, y - s); ctx.quadraticCurveTo(x, y, x + s, y); ctx.quadraticCurveTo(x, y, x, y + s); ctx.quadraticCurveTo(x, y, x - s, y); ctx.quadraticCurveTo(x, y, x, y - s); ctx.fill(); };
+  const crown = (x, y, s, rot, col) => {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = col; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = Math.max(1, s * .1); ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(-s, s * .6); ctx.lineTo(-s, -s * .25); ctx.lineTo(-s * .5, s * .15); ctx.lineTo(0, -s * .65); ctx.lineTo(s * .5, s * .15); ctx.lineTo(s, -s * .25); ctx.lineTo(s, s * .6); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fff"; [[-s, -s * .25], [0, -s * .65], [s, -s * .25]].forEach((p) => { ctx.beginPath(); ctx.arc(p[0], p[1], s * .13, 0, TAU); ctx.fill(); }); ctx.restore();
+  };
+  /* ---- Effekte: jeweils spawn(dt) + step(p, dt) + draw(p) ---- */
+  const E = {};
+  E.fw = {
+    spawn(dt) { acc += dt; if (t < T && acc > .5) { acc = 0; parts.push({ k: "r", x: rnd(W * .15, W * .85), y: H, ty: rnd(H * .12, H * .5), vy: -H * rnd(.9, 1.3), c: pick1(), life: 3 }); } },
+    step(p, dt) {
+      if (p.k === "r") { p.y += p.vy * dt; if (p.y <= p.ty) { p.life = 0; const c1 = pick1(), c2 = pick1(), n = 34; for (let i = 0; i < n; i++) { const a = TAU * i / n + rnd(-.1, .1), v = rnd(.35, 1) * 58 * U(); parts.push({ k: "s", x: p.x, y: p.y, px: p.x, py: p.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, c: i % 2 ? c1 : c2, life: rnd(.9, 1.5), max: 1.5 }); } } }
+      else { p.px = p.x; p.py = p.y; p.vy += 70 * U() * dt; p.vx *= .985; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; }
+    },
+    draw(p) { if (p.k === "r") { ctx.globalAlpha = 1; ctx.fillStyle = p.c; ctx.fillRect(p.x - 1, p.y, 2, 8); return; } ctx.globalAlpha = Math.max(0, Math.min(1, p.life / .8)); ctx.strokeStyle = p.c; ctx.lineWidth = Math.max(1, 1.6 * U() * .7); ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke(); },
+    alive(p) { return p.life > 0; },
+  };
+  const confStep = (p, dt) => { p.t += dt; p.x += (p.vx + Math.sin(p.t * p.f + p.ph) * 22) * dt; p.y += p.vy * dt; p.rot += p.vr * dt; };
+  const confNew = (top) => ({ k: "c", x: rnd(0, W), y: top ? rnd(-H * .5, -4) : rnd(-12, -4), vx: rnd(-20, 20), vy: rnd(55, 130) * U() * .8, rot: rnd(0, TAU), vr: rnd(-6, 6), f: rnd(2, 5), ph: rnd(0, TAU), t: 0, w: rnd(4, 8) * U() * .8, h: rnd(2.5, 4.5) * U() * .8, c: pick1() });
+  const confDraw = (p) => { ctx.globalAlpha = 1; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(1, Math.cos(p.t * 6 + p.ph)); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore(); };
+  E.conf = {
+    init() { for (let i = 0; i < 90; i++) parts.push(confNew(true)); },
+    spawn(dt) { acc += dt; while (t < T && acc > .04) { acc -= .04; parts.push(confNew(false)); } },
+    step: confStep, draw: confDraw, alive(p) { return p.y < H + 14; },
+  };
+  E.glit = {
+    spawn(dt) { acc += dt; while (t < T && acc > .03) { acc -= .03; parts.push({ k: "g", x: rnd(0, W), y: rnd(0, H), s: rnd(2.5, 8) * U() * .8, life: rnd(.5, 1.3), t: 0, max: 0, c: R() < .45 ? "#fff" : pick1() }); } },
+    step(p, dt) { if (!p.max) p.max = p.life; p.t += dt; p.life -= dt; },
+    draw(p) { const k = Math.max(0, Math.sin(Math.PI * (1 - p.life / p.max))); spark(p.x, p.y, p.s * (.4 + k), p.c, k); },
+    alive(p) { return p.life > 0; },
+  };
+  E.party = {
+    init() { for (let i = 0; i < 40; i++) parts.push(confNew(true)); for (let i = 0; i < 4; i++) E.party.ballon(true); },
+    ballon(init) { const r = rnd(9, 15) * U() * .8; parts.push({ k: "b", x: rnd(r, W - r), y: init ? rnd(H * .5, H + r) : H + r * 2, r, vy: -rnd(45, 85) * U() * .7, ph: rnd(0, TAU), t: 0, c: pick1() }); },
+    streamer() { parts.push({ k: "s", x: rnd(W * .08, W * .92), grow: 0, ph: rnd(0, TAU), t: 0, c: pick1(), len: rnd(.35, .7) * H, life: 2.6 }); },
+    spawn(dt) {
+      acc += dt; burstAt += dt;
+      if (t < T) { if (acc > .09) { acc = 0; parts.push(confNew(false)); } if (burstAt > .7) { burstAt = 0; if (R() < .8) E.party.ballon(false); if (R() < .6) E.party.streamer(); } }
+    },
+    step(p, dt) {
+      if (p.k === "c") return confStep(p, dt);
+      p.t += dt;
+      if (p.k === "b") { p.y += p.vy * dt; p.x += Math.sin(p.t * 1.8 + p.ph) * 14 * dt; } else { p.life -= dt; p.grow = Math.min(1, p.t / 1.1); }
+    },
+    draw(p) {
+      if (p.k === "c") return confDraw(p);
+      if (p.k === "b") {
+        ctx.globalAlpha = 1; ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x, p.y + p.r * 1.2); for (let i = 1; i <= 6; i++) ctx.lineTo(p.x + Math.sin(p.t * 3 + i) * 2.2, p.y + p.r * 1.2 + i * p.r * .35); ctx.stroke();
+        ctx.fillStyle = p.c; ctx.beginPath(); ctx.ellipse(p.x, p.y, p.r, p.r * 1.2, 0, 0, TAU); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(p.x, p.y + p.r * 1.2); ctx.lineTo(p.x - p.r * .22, p.y + p.r * 1.45); ctx.lineTo(p.x + p.r * .22, p.y + p.r * 1.45); ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,.6)"; ctx.beginPath(); ctx.ellipse(p.x - p.r * .4, p.y - p.r * .45, p.r * .17, p.r * .3, -.5, 0, TAU); ctx.fill(); return;
+      }
+      ctx.globalAlpha = Math.max(0, Math.min(1, p.life / .8)); ctx.strokeStyle = p.c; ctx.lineWidth = 3 * U() * .6; ctx.lineCap = "round"; ctx.beginPath();
+      const L = p.len * p.grow; for (let y = 0; y <= L; y += 5) { const x = p.x + Math.sin(y * .09 + p.t * 4 + p.ph) * 7 * U() * .6; y ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke();
+    },
+    alive(p) { return p.k === "c" ? p.y < H + 14 : p.k === "b" ? p.y > -p.r * 3 : p.life > 0; },
+  };
+  E.stars = {
+    init() { for (let i = 0; i < 16; i++) { const a = TAU * i / 16 + rnd(-.15, .15), v = rnd(40, 110) * U(); parts.push({ x: W / 2, y: H / 2, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: rnd(5, 11) * U() * .8, rot: rnd(0, TAU), vr: rnd(-4, 4), c: pick1(), life: rnd(1.1, 1.8), max: 1.8 }); } },
+    spawn(dt) { acc += dt; while (t < T && acc > .16) { acc -= .16; parts.push({ x: rnd(W * .05, W * .95), y: H + 8, vx: rnd(-25, 25), vy: -rnd(80, 190) * U() * .8, r: rnd(5, 11) * U() * .8, rot: rnd(0, TAU), vr: rnd(-4, 4), c: pick1(), life: rnd(1.4, 2.2), max: 2.2 }); } },
+    step(p, dt) { p.vy += 55 * U() * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt; p.life -= dt; },
+    draw(p) { ctx.globalAlpha = Math.max(0, Math.min(1, p.life / .6)); ctx.fillStyle = p.c; star(p.x, p.y, p.r * (.85 + .15 * Math.sin(p.life * 12)), p.rot, 5, .45); ctx.fill(); ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 1; ctx.stroke(); },
+    alive(p) { return p.life > 0; },
+  };
+  E.bubbles = {
+    spawn(dt) { acc += dt; while (t < T && acc > .17) { acc -= .17; const r = rnd(7, 19) * U() * .8; parts.push({ k: "b", x: rnd(r, W - r), y: H + r, r, vy: -rnd(28, 60) * U() * .8, ph: rnd(0, TAU), t: 0, c: pick1(), pop: rnd(1.6, 4.6), pt: 0, drops: null }); } },
+    step(p, dt) {
+      p.t += dt;
+      if (p.pt) { p.pt += dt; if (p.pt > .32) p.dead = true; return; }
+      p.y += p.vy * dt; p.x += Math.sin(p.t * 2 + p.ph) * 12 * dt;
+      if (p.t > p.pop || p.y < p.r * 1.2) { p.pt = .001; p.drops = Array.from({ length: 7 }, () => rnd(0, TAU)); }
+    },
+    draw(p) {
+      if (p.pt) { const k = p.pt / .32; ctx.globalAlpha = 1 - k; ctx.strokeStyle = p.c; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1 + .5 * k), 0, TAU); ctx.stroke(); ctx.fillStyle = "#fff"; p.drops.forEach((a) => { ctx.beginPath(); ctx.arc(p.x + Math.cos(a) * p.r * (1 + 1.1 * k), p.y + Math.sin(a) * p.r * (1 + 1.1 * k), 1.6 + (1 - k) * 1.2, 0, TAU); ctx.fill(); }); return; }
+      const g = ctx.createRadialGradient(p.x - p.r * .25, p.y - p.r * .25, p.r * .1, p.x, p.y, p.r); g.addColorStop(0, "rgba(255,255,255,.12)"); g.addColorStop(.75, "rgba(255,255,255,.1)"); g.addColorStop(1, p.c);
+      ctx.globalAlpha = .9; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill(); ctx.strokeStyle = p.c; ctx.lineWidth = 1.4; ctx.stroke();
+      ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = Math.max(1.2, p.r * .12); ctx.beginPath(); ctx.arc(p.x, p.y, p.r * .68, Math.PI * 1.1, Math.PI * 1.45); ctx.stroke();
+    },
+    alive(p) { return !p.dead; },
+  };
+  E.crowns = {
+    spawn(dt) {
+      acc += dt;
+      while (t < T && acc > .28) { acc -= .28; const s = rnd(8, 17) * U() * .8; parts.push({ k: "k", x: rnd(s, W - s), y: rnd(s, H - s), s, rot: rnd(-.25, .25), life: rnd(1.3, 2.3), max: 0, c: R() < .6 ? pal[0] : pick1() }); }
+    },
+    step(p, dt) { if (!p.max) p.max = p.life; p.life -= dt; if (p.k === "k" && R() < dt * 9) parts.push({ k: "g", x: p.x + rnd(-p.s * 1.4, p.s * 1.4), y: p.y + rnd(-p.s, p.s), s: rnd(2, 5) * U() * .8, life: rnd(.4, .8), max: .8, c: "#fff" }); },
+    draw(p) {
+      if (p.k === "g") { const k = Math.max(0, Math.sin(Math.PI * (1 - p.life / p.max))); spark(p.x, p.y, p.s * (.4 + k), p.c, k); return; }
+      const k = Math.sin(Math.PI * Math.max(0, 1 - p.life / p.max)); ctx.globalAlpha = Math.min(1, k * 2); crown(p.x, p.y, p.s * (.5 + .55 * k), p.rot + Math.sin(p.life * 6) * .08, p.c);
+    },
+    alive(p) { return p.life > 0; },
+  };
+  /* Jubelnde Bälle */
+  const BALLS = (top) => ({
+    init() {
+      const r = Math.max(9, Math.min(26, H * .12, W * .07)), n = Math.max(3, Math.min(9, Math.round(W / (r * 2.9))));
+      for (let i = 0; i < n; i++) parts.push({ i, x: (i + .5) * W / n + rnd(-r * .3, r * .3), r, ph: rnd(0, TAU), w: rnd(4.4, 5.6), c: pal[i % 5], in: i * .09, t: 0, jump: rnd(.9, 1.5) * r });
+    },
+    spawn() {},
+    step(p, dt) { p.t += dt; },
+    draw(p) {
+      const tt = p.t - p.in; if (tt <= 0) return; const out = !forever && t > T - .4; const sc = Math.min(1, tt / .35) * (out ? Math.max(0, (T - t) / .4) : 1); if (sc <= 0) return;
+      const r = p.r * sc, ex = (a) => 1 + Math.sin(Math.min(1, a) * Math.PI / 2) * .12;
+      let cx = p.x, cy, sx = 1, sy = 1, wave = tt * 7 + p.ph;
+      if (!top) { const s = Math.abs(Math.sin(tt * p.w * .6 + p.ph)); cy = H - r - 2 - s * p.jump * 1.6; const sq = Math.pow(1 - s, 7); sy = 1 - .22 * sq + .06 * s; sx = 1 + .2 * sq - .04 * s; cy += r * (1 - sy); }
+      else { const L = r * 2.1, th = .38 * Math.sin(tt * 2.8 + p.ph); cx = p.x + Math.sin(th) * L; cy = Math.cos(th) * L + r * .25; var pivX = p.x; }
+      ctx.save(); ctx.globalAlpha = 1; ctx.lineCap = "round"; ctx.strokeStyle = p.c; ctx.fillStyle = p.c; ctx.lineWidth = Math.max(1.6, r * .16);
+      /* Arme */
+      const lift = .9 + .35 * Math.sin(wave);
+      if (!top) { [-1, 1].forEach((d) => { const a = d * (.6 + .5 * Math.sin(wave + (d > 0 ? 0 : 1.6))); ctx.beginPath(); ctx.moveTo(cx + d * r * .85, cy + r * .05); ctx.lineTo(cx + d * r * .85 + Math.sin(a) * r * 1.1 * (d > 0 ? 1 : 1), cy - r * (.9 + lift * .4)); ctx.stroke(); ctx.beginPath(); ctx.arc(cx + d * r * .85 + Math.sin(a) * r * 1.1, cy - r * (.9 + lift * .4), r * .17, 0, TAU); ctx.fill(); }); }
+      else { ctx.beginPath(); ctx.moveTo(cx + r * .55, cy - r * .7); ctx.lineTo(pivX + Math.sin(.38 * Math.sin(tt * 2.8 + p.ph)) * 0, -1); ctx.stroke(); ctx.beginPath(); ctx.arc(pivX, 1, r * .2, 0, TAU); ctx.fill(); const a = Math.sin(wave) * .6; ctx.beginPath(); ctx.moveTo(cx - r * .85, cy); ctx.lineTo(cx - r * .85 - Math.cos(a) * r * 1.0, cy - Math.sin(a + .9) * r * 1.0); ctx.stroke(); }
+      ctx.translate(cx, cy); ctx.scale(sx, sy);
+      ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = Math.max(1, r * .09); ctx.stroke();
+      ctx.fillStyle = "rgba(255,255,255,.5)"; ctx.beginPath(); ctx.ellipse(-r * .38, -r * .45, r * .16, r * .26, -.5, 0, TAU); ctx.fill();
+      ctx.strokeStyle = "#1b1b1b"; ctx.fillStyle = "#1b1b1b"; ctx.lineWidth = Math.max(1.3, r * .13);
+      [-1, 1].forEach((d) => { ctx.beginPath(); ctx.arc(d * r * .36, -r * .12, r * .18, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); });
+      ctx.beginPath(); ctx.arc(0, r * .05, r * .3, 0, Math.PI); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "rgba(255,120,150,.55)"; [-1, 1].forEach((d) => { ctx.beginPath(); ctx.arc(d * r * .62, r * .22, r * .14, 0, TAU); ctx.fill(); });
+      ctx.restore();
+    },
+    alive(p) { return forever || t < T + .2; },
+  });
+  E.ballsb = BALLS(false); E.ballst = BALLS(true);
+  const fxo = E[kind]; if (fxo.init) { fit(); fxo.init(); }
+  const stop = () => { if (dead) return; dead = true; cancelAnimationFrame(raf); cv.remove(); };
+  const frame = (ts) => {
+    if (dead) return; if (!b.isConnected) { stop(); return; }
+    const dt = Math.min(.05, last ? (ts - last) / 1000 : .016); last = ts; t += dt; fit();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    fxo.spawn(dt);
+    parts.forEach((p) => { fxo.step(p, dt); fxo.draw(p); }); ctx.globalAlpha = 1;
+    parts = parts.filter((p) => fxo.alive(p));
+    if (t > T + 3 || (t > T && !parts.length)) { stop(); return; }
+    raf = requestAnimationFrame(frame);
+  };
+  fit(); raf = requestAnimationFrame(frame);
+  return stop;
+}
+
 const JUST = { left: "flex-start", center: "center", right: "flex-end" };
 const q = new URLSearchParams(location.search);
 
@@ -2069,6 +2262,13 @@ function applyPage() {
   function refreshDs() {
     if (!X || !X.uhr) return; const ok = (US_LIST[S.theme] || []).some((x) => x[0] === X.uhr.ds); if (X.uhr.ds && !ok) X.uhr.ds = "";
     const c = document.querySelector('#wc [data-f="ds"]'); if (c && c._redraw) c._redraw();
+  }
+  function fxTest(kind) { const bt = btn || null; if (!bt) return; const d = X.countdown.fxd === "0" ? 6 : Math.min(+X.countdown.fxd || 8, 8); fxPlay(bt, kind, d); }
+  function cdVis() {
+    if (S.w !== "countdown") return; const c = X.countdown, up = c.mode === "up", row = (k) => { const e = document.querySelector('#wc [data-f="' + k + '"]'); return e ? e.closest(".row") : null; }, set = (k, on) => { const r = row(k); if (r) r.style.display = on ? "" : "none"; };
+    set("to", !up); set("done", !up); set("dfx", !up); set("from", up); set("jub", up); set("jmsg", up && !!c.jub); set("jfx", up && !!c.jub);
+    const pre = !up || !!c.jub; set("pre", pre); set("preu", pre && +c.pre > 0); set("pmsg", pre && +c.pre > 0); set("pfx", pre && +c.pre > 0);
+    set("fxd", [c.dfx, c.jfx, c.pfx].some(Boolean));
   }
   function uhrVis() {
     if (S.w !== "uhr") return; const u = X.uhr, row = (k) => { const e = document.querySelector('#wc [data-f="' + k + '"]'); return e ? e.closest(".row") : null; }, set = (k, on) => { const r = row(k); if (r) r.style.display = on ? "" : "none"; };
@@ -2380,6 +2580,7 @@ function applyPage() {
   const BASE = ["g-colors", "g-fill", "g-shape", "g-frame", "g-pat", "g-font", "g-size", "g-caps", "g-pad", "g-fx", "g-scheme"];
   const ROWSV = { button: ALL_ROWS, lauftext: BASE.concat(["g-hov"]), banner: BASE.concat(["g-align", "g-fit", "g-hov", "g-clk"]), textfeld: BASE.concat(["g-align", "g-fit", "g-hov"]), uhr: BASE.concat(["g-align", "g-fit", "g-hov"]), countdown: BASE.concat(["g-align", "g-fit", "g-hov"]), kalender: BASE.concat(["g-align", "g-fit", "g-hov"]), fun: BASE.concat(["g-align", "g-fit", "g-hov"]) };
   const WPREV = { lauftext: 80, banner: 130, textfeld: 210, uhr: 170, countdown: 170, kalender: 340, fun: 330 };
+  const ago7 = (() => { const d = new Date(Date.now() - 7 * 86400000); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + "T18:00"; })();
   const in7 = (() => { const d = new Date(Date.now() + 7 * 86400000); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + "T18:00"; })();
   const YN = (a, b) => [["1", a], ["0", b]];
   const F = (k, label, kind, x) => Object.assign({ k, label, kind, def: "" }, x || {});
@@ -2388,7 +2589,11 @@ function applyPage() {
     banner: [F("title", "Titel", "text", { max: 80, ph: "z. B. Neue Quest verfügbar" }), F("text", "Text", "area", { max: 300, ph: "Beschreibung, mehrere Zeilen möglich" }), F("bar", "Akzentleiste", "seg", { items: [["left", "Links"], ["top", "Oben"], ["none", "Keine"]], def: "left" })],
     textfeld: [F("title", "Überschrift", "text", { max: 80, ph: "optional" }), F("text", "Text", "area", { max: 700, ph: "Dein Text. Neue Zeile = neuer Absatz.", rows: 6 }), F("lh", "Zeilenabstand", "seg", { items: [["tight", "Eng"], ["mid", "Normal"], ["loose", "Weit"]], def: "mid" }), F("type", "Tipp-Animation", "seg", { items: [["0", "Aus"], ["1", "Schreibmaschine"]], def: "0", hint: "Text tippt sich selbst; Klick zeigt ihn sofort." })],
     uhr: [F("mode", "Anzeige", "seg", { items: [["digital", "Digital"], ["analog", "Analog"]], def: "digital" }), F("ds", "Uhr-Stil", "ds", { def: "", hint: "Eigene Zeichnungen, nur im gewählten Theme verfügbar. Ein Stil ersetzt „Anzeige“. Klick auf die Uhr startet die Stunden-Show (Klingeln, Kuckuck)." }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("h12", "Format", "seg", { items: [["0", "24 Stunden"], ["1", "12 Stunden"]], def: "0", hint: "Nur bei digitaler Anzeige." }), F("flip", "Umblättern", "seg", { items: [["none", "Aus"], ["top", "Oben"], ["side", "Seite"]], def: "none", hint: "Oben: Klappe fällt nach unten (Klapp-Uhr). Seite: Karte dreht sich um die senkrechte Achse. Nur bei Digital ohne Uhr-Stil." }), F("fu", "Umblättern bei", "multi", { items: [["h", "Stunden"], ["m", "Minuten"], ["s", "Sekunden"]], def: "hms" }), F("date", "Datum", "seg", { items: [["none", "Keins"], ["short", "Kurz"], ["long", "Lang"]], def: "short" }), F("name", "Name", "text", { max: 30, ph: "optional, z. B. Berlin" })],
-    countdown: [F("title", "Titel", "text", { max: 60, ph: "z. B. Bis zur nächsten Session" }), F("to", "Zieldatum", "dt", { def: in7, req: true }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("units", "Einheiten", "seg", { items: [["full", "Ausgeschrieben"], ["short", "Kurz"]], def: "full" }), F("done", "Text nach Ablauf", "text", { max: 60, def: "Es ist soweit!" })],
+    countdown: [F("mode", "Modus", "seg", { items: [["down", "Countdown bis"], ["up", "Countup seit"]], def: "down" }), F("title", "Titel", "text", { max: 60, ph: "z. B. Bis zur nächsten Session" }), F("to", "Zieldatum", "dt", { def: in7, req: true }), F("from", "Startdatum", "dt", { def: ago7, req: true, hint: "Zählt ab diesem Zeitpunkt aufwärts." }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("units", "Einheiten", "seg", { items: [["full", "Ausgeschrieben"], ["short", "Kurz"]], def: "full" }),
+      F("done", "Meldung bei Erreichen", "text", { max: 80, def: "Es ist soweit!" }), F("dfx", "Effekt bei Erreichen", "efx", { def: "", hint: "Läuft beim Erreichen und bis 24 Stunden danach beim Laden des Widgets." }),
+      F("jub", "Jubiläum", "seg", { items: [["", "Keins"], ["w", "Wöchentlich"], ["m", "Monatlich"], ["y", "Jährlich"]], def: "", hint: "Meldung und Effekt am Jahrestag, Monatstag bzw. Wochentag des Startdatums (24 Stunden lang)." }), F("jmsg", "Meldung zum Jubiläum", "text", { max: 80, def: "{n}. Jubiläum!", hint: "{n} = Anzahl Wochen, Monate bzw. Jahre." }), F("jfx", "Effekt zum Jubiläum", "efx", { def: "" }),
+      F("pre", "Vorab-Meldung ab", "num", { min: 0, max: 999, def: "0", hint: "0 = aus. Countdown: vor dem Zieldatum. Countup: vor dem nächsten Jubiläum." }), F("preu", "Einheit", "seg", { items: [["d", "Tage vorher"], ["h", "Stunden vorher"]], def: "d" }), F("pmsg", "Vorab-Meldung", "text", { max: 80, def: "", ph: "z. B. Nur noch kurz!", hint: "{n} = nächstes Jubiläum (nur Countup)." }), F("pfx", "Vorab-Effekt", "efx", { def: "" }),
+      F("fxd", "Effekt-Dauer", "seg", { items: [["5", "5 s"], ["8", "8 s"], ["15", "15 s"], ["30", "30 s"], ["0", "Dauerhaft"]], def: "8" })],
     kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag)." })],
     fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mult", "Multiplikator", "num", { min: 1, max: 20, def: "1", hint: "Würfelsumme × Multiplikator." }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zuletzt addiert: (Summe × Multiplikator) + Modifikator." }), F("ctl", "Bedienung im Widget", "seg", { items: YN("An", "Aus"), def: "1", hint: "Würfel, Anzahl, Multiplikator und Modifikator lassen sich im Widget selbst ändern (wird im Browser gemerkt). Die Werte oben sind die Startwerte." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
   };
@@ -2462,6 +2667,15 @@ function applyPage() {
             });
           };
           redraw(); ctl._redraw = redraw;
+        } else if (f.kind === "efx") {
+          ctl = document.createElement("div"); ctl.className = "sepsel";
+          const redraw = () => {
+            ctl.textContent = ""; const cur = X[t][f.k], r = document.createElement("div"); r.className = "seg";
+            FX_LIST.forEach(([v, l]) => { const bt = document.createElement("button"); bt.type = "button"; bt.textContent = l; bt.setAttribute("aria-pressed", String(cur === v)); bt.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); if (v) fxTest(v); }); r.appendChild(bt); });
+            const tb = document.createElement("button"); tb.type = "button"; tb.className = "mdp"; tb.textContent = "▶ Effekt testen"; tb.disabled = !cur; tb.addEventListener("click", () => fxTest(cur));
+            ctl.append(r, tb);
+          };
+          redraw(); ctl._redraw = redraw;
         } else if (f.kind === "tz") {
           ctl = document.createElement("select"); TZS.forEach(([v, l]) => { const op = document.createElement("option"); op.value = v; op.textContent = l; ctl.appendChild(op); }); ctl.value = X[t][f.k];
           ctl.addEventListener("change", () => { X[t][f.k] = ctl.value; render(); });
@@ -2503,7 +2717,7 @@ function applyPage() {
     const t = S.w, cfg = cfgNow(); cfg.label = ""; cfg.sub = ""; if (t !== "banner") { cfg.icon = ""; cfg.url = ""; }
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align] || "flex-start"; prev.classList.remove("ff");
     { const big = t === "uhr" && (X.uhr.mode === "analog" || X.uhr.ds), key = t + (big ? "L" : ""); if (prev._wk !== key) { prev._wk = key; prev.style.height = (big ? 280 : WPREV[t]) + "px"; } }
-    uhrVis();
+    uhrVis(); cdVis();
     const sh = buildWidget(t, cfg, oFor(t), prev); btn = sh.b;
     const raw = cfg.url, ok = !!okUrl(raw);
     $("g-msg").textContent = t !== "banner" ? "" : !raw ? "Optional: Mit Ziel-Adresse wird das Banner anklickbar." : ok ? "" : "Ziel nicht erlaubt oder unvollständig: Das Banner bleibt nicht anklickbar (erlaubt: https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";
@@ -2518,7 +2732,7 @@ function applyPage() {
     if (!S.caps) p.set("caps", "0"); if (S.fit !== D.fit) p.set("fit", S.fit); if (S.scheme !== "auto") p.set("scheme", S.scheme);
     if (S.fx.slice().sort().join() !== W_DEFAULT_FX.slice().sort().join()) p.set("fx", S.fx.length ? S.fx.join(",") : "none");
     DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
-    WSCHEMA[t].forEach((f) => { let v = X[t][f.k]; if (f.kind === "dates" || f.kind === "mdates") v = normDates(v); if (f.req ? v !== "" : v !== String(f.def)) p.set(f.k, v); });
+    WSCHEMA[t].forEach((f) => { if (t === "countdown" && ((f.k === "to" && X.countdown.mode === "up") || (f.k === "from" && X.countdown.mode !== "up"))) return; let v = X[t][f.k]; if (f.kind === "dates" || f.kind === "mdates") v = normDates(v); if (f.req ? v !== "" : v !== String(f.def)) p.set(f.k, v); });
     $("g-out").value = location.origin + location.pathname + "?" + p.toString(); $("g-copy").disabled = false;
   }
   function loadWidgetParams(u) {
@@ -2527,7 +2741,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:45"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 22:54"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

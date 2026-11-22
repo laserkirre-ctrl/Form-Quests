@@ -304,6 +304,12 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .side .prev { height: auto; width: fit-content; min-width: 60px; min-height: 40px; max-width: 100%; }
 .navcard .nav { flex-wrap: wrap; }
 
+/* ---- Adresse neu erzeugen ---- */
+.out2 { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.out2 .msg { margin: 0; }
+.alt { font: inherit; font-size: .9rem; cursor: pointer; color: var(--pa); background: transparent; border: 1px solid var(--pa); padding: 5px 12px; border-radius: 3px; }
+.alt:hover { background: var(--pa); color: var(--pink); }
+
 </style>
 </head>
 <body>
@@ -556,7 +562,7 @@ if (q.has("url") || q.has("w")) {
     '</section>' +
     '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
-    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
+    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div>' +
     '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
     '</div></aside></div></div>' +
@@ -748,6 +754,12 @@ if (q.has("url") || q.has("w")) {
     const o = $("g-out"); o.select();
     try { await navigator.clipboard.writeText(o.value); $("g-copy").textContent = "Kopiert"; } catch (e) { document.execCommand && document.execCommand("copy"); $("g-copy").textContent = "Markiert – Strg+C"; }
     setTimeout(() => { $("g-copy").textContent = "Kopieren"; }, 1800);
+  });
+  $("g-regen").addEventListener("click", () => {
+    render();
+    const m = $("g-regenmsg"), ok = !!$("g-out").value;
+    m.textContent = ok ? "Neu erzeugt aus den aktuellen Einstellungen." : "Ziel-Adresse fehlt oder ist ungültig.";
+    clearTimeout(m._t); m._t = setTimeout(() => { m.textContent = ""; }, 2400);
   });
   /* ---- Vorhandenes Widget laden ---- */
   $("g-loadgo").addEventListener("click", () => {

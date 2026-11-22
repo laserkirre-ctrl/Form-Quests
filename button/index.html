@@ -310,6 +310,16 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .alt { font: inherit; font-size: .9rem; cursor: pointer; color: var(--pa); background: transparent; border: 1px solid var(--pa); padding: 5px 12px; border-radius: 3px; }
 .alt:hover { background: var(--pa); color: var(--pink); }
 
+/* ---- Optionen mit Live-Vorschau ---- */
+.seg.pvrow { gap: 10px; }
+.pv { display: inline-flex; align-items: center; justify-content: center; padding: 8px 10px; border: 1px dashed var(--pl); border-radius: 4px; cursor: pointer; background: transparent; outline: none; }
+.pv:hover { border-color: var(--pa); }
+.pv:focus-visible { box-shadow: 0 0 0 2px var(--pa); }
+.pv[aria-pressed=true] { border: 1px solid var(--pa); box-shadow: 0 0 0 1px var(--pa); }
+.pv .btn { cursor: pointer; }
+.seg .pv.mchk::before { content: none; }
+.pv.mchk[aria-pressed=true]::before { content: none; }
+
 </style>
 </head>
 <body>
@@ -554,8 +564,8 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Randabstand</span><div class="seg" id="g-pad"></div><p class="hint2">Platz um den Button, damit Glühen und Zittern nicht abgeschnitten werden. Auto: 20 px bei Glühen, Zittern oder Streifen, sonst 0. Rahmen in Notion = Button + Randabstand.</p></div>' +
     '<h3 class="sub3">Animation</h3>' +
     '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl, keine Auswahl = ruhiger Button.</p></div>' +
-    '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div></div>' +
-    '<div class="row"><span class="lab">Klick</span><div class="seg" id="g-clk"></div></div>' +
+    '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div><p class="hint2">Maus über die Option bewegen zeigt die Wirkung.</p></div>' +
+    '<div class="row"><span class="lab">Klick</span><div class="seg" id="g-clk"></div><p class="hint2">Maustaste auf der Option gedrückt halten zeigt die Wirkung.</p></div>' +
     '<h3 class="sub3">Notion</h3>' +
     '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
     '</section>' +
@@ -617,18 +627,35 @@ if (q.has("url") || q.has("w")) {
     });
   };
   const drawDiyBtn = () => { const b = $("g-diy"); b.className = "diy" + (diyCount() ? " on" : ""); b.textContent = "DIY" + (diyCount() ? " · " + diyCount() : ""); };
-  const drawFx = () => {
-    const host = $("g-fx"); host.textContent = "";
-    FX.forEach(([k, label]) => {
-      const b = document.createElement("button"); b.type = "button"; b.className = "mchk"; b.textContent = label; b.setAttribute("aria-pressed", String(S.fx.includes(k)));
-      b.addEventListener("click", () => { S.fx = S.fx.includes(k) ? S.fx.filter((x) => x !== k) : S.fx.concat(k); drawFx(); render(); });
-      host.appendChild(b);
+  /* Optionen mit Live-Vorschau: jede Auswahl ist ein echter Mini-Button im aktuellen Stil, nur die jeweilige Option ist ersetzt */
+  const PV_ROWS = [["g-fill", FILLS, "fill"], ["g-shape", SHAPES, "shape"], ["g-frame", FRAMES, "frame"], ["g-pat", PATTERNS, "pat"], ["g-size", SIZES.map((z) => [z[0], z[1] + " " + z[2]]), "size"], ["g-fx", FX, "fx"], ["g-hov", HOVERS, "hov"], ["g-clk", CLICKS, "clk"]];
+  let pvSig = "";
+  const pvCfg = (key, val, label) => {
+    const c = cfgNow(); c.label = label; c.sub = ""; c.icon = ""; c.url = ""; c.fx = []; c.pad = "0"; c.fit = "content"; c.open = "tab";
+    if (key === "fx") { c.fx = [val]; c.pad = "6"; } else c[key] = val;
+    if (key !== "size") c.size = "small";
+    return c;
+  };
+  const drawPv = (force) => {
+    const sig = JSON.stringify([S.theme, S.fill, S.shape, S.frame, S.pat, S.hov, S.clk, S.caps, S.size, S.font, S.fx, S.diy, S.scheme]);
+    if (!force && sig === pvSig) return; pvSig = sig;
+    PV_ROWS.forEach(([id, items, key]) => {
+      const host = $(id); host.textContent = ""; host.classList.add("pvrow");
+      items.forEach(([val, label]) => {
+        const on = key === "fx" ? S.fx.includes(val) : S[key] === val;
+        const o = document.createElement("div"); o.className = "pv" + (key === "fx" ? " mchk" : ""); o.setAttribute("role", "button"); o.tabIndex = 0; o.setAttribute("aria-pressed", String(on)); o.setAttribute("aria-label", label);
+        buildButton(pvCfg(key, val, label), o);
+        const act = () => { if (key === "fx") S.fx = S.fx.includes(val) ? S.fx.filter((x) => x !== val) : S.fx.concat(val); else S[key] = val; render(); };
+        o.addEventListener("click", act);
+        o.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+        host.appendChild(o);
+      });
     });
   };
   const drawAll = () => {
-    drawThemes(); drawNav(); drawDiyBtn(); seg("g-fill", FILLS, "fill"); seg("g-shape", SHAPES, "shape"); seg("g-frame", FRAMES, "frame"); seg("g-pat", PATTERNS, "pat");
-    seg("g-font", FONTS.map((f) => [f[0], f[1]]), "font"); seg("g-size", SIZES.map((s) => [s[0], s[1] + " · " + s[2] + " px"]), "size"); seg("g-caps", [[true, "GROSSBUCHSTABEN"], [false, "Normal"]], "caps");
-    seg("g-align", ALIGNS, "align"); seg("g-fit", [["content", "Nach Inhalt"], ["frame", "Rahmen ausfüllen"]], "fit"); seg("g-pad", [["auto", "Auto"], ["0", "0 px"], ["6", "6 px"], ["12", "12 px"], ["20", "20 px"]], "pad"); seg("g-open", OPEN, "open"); seg("g-hov", HOVERS, "hov"); seg("g-clk", CLICKS, "clk"); seg("g-scheme", SCHEMES, "scheme"); drawFx(); drawIcoBtn();
+    drawThemes(); drawNav(); drawDiyBtn(); drawPv(true);
+    seg("g-font", FONTS.map((f) => [f[0], f[1]]), "font"); seg("g-caps", [[true, "GROSSBUCHSTABEN"], [false, "Normal"]], "caps");
+    seg("g-align", ALIGNS, "align"); seg("g-fit", [["content", "Nach Inhalt"], ["frame", "Rahmen ausfüllen"]], "fit"); seg("g-pad", [["auto", "Auto"], ["0", "0 px"], ["6", "6 px"], ["12", "12 px"], ["20", "20 px"]], "pad"); seg("g-open", OPEN, "open"); seg("g-scheme", SCHEMES, "scheme"); drawIcoBtn();
   };
 
   /* ---- DIY-Popup + gespeicherte Kombis ---- */
@@ -722,6 +749,7 @@ if (q.has("url") || q.has("w")) {
     return Object.assign({ label: $("g-label").value.trim(), sub: $("g-sub").value.trim(), icon: S.icon, url: $("g-url").value.trim(), theme: S.theme, fill: S.fill, shape: S.shape, frame: S.frame, pat: S.pat, hov: S.hov, clk: S.clk, caps: S.caps, fx: S.fx, open: S.open, size: S.size, font: S.font, pad: S.pad, fit: S.fit }, S.diy);
   }
   function render() {
+    drawPv();
     const cfg = cfgNow();
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align];
     btn = buildButton(cfg, prev); btn.addEventListener("click", (e) => { if (!okUrl(cfg.url)) e.preventDefault(); });

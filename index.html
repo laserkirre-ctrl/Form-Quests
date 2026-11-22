@@ -490,7 +490,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363676570}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363847982}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -1153,7 +1153,13 @@ function toApiProps(F) {
 async function sendWebhook(F, files) {
   const payload = { secret: cfg.secret || "", database_id: DB_ID, created: new Date().toISOString(), properties: toApiProps(F), files: files || [] };
   const body = new URLSearchParams(); body.set("payload", JSON.stringify(payload)); body.set("secret", cfg.secret || ""); body.set("properties", JSON.stringify(payload.properties)); body.set("body", JSON.stringify({ parent: { database_id: DB_ID }, properties: payload.properties }));
-  await fetch(cfg.webhook, { method: "POST", mode: "no-cors", body });
+  const ac = new AbortController(), tm = setTimeout(() => ac.abort(), 25000);
+  try {
+    const r = await fetch(cfg.webhook, { method: "POST", mode: "cors", body, signal: ac.signal });
+    const t = await r.text(); let url = "";
+    try { const m = /([0-9a-f]{32})(?:[?#]|$)/i.exec(JSON.parse(t).url || ""); if (m) url = "https://app.notion.com/p/" + m[1]; } catch (e) {}
+    return url;
+  } finally { clearTimeout(tm); }
 }
 
 const saveBtn = $("save"), doneDlg = $("done");
@@ -1187,16 +1193,17 @@ async function save() {
   saving = true; saveBtn.disabled = true; say("Quest wird gespeichert …");
   try {
     Snd.send();
-    await sendWebhook(F, []);
+    const pageUrl = await sendWebhook(F, []);
     Snd.ok(); burst();
-    showDone();
+    showDone(pageUrl);
     say("Gespeichert.", "ok");
   } catch (e) {
     console.error(e);
     say("Senden fehlgeschlagen. Verbindung prüfen und erneut versuchen.", "err");
   } finally { saving = false; saveBtn.disabled = false; }
 }
-function showDone() { openDlg(doneDlg); }
+const VIEW_ALL = $("dn-view").href;
+function showDone(pageUrl) { $("dn-view").href = pageUrl || VIEW_ALL; openDlg(doneDlg); }
 saveBtn.addEventListener("click", save);
 /* Ziel-Links: im selben Tab; im Einbettungs-Rahmen (falls gesperrt) in neuem Tab */
 function goTo(url) {

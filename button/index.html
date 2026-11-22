@@ -239,6 +239,13 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .row.cr.closed { margin-bottom: 4px; }
 @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } .side { order: -1; top: 6px; z-index: 5; max-height: none; background: var(--pb); } }
 
+/* ---- Rechte Spalte mittig zum Fenster ---- */
+.side { top: 12px; height: calc(100vh - 24px); max-height: none; display: flex; flex-direction: column; overflow: auto; }
+.sideinner { margin: auto 0; }
+.themes .tb small { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--pl); padding: 0 4px; }
+.themes .tb:disabled { color: var(--pm); cursor: not-allowed; opacity: .7; }
+@media (max-width: 920px) { .side { height: auto; overflow: visible; } .sideinner { margin: 0; } }
+
 </style>
 </head>
 <body>
@@ -442,14 +449,14 @@ if (q.has("url") || q.has("w")) {
   const app = $("app");
   app.innerHTML = '<div class="shell">' +
     '<header class="topbar"><h1>WIDGETS FÜR NOTION</h1><div class="themes" id="g-themes" role="group" aria-label="Theme"></div></header>' +
-    '<div class="cols"><div class="main">' +
+    '<div class="cols"><div class="lmain">' +
     '<section class="card navcard"><nav class="nav" id="g-nav" aria-label="Widgets"></nav></section>' +
-    '<section class="card"><h2 id="opt-h">OPTIONEN · BUTTON</h2><div class="allbtns"><button type="button" id="g-allopen">Alle auf</button><button type="button" id="g-allclose">Alle zu</button></div>' +
+    '<section class="card"><h2 id="opt-h">OPTIONEN · BUTTON</h2>' +
     '<h3 class="sub3">Inhalt</h3>' +
     '<div class="row"><label for="g-label">Beschriftung</label><input type="text" id="g-label" maxlength="60" placeholder="z. B. Neue Quest anpinnen" autocomplete="off"></div>' +
     '<div class="row"><label for="g-sub">Untertitel</label><input type="text" id="g-sub" maxlength="60" placeholder="optional" autocomplete="off"></div>' +
     '<div class="row"><span class="lab">Symbol</span><div class="seg"><button type="button" class="icobtn" id="g-ico"></button></div></div>' +
-    '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="text" id="g-url" spellcheck="false" placeholder="https://… oder name@beispiel.de" autocomplete="off" inputmode="url"><button type="button" id="g-formurl" class="ghostbtn">Formular</button></div></div>' +
+    '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="text" id="g-url" spellcheck="false" placeholder="https://… oder name@beispiel.de" autocomplete="off" inputmode="url"></div></div>' +
     '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
     '<p class="msg" id="g-msg"></p>' +
     '<h3 class="sub3">Aussehen</h3>' +
@@ -471,13 +478,13 @@ if (q.has("url") || q.has("w")) {
     '<h3 class="sub3">Notion</h3>' +
     '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
     '</section>' +
-    '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p>' +
-    '<p class="hl">Geändert wird eine Kopie: Nach dem Anpassen die neue Adresse in der Notion-Einbettung ersetzen. Erlaubte Ziele: notion.so, notion.com, notion.site, die Formular-Adresse und E-Mail-Adressen. Symbole: Lucide (ISC). Schriften: Google Fonts (OFL / Apache 2.0).</p></section>' +
-    '</div><aside class="side" aria-label="Vorschau">' +
+    '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
     '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
     '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
-    '</aside></div></div>' +
+    '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p>' +
+    '<p class="hl">Geändert wird eine Kopie: Nach dem Anpassen die neue Adresse in der Notion-Einbettung ersetzen. Erlaubte Ziele: notion.so, notion.com, notion.site, die Formular-Adresse und E-Mail-Adressen. Symbole: Lucide (ISC). Schriften: Google Fonts (OFL / Apache 2.0).</p></section>' +
+    '</div></aside></div></div>' +
     '<dialog class="dlg" id="diy" aria-labelledby="diy-t"><div class="dlg-in"><h3 id="diy-t">EIGENE FARBEN</h3><div id="diy-rows"></div>' +
     '<h4>KOMBINATIONEN</h4><div class="inl"><input type="text" id="cb-name" maxlength="24" placeholder="Name der Kombi" autocomplete="off"><button type="button" class="go" id="cb-save">Speichern</button></div><div id="cb-list" style="margin-top:10px"></div>' +
     '<p class="hl" id="cb-note">Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen.</p>' +
@@ -487,7 +494,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="tabs" role="tablist"><button type="button" role="tab" id="tab-e" aria-selected="true">Emojis</button><button type="button" role="tab" id="tab-s" aria-selected="false">Symbole</button><button type="button" role="tab" id="tab-a" aria-selected="false">Animiert</button></div>' +
     '<div class="igrid" id="ip-grid"></div><div class="dact"><button type="button" id="ip-none">Kein Symbol</button><button type="button" class="go" id="ip-ok">Schließen</button></div></div></dialog>';
   const TK = "wfn-theme";
-  let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (THEMES[t]) savedTheme = t; } catch (e) { /* ohne Speicher */ }
+  let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (t === "standard") savedTheme = t; } catch (e) { /* ohne Speicher */ }
   const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, pad: "auto", fit: "content", fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {} };
   const OPENHINT = { tab: "Normaler Tab des Browsers bzw. der Notion-App.", side: "Notions Seitenansicht (Side Peek) des Eintrags.", center: "Notions zentrierte Ansicht (Center Peek) des Eintrags.", full: "Notions Vollseite des Eintrags." };
   const SCHEMEHINT = { dark: "Notion läuft im Dunkelmodus: Hintergrund des Widgets bleibt transparent.", light: "Notion läuft im Hellmodus: Hintergrund des Widgets bleibt transparent.", auto: "Folgt der Systemeinstellung. Nur transparent, wenn Notion dieselbe Einstellung nutzt; sonst erscheint ein weißer oder schwarzer Kasten." };
@@ -497,12 +504,15 @@ if (q.has("url") || q.has("w")) {
     const t = THEMES[S.theme], r = document.documentElement.style;
     r.setProperty("--pa", t.a); r.setProperty("--pp", t.panel); r.setProperty("--pl", t.line); r.setProperty("--ptx", t.text); r.setProperty("--pm", t.mu); r.setProperty("--pb", t.pb); r.setProperty("--pink", t.ink);
   }
+  const THEME_PICK = [["standard", "Cybercriminal", true], ["floral", "Floral", false], ["candy", "Candy", false], ["retro", "Retro", false]];
   function drawThemes() {
     const host = $("g-themes"); host.textContent = "";
-    Object.keys(THEMES).forEach((k) => {
-      const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(S.theme === k)); b.className = "tb";
-      const dot = document.createElement("i"); dot.style.background = THEMES[k].a; b.appendChild(dot); b.appendChild(document.createTextNode(THEMES[k].name));
-      b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); render(); });
+    THEME_PICK.forEach(([k, name, ready]) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "tb"; b.setAttribute("aria-pressed", String(ready && S.theme === k));
+      if (ready) { const dot = document.createElement("i"); dot.style.background = THEMES[k].a; b.appendChild(dot); }
+      b.appendChild(document.createTextNode(name));
+      if (!ready) { b.disabled = true; b.title = "Folgt später"; const sm = document.createElement("small"); sm.textContent = "bald"; b.appendChild(sm); }
+      else b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); render(); });
       host.appendChild(b);
     });
   }
@@ -659,7 +669,6 @@ if (q.has("url") || q.has("w")) {
     $("g-copy").disabled = !ok;
   }
   ["g-label", "g-sub", "g-url"].forEach((id) => $(id).addEventListener("input", render));
-  $("g-formurl").addEventListener("click", () => { $("g-url").value = FORM_URL; render(); });
   $("g-copy").addEventListener("click", async () => {
     const o = $("g-out"); o.select();
     try { await navigator.clipboard.writeText(o.value); $("g-copy").textContent = "Kopiert"; } catch (e) { document.execCommand && document.execCommand("copy"); $("g-copy").textContent = "Markiert – Strg+C"; }
@@ -715,8 +724,6 @@ if (q.has("url") || q.has("w")) {
       const tog = () => { const open = grp.classList.contains("closed"); set(open); openState["g:" + name] = open; saveOpen(); };
       h.addEventListener("click", tog); h.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tog(); } });
     });
-    const all = (open) => { rowSetters.forEach(([id, set]) => { set(open); openState[id] = open; }); saveOpen(); };
-    $("g-allopen").addEventListener("click", () => all(true)); $("g-allclose").addEventListener("click", () => all(false));
   }
   setupCollapse(); applyPage(); drawAll(); render();
   startBursts(() => btn);

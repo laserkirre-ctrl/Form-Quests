@@ -531,6 +531,165 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes ia-bsp { 0%, 46% { opacity: 0; transform: scale(.4); } 50% { opacity: 1; transform: scale(1.1); } 62% { opacity: 1; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(.6); } }
 }
 
+
+/* ================= Weitere Widgets ================= */
+.btn.wp { cursor: default; display: flex; align-items: center; justify-content: center; text-align: var(--ta, left); padding: .55em .8em; letter-spacing: .06em; line-height: 1.25; max-width: 100%; }
+.btn.wp.nolink { cursor: default; }
+a.btn.wp { cursor: pointer; }
+.btn.wp .wb { position: relative; z-index: 2; color: var(--tx); min-width: 0; font-family: var(--ff); }
+.btn.wp .gl { position: relative; }
+.btn.wp.fitf { width: 100%; height: 100%; }
+.btn.wp.fitf .wb { flex: none; }
+.wp.wt-uhr .wb, .wp.wt-countdown .wb, .wp.wt-kalender .wb, .wp.wt-fun .wb { white-space: nowrap; }
+.wpw { max-width: 100%; }
+
+/* Lauftext */
+.wp.mqb { padding: .35em 0; }
+.wp .mq { width: 100%; overflow: hidden; white-space: nowrap; }
+.wp .mqf { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.mqt { display: inline-flex; width: max-content; will-change: transform; animation-duration: var(--mqd, 12s); animation-timing-function: linear; animation-iteration-count: infinite; animation-name: none; }
+.mqg { display: inline-flex; flex: none; }
+.mqi { padding: 0 .4em; color: var(--tx); }
+.wp.f-solid .mqi { color: var(--ink); }
+.wp:not(.f-solid) .mqi { color: var(--ac); }
+.mqs { color: var(--tx); opacity: .55; padding: 0 .4em; }
+.mqp:hover .mqt { animation-play-state: paused; }
+@keyframes mq-l { from { transform: translateX(0); } to { transform: translateX(calc(-1 * var(--mqw, 50%))); } }
+@keyframes mq-r { from { transform: translateX(calc(-1 * var(--mqw, 50%))); } to { transform: translateX(0); } }
+
+/* Banner */
+.wp.wt-banner .wb { display: flex; align-items: center; gap: .8em; width: 100%; }
+.wp.al-center .wb { justify-content: center; text-align: center; } .wp.al-right .wb { justify-content: flex-end; text-align: right; flex-direction: row-reverse; }
+.wp.al-right .btx { text-align: right; } .wp.al-center .btx { text-align: center; }
+.wp .bic { display: inline-flex; font-size: 1.9em; color: var(--ac); flex: none; }
+.wp .bic .ico svg { width: 1em; height: 1em; }
+.wp .btl { font-size: 1.15em; font-weight: 700; color: var(--ac); letter-spacing: .1em; text-transform: none; }
+.wp.caps .btl { text-transform: uppercase; }
+.wp .bpr { margin-top: .2em; font-size: .92em; color: var(--tx); opacity: .92; letter-spacing: .04em; }
+.wp.bar-left { box-shadow: inset .3em 0 0 var(--ac); padding-left: 1.2em; }
+.wp.bar-top { box-shadow: inset 0 .28em 0 var(--ac); padding-top: .85em; }
+.wp.sh-cut.bar-left, .wp.sh-cut.bar-top { box-shadow: none !important; }
+.wp.sh-cut.bar-left::before { display: block !important; content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: .3em; background: var(--ac); z-index: 1; }
+.wp.sh-cut.bar-top::before { display: block !important; content: ""; position: absolute; left: 0; right: 0; top: 0; height: .28em; background: var(--ac); z-index: 1; }
+.wp.sh-cut.bar-left { padding-left: 1.2em; } .wp.sh-cut.bar-top { padding-top: .85em; }
+.wp.sh-pill.bar-left, .wp.sh-pill.bar-top, .wp.sh-round.bar-left, .wp.sh-round.bar-top { box-shadow: none; } 
+
+/* Textfeld */
+.wp.tf { align-items: flex-start; justify-content: flex-start; }
+.wp.tf .wb { width: 100%; }
+.wp .ttl { font-size: 1.25em; font-weight: 700; color: var(--ac); letter-spacing: .1em; margin-bottom: .35em; text-align: var(--ta, left); }
+.wp.caps .ttl { text-transform: uppercase; }
+.wp .tp { margin: 0 0 .55em; line-height: var(--lh, 1.45); text-align: var(--ta, left); letter-spacing: .03em; overflow-wrap: anywhere; hyphens: auto; }
+.wp .tp:last-child { margin-bottom: 0; }
+.tcur { color: var(--ac); animation: tcb 1s steps(1, end) infinite; }
+@keyframes tcb { 50% { opacity: 0; } }
+
+/* Uhr */
+.wp.wt-uhr .wb, .wp.wt-countdown .wb, .wp.wt-fun .wb, .wp.wt-kalender .wb { text-align: center; }
+.cnm { font-size: .8em; letter-spacing: .22em; color: var(--ac); text-transform: uppercase; margin-bottom: .3em; opacity: .9; }
+.ucl { display: flex; align-items: baseline; justify-content: center; font-size: 3em; font-weight: 700; line-height: 1; color: var(--ac); letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+.ud { display: inline-block; min-width: 1.15em; text-align: center; }
+.uc { opacity: .9; padding: 0 .02em; }
+@media (prefers-reduced-motion: no-preference) { .uc { animation: ucb 1s ease-in-out infinite; } }
+@keyframes ucb { 0%, 55% { opacity: .95; } 80%, 100% { opacity: .25; } }
+.uap { font-size: .32em; margin-left: .4em; opacity: .75; }
+.udt { font-size: .82em; letter-spacing: .12em; margin-top: .5em; color: var(--tx); opacity: .85; text-transform: uppercase; }
+.ucs { width: 9em; height: 9em; display: block; margin: 0 auto; overflow: visible; }
+.ucs .uf { fill: none; stroke: var(--ac); stroke-width: 2.2; }
+.ucs .ut { stroke: var(--tx); stroke-width: 1; opacity: .55; } .ucs .ut5 { stroke: var(--ac); stroke-width: 2.4; stroke-linecap: round; }
+.ucs .uh { transform-origin: 50px 50px; transform-box: view-box; } .ucs .uh line { stroke-linecap: round; fill: none; }
+.ucs .uhh line { stroke: var(--ac); stroke-width: 4.2; } .ucs .uhm line { stroke: var(--tx); stroke-width: 3; } .ucs .uhs line { stroke: var(--g1); stroke-width: 1.6; }
+.ucs .ucn { fill: var(--ac); }
+.wp.f-solid .ucs .uhs line { stroke: var(--ink); }
+
+/* Countdown */
+.cdg { display: flex; gap: .55em; justify-content: center; }
+.cdc { min-width: 3.2em; padding: .5em .35em .4em; border: 1px solid var(--dim); background: var(--dim); text-align: center; border-radius: .25em; }
+.cdv { font-size: 2.2em; font-weight: 700; line-height: 1; color: var(--ac); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.cdl { font-size: .62em; letter-spacing: .18em; text-transform: uppercase; margin-top: .45em; opacity: .85; }
+.cdv.pop { animation: cdp .45s cubic-bezier(.3, 2.2, .5, 1); }
+@keyframes cdp { 0% { transform: scale(1.28); opacity: .55; } 100% { transform: scale(1); opacity: 1; } }
+.cdone { font-size: 2em; font-weight: 700; color: var(--ac); letter-spacing: .12em; text-transform: uppercase; animation: cdd 1.4s ease-in-out infinite; }
+@keyframes cdd { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.cmsg { font-size: 1.1em; opacity: .8; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Kalender */
+.kh { display: flex; align-items: center; justify-content: space-between; gap: .6em; margin-bottom: .55em; }
+.kt { font-size: 1.15em; font-weight: 700; color: var(--ac); letter-spacing: .12em; text-transform: uppercase; flex: 1; text-align: center; cursor: default; }
+.kb { font: inherit; font-size: 1.3em; line-height: 1; width: 1.6em; height: 1.6em; color: var(--ac); background: transparent; border: 1px solid var(--dim); border-radius: .2em; cursor: pointer; padding: 0; transition: transform .15s cubic-bezier(.3, 2.2, .5, 1), background .12s; }
+.kb:hover { background: var(--dim); transform: scale(1.1); } .kb:active { transform: scale(.9); }
+.kg { display: grid; grid-template-columns: repeat(7, 2.1em); gap: .2em; }
+.kg.wk { grid-template-columns: 1.8em repeat(7, 2.1em); }
+.kd0 { font-size: .7em; letter-spacing: .1em; text-transform: uppercase; opacity: .7; padding: .2em 0 .35em; text-align: center; }
+.kd0.we { color: var(--ac); opacity: .95; }
+.kw { font-size: .68em; opacity: .55; display: flex; align-items: center; justify-content: center; }
+.kc { height: 2.1em; display: flex; align-items: center; justify-content: center; border-radius: .25em; font-variant-numeric: tabular-nums; position: relative; }
+.kc.em { visibility: hidden; }
+.kc.we { color: var(--ac); background: var(--dim); }
+.kg.nowe .kc.we { color: inherit; background: transparent; } .kg.nowe .kd0.we { color: inherit; opacity: .7; }
+.kc.td { background: var(--ac); color: var(--bg2, #111); font-weight: 700; }
+.wp.f-solid .kc.td { background: var(--ink); color: var(--a); }
+.wp:not(.f-solid) .kc.td { color: var(--ink); }
+.kc.mk::after { content: ""; position: absolute; bottom: .22em; left: 50%; width: .42em; height: .42em; margin-left: -.21em; border-radius: 50%; background: var(--g1); }
+.kc.mk { box-shadow: inset 0 0 0 1px var(--ac); }
+@media (prefers-reduced-motion: no-preference) { .kc.td { animation: ktd 2.4s ease-in-out infinite; } }
+@keyframes ktd { 0%, 100% { box-shadow: 0 0 0 0 rgb(var(--arg) / .0); } 50% { box-shadow: 0 0 .7em 0 rgb(var(--arg) / .55); } }
+
+/* Würfel-Roboter */
+.wp.fnb { user-select: none; }
+.fn { display: flex; align-items: center; gap: 1.4em; }
+.rob { width: 6.6em; height: 9.2em; display: block; overflow: visible; fill: none; stroke: var(--ac); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.rob .ball, .rob .chest, .rob .ef { fill: var(--ac); } .rob .arm circle { fill: var(--ac); stroke: none; }
+.rob .eh, .rob .ex, .rob .ms2, .rob .mf { display: none; }
+.rob .hd, .rob .bd { fill: var(--dim); }
+.rob .ant { transform-origin: 36px 22px; } .rob .rbody { transform-origin: 36px 92px; } .rob .arm { transform-box: view-box; } .rob .ar { transform-origin: 52px 62px; } .rob .al { transform-origin: 20px 62px; }
+.rob .eye { transform-box: fill-box; transform-origin: center; }
+.fcol { display: flex; flex-direction: column; align-items: center; min-width: 7.2em; }
+.fnm { font-size: .68em; letter-spacing: .26em; color: var(--ac); opacity: .9; text-transform: uppercase; margin-bottom: .35em; }
+.fdw { width: 5.8em; height: 5.8em; }
+.die { width: 100%; height: 100%; overflow: visible; display: block; }
+.die .dshape * { fill: var(--dim); stroke: var(--ac); stroke-width: 4; stroke-linejoin: round; }
+.die .dn { font-family: var(--ff); font-weight: 700; font-size: 40px; fill: var(--ac); stroke: none; }
+.die .dn.d2 { font-size: 34px; } .die .dn.d3 { font-size: 27px; }
+.fdw { transform-origin: 50% 90%; }
+.ffo { font-size: 1.15em; font-weight: 700; color: var(--ac); letter-spacing: .12em; margin-top: .45em; }
+.fch { display: flex; flex-wrap: wrap; gap: .25em; justify-content: center; max-width: 11em; min-height: 1.4em; margin-top: .25em; }
+.fc { font-size: .78em; padding: .05em .45em; border: 1px solid var(--dim); background: var(--dim); border-radius: .3em; }
+.fc.mx { border-color: var(--ac); color: var(--ac); } .fc.mn { border-color: var(--g1); color: var(--g1); } .fc.md { opacity: .75; }
+.fms { font-size: .74em; letter-spacing: .16em; text-transform: uppercase; opacity: .85; margin-top: .2em; min-height: 1.3em; }
+.fhi { display: flex; gap: .3em; margin-top: .3em; opacity: .55; font-size: .7em; }
+.fh::after { content: "·"; margin-left: .3em; } .fh:last-child::after { content: ""; }
+.fn.happy .rob .eyes .eye, .fn.sad .rob .eyes .eye { display: none; }
+.fn.happy .rob .eh { display: block; } .fn.happy .rob .mo { display: none; } .fn.happy .rob .ms2 { display: block; }
+.fn.sad .rob .ex { display: block; } .fn.sad .rob .mo { display: none; } .fn.sad .rob .mf { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .fn.idle .rbody, .fn.rest .rbody { animation: rbob 2.6s ease-in-out infinite; }
+  .rob .ant { animation: rant 2.2s ease-in-out infinite; }
+  .rob .eye { animation: rblink 4.4s ease-in-out infinite; } .rob .e2 { animation-delay: .02s; }
+  .rob .chest { animation: rch 1.6s ease-in-out infinite; }
+  .fn.throw .ar { animation: rthrow .9s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .fn.throw .rbody { animation: rlean .9s ease-in-out both; }
+  .fn.throw .fdw, .fdw.tumble { animation: rtum .9s cubic-bezier(.4, 0, .6, 1) both; }
+  .fdw.land { animation: rland .6s cubic-bezier(.3, 2, .5, 1) both; }
+  .fn.happy .rbody { animation: rjump .55s cubic-bezier(.3, 1.6, .5, 1) 3; }
+  .fn.sad .rbody { animation: rsad 1.4s ease-in-out both; } .fn.sad .ant { animation: rdroop 1.4s ease-in-out both; }
+  .fn.ok .rbody { animation: rnod .5s ease-in-out 2; }
+  .fn.ok .fms, .fn.happy .fms, .fn.sad .fms { animation: rpop .5s cubic-bezier(.3, 2, .5, 1) both; }
+}
+@keyframes rbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+@keyframes rant { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@keyframes rblink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes rch { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes rthrow { 0% { transform: rotate(0); } 30% { transform: rotate(-125deg); } 55% { transform: rotate(35deg); } 72% { transform: rotate(-10deg); } 100% { transform: rotate(0); } }
+@keyframes rlean { 0% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 55% { transform: rotate(5deg) translateX(2px); } 100% { transform: rotate(0); } }
+@keyframes rtum { 0% { transform: translateY(0) rotate(0) scale(1); } 20% { transform: translateY(-1.2em) rotate(180deg) scale(1.1); } 45% { transform: translateY(0) rotate(360deg) scale(1, .85); } 62% { transform: translateY(-.7em) rotate(520deg) scale(1.04); } 82% { transform: translateY(0) rotate(690deg) scale(1, .9); } 100% { transform: translateY(0) rotate(720deg) scale(1); } }
+@keyframes rland { 0% { transform: scale(1.3, .7); } 40% { transform: scale(.9, 1.15); } 70% { transform: scale(1.04, .97); } 100% { transform: scale(1); } }
+@keyframes rjump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px) rotate(3deg); } }
+@keyframes rsad { 0% { transform: translateY(0); } 30%, 80% { transform: translateY(2px) scaleY(.96); } 100% { transform: translateY(0); } }
+@keyframes rdroop { 0% { transform: rotate(0); } 30%, 80% { transform: rotate(38deg); } 100% { transform: rotate(0); } }
+@keyframes rnod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px) rotate(-2deg); } }
+@keyframes rpop { 0% { transform: scale(.7); opacity: 0; } 100% { transform: scale(1); opacity: .85; } }
+
 /* ---------- Generator ---------- */
 body.gen { background: var(--pb); padding: 18px; height: auto; min-height: 100%; }
 .gen main { max-width: 780px; margin: 0 auto; }
@@ -674,8 +833,15 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 /* Vorschau bei „Rahmen ausfüllen“: feste Rahmengröße (per Ecke ziehbar), damit die Schrift mitwachsen kann */
 .prev.ff, .side .prev.ff, .stage .prev.ff { height: 120px; width: 100%; max-width: 100%; }
 
-.igrid.fita button svg { width: 75%; height: 75%; overflow: visible; }
+.igrid.fita button svg { width: 34px; height: 34px; overflow: visible; justify-self: center; align-self: center; }
 .igrid.fita button { overflow: hidden; }
+
+/* Weitere Widgets: Eingabefelder */
+textarea, select, input[type=number], input[type=datetime-local], input[type=month] { width: 100%; box-sizing: border-box; font: inherit; font-size: 1rem; color: var(--ptx); background: rgb(0 0 0 / .25); border: 1px solid var(--pl); padding: 8px 10px; border-radius: 3px; color-scheme: dark; }
+textarea { resize: vertical; min-height: 3.2em; line-height: 1.35; }
+select option { background: #101510; color: #dbe8c8; }
+input[type=number] { max-width: 9em; }
+.wcs[hidden] { display: none; }
 
 </style>
 </head>
@@ -718,7 +884,7 @@ const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], 
 const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["none", "Keiner"]];
 const CLICKS = [["press", "Eindrücken"], ["flash", "Aufblitzen"], ["shake", "Rütteln"], ["none", "Keiner"]];
 const SCHEMES = [["dark", "Dunkel"], ["light", "Hell"], ["auto", "Auto"]];
-const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Banner"], ["textfeld", "Textfeld"], ["uhr", "Uhr"], ["countdown", "Countdown"], ["counter", "Counter"], ["kalender", "Kalender"], ["fun", "Fun-Widget"]];
+const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Banner"], ["textfeld", "Textfeld"], ["uhr", "Uhr"], ["countdown", "Countdown"], ["counter", "Counter"], ["kalender", "Kalender"], ["fun", "Würfel-Roboter"]];
 const LEGACY_STYLE = { solid: { fill: "solid" }, outline: { fill: "outline" }, ghost: { fill: "ghost" }, double: { fill: "outline", frame: "double" }, square: { shape: "square" }, round: { shape: "round" }, pill: { shape: "pill" } };
 /* Animierte flache Symbole: [Schlüssel, Name, Lucide-Symbol, Animation]; "x-…" = eigene Teile-Animation (ANIM_X) */
 const ANIMS = [["zahnrad", "Zahnrad dreht", "settings", "spin"], ["laden", "Laden", "loader-circle", "spin"], ["sync", "Aktualisieren", "refresh-cw", "spin"], ["sonne", "Sonne glänzt", "sun", "x-sonne"],
@@ -955,14 +1121,296 @@ function cfgFromParams(q) {
     theme: (q.get("theme") || "standard").toLowerCase(), caps: q.get("caps") !== "0",
     fill: (q.get("fill") || "").toLowerCase(), shape: (q.get("shape") || "").toLowerCase(), frame: (q.get("frame") || "").toLowerCase(), pat: (q.get("pat") || "scan").toLowerCase(),
     hov: (q.get("hov") || "bright").toLowerCase(), clk: (q.get("clk") || "press").toLowerCase(), scheme: (q.get("scheme") || "auto").toLowerCase(),
-    fx: parseFx(q.get("fx")), open: (q.get("open") || "tab").toLowerCase(), size: (q.get("size") || "mid").toLowerCase(), align: (q.get("align") || "left").toLowerCase(),
-    font: (q.get("font") || "rajdhani").toLowerCase(), pad: (q.get("pad") || "auto").toLowerCase(), fit: q.get("fit") === "frame" ? "frame" : "content",
+    fx: ((q.get("w") || "button").toLowerCase() !== "button" && !q.has("fx")) ? W_DEFAULT_FX.slice() : parseFx(q.get("fx")), open: (q.get("open") || "tab").toLowerCase(), size: (q.get("size") || "mid").toLowerCase(), align: (q.get("align") || "left").toLowerCase(),
+    font: (q.get("font") || "rajdhani").toLowerCase(), pad: (q.get("pad") || "auto").toLowerCase(), fit: q.has("fit") ? (q.get("fit") === "frame" ? "frame" : "content") : (((q.get("w") || "button").toLowerCase() !== "button" && (q.get("w") || "").toLowerCase() !== "lauftext") ? "frame" : "content"),
   };
   DIY_KEYS.forEach(([k]) => { c[k] = q.get(k) || ""; });
   const lg = LEGACY_STYLE[(q.get("style") || "").toLowerCase()] || {};
-  c.fill = c.fill || lg.fill || "solid"; c.shape = c.shape || lg.shape || "cut"; c.frame = c.frame || lg.frame || "auto";
+  c.fill = c.fill || lg.fill || ((q.get("w") || "button").toLowerCase() !== "button" ? "outline" : "solid"); c.shape = c.shape || lg.shape || "cut"; c.frame = c.frame || lg.frame || "auto";
   return c;
 }
+/* ================= Weitere Widgets: Lauftext, Banner, Textfeld, Uhr, Countdown, Kalender, Würfel-Roboter ================= */
+const WTYPES = ["lauftext", "banner", "textfeld", "uhr", "countdown", "kalender", "fun"];
+const WLABEL = { button: "Button", lauftext: "Lauftext", banner: "Banner", textfeld: "Textfeld", uhr: "Uhr", countdown: "Countdown", kalender: "Kalender", fun: "Würfel-Roboter" };
+const WSCALE = { uhr: 1, countdown: 1, kalender: 1, fun: 1 };            /* Inhalt wächst/schrumpft mit dem Rahmen */
+const TZS = [["local", "Gerät"], ["Europe/Berlin", "Berlin"], ["Europe/London", "London"], ["Europe/Moscow", "Moskau"], ["America/New_York", "New York"], ["America/Chicago", "Chicago"], ["America/Los_Angeles", "Los Angeles"], ["Asia/Tokyo", "Tokio"], ["Asia/Dubai", "Dubai"], ["Australia/Sydney", "Sydney"], ["UTC", "UTC"]];
+const MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const WDAYS = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+const DIE_SIDES = [4, 6, 8, 10, 12, 20, 100];
+const W_DEFAULT_FX = ["glow"];
+const clampN = (v, a, b, d) => { v = parseInt(v, 10); return isNaN(v) ? d : Math.max(a, Math.min(b, v)); };
+const tzOk = (tz) => { if (!tz || tz === "local") return true; try { new Intl.DateTimeFormat("de-DE", { timeZone: tz }); return TZS.some((t) => t[0] === tz); } catch (e) { return false; } };
+const tzOpt = (tz) => (tz && tz !== "local" && tzOk(tz) ? tz : undefined);
+function partsIn(date, tz) {
+  const f = new Intl.DateTimeFormat("en-GB", { timeZone: tzOpt(tz), hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric", second: "numeric" }), o = {};
+  f.formatToParts(date).forEach((p) => { o[p.type] = p.value; });
+  const jsDow = new Date(Date.UTC(+o.year, +o.month - 1, +o.day)).getUTCDay();
+  return { y: +o.year, m: +o.month, d: +o.day, h: +o.hour % 24, mi: +o.minute, s: +o.second, dow: (jsDow + 6) % 7 };
+}
+function wallToDate(y, m, d, h, mi, tz) {
+  if (!tzOpt(tz)) return new Date(y, m - 1, d, h, mi);
+  const want = Date.UTC(y, m - 1, d, h, mi); let g = want;
+  for (let i = 0; i < 3; i++) { const p = partsIn(new Date(g), tz); g += want - Date.UTC(p.y, p.m - 1, p.d, p.h, p.mi, p.s); }
+  return new Date(g);
+}
+const pad2 = (n) => String(n).padStart(2, "0");
+function wClear(host) {
+  (host._wt || []).forEach((t) => { if (t.i) clearInterval(t.i); if (t.o) clearTimeout(t.o); if (t.r) cancelAnimationFrame(t.r); if (t.ro) t.ro.disconnect(); });
+  host._wt = []; if (host._fitRO) { host._fitRO.disconnect(); host._fitRO = null; }
+}
+const wReg = (host, t) => { (host._wt = host._wt || []).push(t); return t; };
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) { e.textContent = txt; if (cls && /(^| )gl( |$)/.test(cls)) e.dataset.text = txt; } return e; };
+const svgEl = (tag, attrs) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); Object.keys(attrs || {}).forEach((k) => e.setAttribute(k, attrs[k])); return e; };
+
+/* Gemeinsame Hülle (Rahmen, Füllung, Form, Muster, Schrift, Farben) – nutzt die Button-Stile */
+function wShell(type, cfg, o, host) {
+  wClear(host); host.textContent = "";
+  const fx = Array.isArray(cfg.fx) ? cfg.fx : W_DEFAULT_FX, size = SIZES.find((s) => s[0] === cfg.size) || SIZES[1];
+  const fill = pick(FILLS, cfg.fill, "outline"), shape = pick(SHAPES, cfg.shape, "cut"), pat = pick(PATTERNS, cfg.pat, "scan");
+  let frame = pick(FRAMES, cfg.frame, "auto"); if (frame === "auto") frame = fill === "outline" ? "thin" : "none";
+  const font = FONTS.some((f) => f[0] === cfg.font) ? cfg.font : "rajdhani"; loadFont(font);
+  const wrap = el("div", "wrap wpw"); wrap.dataset.fx = fx.join(" "); applyTheme(wrap, cfg);
+  const href0 = type === "banner" ? okUrl(cfg.url) : "", href = href0 ? resolveTarget(href0, "tab") : "";
+  const hov = href ? pick(HOVERS, cfg.hov, "bright") : "none", clk = href ? pick(CLICKS, cfg.clk, "press") : "none";
+  const b = el(href ? "a" : "div", "btn wp wt-" + type + " f-" + fill + " sh-" + shape + " fr-" + frame + " pt-" + pat + " hv-" + hov + " ck-" + clk + (cfg.caps !== false ? " caps" : "") + (href ? "" : " nolink"));
+  if (href) { b.href = href; if (!href.startsWith("mailto:")) { b.target = "_blank"; b.rel = "noopener noreferrer"; } }
+  { const t = palette(cfg); b.style.setProperty("--fr", HEX.test(cfg.line || "") ? t.line : (fill === "solid" ? t.ink : (cfg.frame && cfg.frame !== "auto" ? t.a : t.line))); b.style.setProperty("--pt", fill === "solid" ? "rgb(0 0 0 / .16)" : "rgb(255 255 255 / .07)");
+    b.style.setProperty("--tx", fill === "solid" ? t.ink : t.text); b.style.setProperty("--ac", fill === "solid" ? t.ink : t.a); b.style.setProperty("--dim", fill === "solid" ? "rgb(0 0 0 / .45)" : "rgb(255 255 255 / .16)"); }
+  b.style.fontSize = size[2] + "px"; b.style.setProperty("--ff", famOf(font));
+  const body = el("div", "wb wb-" + type); b.appendChild(body);
+  if (fx.includes("noise")) b.appendChild(el("span", "nz"));
+  wrap.appendChild(b); host.appendChild(wrap);
+  if (shape === "cut") cutFrame(b, frame);
+  if (href) { b.addEventListener("pointerdown", () => fireClick(b)); }
+  const pad = (cfg.pad && cfg.pad !== "auto" && !isNaN(+cfg.pad)) ? Math.max(0, Math.min(40, Math.round(+cfg.pad))) : ((fx.includes("glow") || fx.includes("jitter") || fx.includes("tear")) ? 20 : 0);
+  host.style.boxSizing = "border-box"; host.style.padding = pad + "px";
+  const fitFrame = cfg.fit === "frame";
+  if (fitFrame || type === "lauftext") { wrap.style.cssText += ";display:flex;flex:1 1 auto;align-self:" + (fitFrame ? "stretch" : "center") + ";max-width:none;min-width:0"; b.style.flex = "1 1 auto"; b.style.maxWidth = "none"; b.style.minWidth = "0"; }
+  if (fitFrame) b.classList.add("fitf");
+  wrap.style.setProperty("--gd", (-Math.random() * 4).toFixed(2) + "s");
+  if (!reduced()) { const an = []; if (fx.includes("glow")) an.push("glow 2.6s ease-in-out infinite"); if (fx.includes("flicker")) an.push("fl 6.5s steps(1, end) var(--gd) infinite"); if (an.length) wrap.style.animation = an.join(", "); }
+  /* Skalierende Widgets: Inhalt passt sich dem Rahmen an (Schrift = Größe des Inhalts) */
+  if (fitFrame && WSCALE[type] && !cfg.demo && typeof ResizeObserver === "function") {
+    const fitNow = () => {
+      const hw = host.clientWidth - 2 * pad, hh = host.clientHeight - 2 * pad; if (hw < 24 || hh < 24 || !b.isConnected) return;
+      let f = 16; b.style.fontSize = f + "px";
+      for (let i = 0; i < 4; i++) {
+        const w0 = body.offsetWidth, h0 = body.offsetHeight; if (!w0 || !h0) return;
+        const s = Math.min((hw * .9 - 4) / w0, (hh * .86 - 4) / h0); f = Math.max(5, Math.min(400, f * s)); b.style.fontSize = f.toFixed(1) + "px"; if (Math.abs(s - 1) < .02) break;
+      }
+    };
+    host._fitRO = new ResizeObserver(fitNow); host._fitRO.observe(host); fitNow(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNow);
+  }
+  return { b, body, wrap, pad, fx, host, cfg, o };
+}
+
+/* ---------- Lauftext ---------- */
+function wLauftext(sh) {
+  const { body, o, host, cfg, b } = sh;
+  const text = (o.text !== undefined && o.text !== "" ? o.text : "Willkommen in der Welt von Quest & Würfel").replace(/\s+/g, " ").slice(0, 300);
+  const sep = o.sep !== undefined ? o.sep.slice(0, 6) : "✦", dir = o.dir === "right" ? "right" : "left";
+  const speed = { slow: 36, mid: 72, fast: 130 }[o.speed] || 72, fade = o.fade !== "0", pause = o.pause !== "0";
+  body.classList.add("mq"); if (fade) body.classList.add("mqf"); if (pause) body.classList.add("mqp");
+  const track = el("div", "mqt"), mk = () => { const g = el("span", "mqg"); return g; };
+  const fillGroup = (g, n) => { g.textContent = ""; for (let i = 0; i < n; i++) { g.appendChild(el("span", "mqi", text)); if (sep) g.appendChild(el("span", "mqs", sep)); } };
+  const g1 = mk(), g2 = mk(); track.append(g1, g2); body.appendChild(track);
+  b.classList.add("mqb");
+  const layout = () => {
+    if (!b.isConnected) return; const w = Math.max(60, body.clientWidth || host.clientWidth); fillGroup(g1, 1);
+    const one = g1.offsetWidth || 50, n = Math.max(1, Math.ceil(w / one)); fillGroup(g1, n); fillGroup(g2, n);
+    const gw = g1.offsetWidth || one; track.style.setProperty("--mqd", (gw / speed).toFixed(2) + "s"); track.style.setProperty("--mqw", gw + "px");
+    track.style.animationName = reduced() ? "none" : (dir === "left" ? "mq-l" : "mq-r");
+  };
+  layout(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  if (typeof ResizeObserver === "function") { const ro = new ResizeObserver(layout); ro.observe(host); wReg(host, { ro }); }
+}
+
+/* ---------- Banner ---------- */
+function wBanner(sh) {
+  const { body, o, cfg, b } = sh;
+  const title = (o.title || "").slice(0, 80), text = (o.text || "").slice(0, 300), bar = ["left", "top", "none"].includes(o.bar) ? o.bar : "left";
+  const ic = (cfg.icon || "").trim();
+  b.classList.add("bar-" + bar, "al-" + (JUST[cfg.align] ? cfg.align : "left"));
+  if (ic) { const ie = el("span", "bic"); ie.appendChild(iconNode(ic)); body.appendChild(ie); }
+  const tx = el("div", "btx");
+  if (title) tx.appendChild(el("div", "btl gl", title));
+  if (text) { text.split(/\n/).forEach((ln) => { if (ln.trim()) tx.appendChild(el("div", "bpr", ln)); }); }
+  if (!title && !text) tx.appendChild(el("div", "btl gl", "Banner"));
+  body.appendChild(tx);
+}
+
+/* ---------- Textfeld ---------- */
+function wTextfeld(sh) {
+  const { body, o, cfg, b, host } = sh;
+  const title = (o.title || "").slice(0, 80), text = (o.text !== undefined && o.text !== "" ? o.text : "Hier steht dein Text.\nNeue Zeile = neuer Absatz.").slice(0, 700);
+  const lh = { tight: 1.2, mid: 1.45, loose: 1.75 }[o.lh] || 1.45, just = cfg.align === "justify" ? "justify" : (JUST[cfg.align] ? cfg.align : "left");
+  b.classList.add("tf"); b.style.setProperty("--lh", lh); b.style.setProperty("--ta", just);
+  if (title) body.appendChild(el("div", "ttl gl", title));
+  const paras = text.split(/\n/).filter((l) => l.trim() !== "").map((l) => { const p = el("p", "tp", l); body.appendChild(p); return p; });
+  if (o.type === "1" && !reduced()) {
+    const full = paras.map((p) => p.textContent); paras.forEach((p) => { p.textContent = ""; p.style.minHeight = lh + "em"; });
+    const cur = el("span", "tcur", "▌"); let pi = 0, ci = 0;
+    const tick = () => {
+      if (!b.isConnected) return; const p = paras[pi]; if (!p) { return; }
+      if (ci === 0) p.appendChild(cur);
+      if (ci < full[pi].length) { p.insertBefore(document.createTextNode(full[pi][ci]), cur); ci++; wReg(host, { o: setTimeout(tick, 22 + Math.random() * 40) }); }
+      else { pi++; ci = 0; if (paras[pi]) wReg(host, { o: setTimeout(tick, 220) }); }
+    };
+    wReg(host, { o: setTimeout(tick, 250) });
+    b.addEventListener("click", () => { wClear(host); paras.forEach((p, i) => { p.textContent = full[i]; }); });
+  }
+}
+
+/* ---------- Uhr ---------- */
+function wUhr(sh) {
+  const { body, o, host, b } = sh;
+  const tz = tzOk(o.tz) ? (o.tz || "Europe/Berlin") : "Europe/Berlin", mode = o.mode === "analog" ? "analog" : "digital", sec = o.sec !== "0", h12 = o.h12 === "1", dmode = ["none", "short", "long"].includes(o.date) ? o.date : "short";
+  const name = (o.name || "").slice(0, 30);
+  if (name) body.appendChild(el("div", "cnm gl", name));
+  let upd;
+  const dateTxt = (p) => { if (dmode === "none") return ""; const wd = WDAYS[p.dow]; return dmode === "long" ? wd + ", " + p.d + ". " + MONTHS[p.m - 1] + " " + p.y : wd.slice(0, 2) + " " + pad2(p.d) + "." + pad2(p.m) + "." + p.y; };
+  if (mode === "digital") {
+    const row = el("div", "ucl"), hh = el("span", "ud"), c1 = el("span", "uc", ":"), mm = el("span", "ud"), c2 = el("span", "uc", ":"), ss = el("span", "ud"), ap = el("span", "uap");
+    row.append(hh, c1, mm); if (sec) row.append(c2, ss); if (h12) row.append(ap); body.appendChild(row);
+    const dl = el("div", "udt"); if (dmode !== "none") body.appendChild(dl);
+    upd = () => { const p = partsIn(new Date(), tz), h = h12 ? (p.h % 12 || 12) : p.h; const t = (h12 ? String(h) : pad2(h)); if (hh.textContent !== t) hh.textContent = t; if (mm.textContent !== pad2(p.mi)) mm.textContent = pad2(p.mi); if (sec && ss.textContent !== pad2(p.s)) ss.textContent = pad2(p.s); if (h12) ap.textContent = p.h < 12 ? "AM" : "PM"; const d = dateTxt(p); if (dl.textContent !== d) dl.textContent = d; };
+  } else {
+    const svg = svgEl("svg", { viewBox: "0 0 100 100", class: "ucs" }); svg.appendChild(svgEl("circle", { cx: 50, cy: 50, r: 47, class: "uf" }));
+    for (let i = 0; i < 60; i++) { const q5 = i % 5 === 0, a = i * 6 * Math.PI / 180, r1 = q5 ? 38 : 42, r2 = 45; svg.appendChild(svgEl("line", { x1: 50 + r1 * Math.sin(a), y1: 50 - r1 * Math.cos(a), x2: 50 + r2 * Math.sin(a), y2: 50 - r2 * Math.cos(a), class: q5 ? "ut5" : "ut" })); }
+    const mkHand = (cls, len, tail) => { const g = svgEl("g", { class: "uh " + cls }); g.appendChild(svgEl("line", { x1: 50, y1: 50 + tail, x2: 50, y2: 50 - len })); svg.appendChild(g); return g; };
+    const hH = mkHand("uhh", 24, 4), hM = mkHand("uhm", 36, 5), hS = sec ? mkHand("uhs", 40, 9) : null; svg.appendChild(svgEl("circle", { cx: 50, cy: 50, r: 3, class: "ucn" }));
+    body.appendChild(svg); const dl = el("div", "udt"); if (dmode !== "none") body.appendChild(dl);
+    let sAng = 0, lastS = -1;
+    upd = () => {
+      const p = partsIn(new Date(), tz); hH.style.transform = "rotate(" + (((p.h % 12) + p.mi / 60) * 30) + "deg)"; hM.style.transform = "rotate(" + ((p.mi + p.s / 60) * 6) + "deg)";
+      if (hS && p.s !== lastS) { if (lastS === -1) sAng = p.s * 6; else { sAng += ((p.s - lastS + 60) % 60) * 6; } lastS = p.s; hS.style.transform = "rotate(" + sAng + "deg)"; }
+      const d = dateTxt(p); if (dl.textContent !== d) dl.textContent = d;
+    };
+    if (hS) hS.style.transition = reduced() ? "none" : "transform .45s cubic-bezier(.3,2.2,.5,1)";
+  }
+  upd(); wReg(host, { i: setInterval(() => { if (!document.hidden) upd(); }, 250) });
+}
+
+/* ---------- Countdown ---------- */
+function wCountdown(sh) {
+  const { body, o, host, b } = sh;
+  const tz = tzOk(o.tz) ? (o.tz || "Europe/Berlin") : "Europe/Berlin", sec = o.sec !== "0", full = o.units !== "short", title = (o.title || "").slice(0, 60), done = (o.done !== undefined ? o.done : "Es ist soweit!").slice(0, 60);
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/.exec(o.to || ""); let target = null;
+  if (m) target = wallToDate(+m[1], +m[2], +m[3], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0, tz);
+  if (title) body.appendChild(el("div", "cnm gl", title));
+  if (!target || isNaN(target)) { body.appendChild(el("div", "cmsg", "Zieldatum fehlt")); return; }
+  const grid = el("div", "cdg"); body.appendChild(grid);
+  const units = [["d", "Tage", "T"], ["h", "Stunden", "Std"], ["m", "Minuten", "Min"], ["s", "Sekunden", "Sek"]].filter((u) => sec || u[0] !== "s"), cells = {};
+  units.forEach(([k, lg, sh2]) => { const c = el("div", "cdc"), v = el("div", "cdv", "00"), l = el("div", "cdl", full ? lg : sh2); c.append(v, l); grid.appendChild(c); cells[k] = v; });
+  const msg = el("div", "cdone gl", done); msg.hidden = true; body.appendChild(msg);
+  const set = (k, val) => { const t = k === "d" ? String(val).padStart(2, "0") : pad2(val); if (cells[k].textContent !== t) { cells[k].textContent = t; if (!reduced()) { cells[k].classList.remove("pop"); void cells[k].offsetWidth; cells[k].classList.add("pop"); } } };
+  const upd = () => {
+    let ms = target - Date.now(); if (ms <= 0) { grid.hidden = true; msg.hidden = false; return; } grid.hidden = false; msg.hidden = true;
+    const s = Math.floor(ms / 1000); set("d", Math.floor(s / 86400)); set("h", Math.floor(s % 86400 / 3600)); set("m", Math.floor(s % 3600 / 60)); if (sec) set("s", s % 60);
+  };
+  upd(); wReg(host, { i: setInterval(() => { if (!document.hidden) upd(); }, 250) });
+}
+
+/* ---------- Kalender ---------- */
+function isoWeek(y, m, d) { const t = new Date(Date.UTC(y, m - 1, d)), dn = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - dn + 3); const f = new Date(Date.UTC(t.getUTCFullYear(), 0, 4)); return 1 + Math.round(((t - f) / 86400000 - 3 + ((f.getUTCDay() + 6) % 7)) / 7); }
+function wKalender(sh) {
+  const { body, o, host, b } = sh;
+  const sunStart = o.start === "su", nav = o.nav !== "0", wk = o.wk === "1", we = o.we !== "0";
+  const now = new Date(), mm = /^(\d{4})-(\d{2})$/.exec(o.month || ""); let vy = now.getFullYear(), vm = now.getMonth() + 1; if (mm && +mm[2] >= 1 && +mm[2] <= 12) { vy = +mm[1]; vm = +mm[2]; }
+  const marks = new Set((o.mark || "").split(",").map((s) => s.trim()).filter((s) => /^\d{4}-\d{2}-\d{2}$/.test(s)));
+  const base = { y: vy, m: vm };
+  const head = el("div", "kh"), prevB = el("button", "kb", "‹"), nextB = el("button", "kb", "›"), ttl = el("div", "kt gl"); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
+  if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
+  const grid = el("div", "kg"); body.append(head, grid);
+  const draw = () => {
+    ttl.textContent = MONTHS[vm - 1] + " " + vy; grid.textContent = ""; grid.classList.toggle("wk", wk); grid.classList.toggle("nowe", !we);
+    const names = sunStart ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
+    if (wk) grid.appendChild(el("div", "kw kd0", "KW"));
+    names.forEach((n) => grid.appendChild(el("div", "kd0" + (n >= 5 ? " we" : ""), WDAYS[n].slice(0, 2))));
+    const first = new Date(vy, vm - 1, 1), dim = new Date(vy, vm, 0).getDate(), lead = sunStart ? first.getDay() : (first.getDay() + 6) % 7, rows = Math.ceil((lead + dim) / 7);
+    const today = new Date(), ty = today.getFullYear(), tm = today.getMonth() + 1, td = today.getDate();
+    for (let r = 0; r < 6; r++) {
+      if (wk) { const dd = r * 7 - lead + 1 + (sunStart ? 1 : 0), dref = new Date(vy, vm - 1, Math.max(1, Math.min(dim, r * 7 - lead + 1 + (sunStart ? 1 : 0)))); grid.appendChild(el("div", "kw", r < rows ? pad2(isoWeek(dref.getFullYear(), dref.getMonth() + 1, dref.getDate())) : "")); }
+      for (let c = 0; c < 7; c++) {
+        const i = r * 7 + c - lead + 1, cell = el("div", "kc");
+        if (i >= 1 && i <= dim && r < rows) {
+          const dow = sunStart ? (c + 6) % 7 : c; cell.textContent = String(i);
+          if (dow >= 5) cell.classList.add("we"); if (vy === ty && vm === tm && i === td) cell.classList.add("td");
+          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i))) cell.classList.add("mk");
+        } else cell.classList.add("em");
+        grid.appendChild(cell);
+      }
+    }
+  };
+  prevB.addEventListener("click", () => { vm--; if (vm < 1) { vm = 12; vy--; } draw(); }); nextB.addEventListener("click", () => { vm++; if (vm > 12) { vm = 1; vy++; } draw(); });
+  ttl.addEventListener("click", () => { if (nav) { vy = base.y; vm = base.m; draw(); } }); if (nav) ttl.title = "Zurück zum Ausgangsmonat";
+  draw();
+}
+
+/* ---------- Würfel-Roboter (eigene Figur) ---------- */
+const dieRoll = (s) => { try { const a = new Uint32Array(1), lim = Math.floor(4294967296 / s) * s; let v; do { crypto.getRandomValues(a); v = a[0]; } while (v >= lim); return v % s + 1; } catch (e) { return 1 + Math.floor(Math.random() * s); } };
+const DIE_PTS = { 4: "50,6 94,88 6,88", 8: "50,4 94,50 50,96 6,50", 10: "50,4 92,36 78,90 22,90 8,36", 12: "50,4 94,36 78,90 22,90 6,36", 20: "50,4 90,27 90,73 50,96 10,73 10,27" };
+function dieShape(sides) {
+  const g = svgEl("g", { class: "dshape" });
+  if (sides === 6) g.appendChild(svgEl("rect", { x: 8, y: 8, width: 84, height: 84, rx: 16 }));
+  else if (sides === 100) g.appendChild(svgEl("circle", { cx: 50, cy: 50, r: 44 }));
+  else { const p = svgEl("polygon", { points: DIE_PTS[sides] || DIE_PTS[20] }); g.appendChild(p); }
+  return g;
+}
+function wFun(sh) {
+  const { body, o, host, b } = sh;
+  const sides = DIE_SIDES.includes(+o.die) ? +o.die : 20, n = clampN(o.n, 1, 10, 1), mod = clampN(o.mod, -50, 50, 0), name = (o.name !== undefined ? o.name : "Würfel-Bot").slice(0, 24), hist = o.hist !== "0";
+  const formula = n + "W" + sides + (mod ? (mod > 0 ? "+" : "−") + Math.abs(mod) : "");
+  const root = el("div", "fn idle"); body.appendChild(root); b.classList.add("fnb"); b.setAttribute("role", "button"); b.tabIndex = 0; b.setAttribute("aria-label", formula + " würfeln");
+  /* Roboter */
+  const rb = svgEl("svg", { viewBox: "0 0 72 100", class: "rob" });
+  rb.innerHTML =
+    '<g class="rbody"><g class="ant"><line x1="36" y1="14" x2="36" y2="22"/><circle cx="36" cy="10" r="3.6" class="ball"/></g>' +
+    '<rect x="16" y="22" width="40" height="30" rx="9" class="hd"/>' +
+    '<g class="eyes"><g class="eye e1"><rect x="25" y="31" width="6.5" height="8" rx="3" class="ef"/></g><g class="eye e2"><rect x="40.5" y="31" width="6.5" height="8" rx="3" class="ef"/></g>' +
+    '<path class="eh" d="M24.5 38.5q4-7 8 0M39.5 38.5q4-7 8 0"/><path class="ex" d="M25 31l7 8M32 31l-7 8M40 31l7 8M47 31l-7 8"/></g>' +
+    '<path class="mo" d="M28 45h16"/><path class="ms2" d="M27 43q9 8 18 0"/><path class="mf" d="M27 47q9-7 18 0"/>' +
+    '<line x1="36" y1="52" x2="36" y2="56"/><rect x="20" y="56" width="32" height="26" rx="7" class="bd"/><circle cx="36" cy="69" r="3.4" class="chest"/>' +
+    '<g class="arm al"><line x1="20" y1="62" x2="10" y2="74"/><circle cx="9" cy="75.5" r="2.2"/></g>' +
+    '<g class="arm ar"><line x1="52" y1="62" x2="63" y2="72"/><circle cx="64.4" cy="73.6" r="2.6"/></g>' +
+    '<line x1="29" y1="82" x2="29" y2="92"/><line x1="43" y1="82" x2="43" y2="92"/><line x1="25" y1="93" x2="32" y2="93"/><line x1="40" y1="93" x2="47" y2="93"/></g>';
+  /* Würfel + Ergebnis */
+  const col = el("div", "fcol"), dwrap = el("div", "fdw"), ds = svgEl("svg", { viewBox: "0 0 100 100", class: "die" }); ds.appendChild(dieShape(sides));
+  const num = svgEl("text", { x: 50, y: 56, "text-anchor": "middle", "dominant-baseline": "middle", class: "dn" }); num.textContent = "?"; ds.appendChild(num); dwrap.appendChild(ds);
+  const fl = el("div", "ffo gl", formula), chips = el("div", "fch"), msg = el("div", "fms", "Klick zum Würfeln"), hs = el("div", "fhi");
+  col.append(dwrap, fl, chips, msg); if (hist) col.appendChild(hs);
+  if (name) { const nm = el("div", "fnm", name); col.insertBefore(nm, dwrap); }
+  root.append(rb, col);
+  const history = []; let busy = false, timers = [];
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); wReg(host, { o: t }); return t; };
+  const setNum = (t) => { num.textContent = String(t); num.setAttribute("class", "dn" + (String(t).length > 2 ? " d3" : String(t).length > 1 ? " d2" : "")); };
+  const roll = () => {
+    if (busy) return; busy = true; root.className = "fn throw"; msg.textContent = "…"; chips.textContent = ""; dwrap.classList.remove("land"); void dwrap.offsetWidth;
+    const vals = Array.from({ length: n }, () => dieRoll(sides)), sum = vals.reduce((a, v) => a + v, 0) + mod;
+    const flick = reduced() ? null : setInterval(() => { setNum(Math.max(1, dieRoll(sides) * (n > 1 ? n : 1))); }, 60); if (flick) wReg(host, { i: flick });
+    dwrap.classList.add("tumble");
+    later(() => {
+      if (flick) clearInterval(flick); dwrap.classList.remove("tumble"); setNum(sum); dwrap.classList.add("land");
+      vals.forEach((v) => chips.appendChild(el("span", "fc" + (v === sides ? " mx" : v === 1 ? " mn" : ""), String(v)))); if (mod) chips.appendChild(el("span", "fc md", (mod > 0 ? "+" : "−") + Math.abs(mod)));
+      const crit = vals.every((v) => v === sides) && sides >= 4, bad = vals.every((v) => v === 1) && sides >= 4;
+      root.className = "fn " + (crit ? "happy" : bad ? "sad" : "ok");
+      msg.textContent = crit ? "Kritischer Treffer!" : bad ? "Patzer!" : (n > 1 ? "Summe " + sum : "Ergebnis " + sum);
+      history.unshift(sum); history.length = Math.min(history.length, 6); hs.textContent = ""; history.slice(1).forEach((h) => hs.appendChild(el("span", "fh", String(h)))); if (hist && history.length > 1) hs.title = "Letzte Würfe";
+      later(() => { busy = false; if (!root.classList.contains("throw")) root.classList.add("rest"); }, 380);
+      later(() => { if (!busy) root.className = "fn idle"; }, 3200);
+    }, reduced() ? 80 : 900);
+  };
+  b.addEventListener("click", roll); b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); roll(); } });
+  b.style.cursor = "pointer";
+}
+
+/* ---------- Verteiler ---------- */
+function buildWidget(type, cfg, o, host) {
+  const sh = wShell(type, cfg, o || {}, host);
+  ({ lauftext: wLauftext, banner: wBanner, textfeld: wTextfeld, uhr: wUhr, countdown: wCountdown, kalender: wKalender, fun: wFun })[type](sh);
+  return sh;
+}
+
 const JUST = { left: "flex-start", center: "center", right: "flex-end" };
 const q = new URLSearchParams(location.search);
 
@@ -974,7 +1422,8 @@ if (q.has("url") || q.has("w")) {
   { const sc = (q.get("scheme") || "auto").toLowerCase(); if (sc === "light" || sc === "dark") document.documentElement.style.colorScheme = sc; }
   host.style.cssText = "width:100%;height:100%;display:flex;align-items:center;justify-content:" + (JUST[cfg.align] || "flex-start");
   const wtype = (q.get("w") || "button").toLowerCase();
-  if (wtype !== "button") { host.textContent = "Widget „" + wtype + "“ folgt."; host.style.color = "#888"; host.style.fontSize = "13px"; }
+  if (WTYPES.includes(wtype)) { host.style.justifyContent = JUST[cfg.align] || "flex-start"; buildWidget(wtype, cfg, Object.fromEntries(q), host); document.title = WLABEL[wtype]; }
+  else if (wtype !== "button") { host.textContent = "Widget „" + wtype + "“ folgt."; host.style.color = "#888"; host.style.fontSize = "13px"; }
   else { const btn = buildButton(cfg, host); document.title = cfg.label || "Button"; startBursts(() => btn); }
 } else {
   /* ---- Generator-Modus ---- */
@@ -993,6 +1442,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="text" id="g-url" spellcheck="false" placeholder="https://… oder name@beispiel.de" autocomplete="off" inputmode="url"></div></div>' +
     '<p class="msg" id="g-msg"></p>' +
     '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
+    '<div id="wc"></div>' +
     '<h3 class="sub3">Aussehen</h3>' +
     '<div class="row"><span class="lab">Farbe</span><div class="seg" id="g-colors"></div><p class="hint2">Kreise: Farbpaletten (Themes und gespeicherte Kombinationen), jedes Stück = eine Farbe. DIY öffnet die Detaileinstellungen.</p></div>' +
     '<div class="row"><span class="lab">Füllung</span><div class="seg" id="g-fill"></div></div>' +
@@ -1015,7 +1465,7 @@ if (q.has("url") || q.has("w")) {
     '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
     '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Adresse erscheint hier"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div>' +
-    '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
+    '<p class="hl" id="g-innotion"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
     '</div></aside></div></div>' +
     '<dialog class="dlg" id="diy" aria-labelledby="diy-t"><div class="dlg-in"><h3 id="diy-t">EIGENE FARBEN</h3><div id="diy-rows"></div>' +
@@ -1028,7 +1478,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="igrid" id="ip-grid"></div><div class="dact"><button type="button" id="ip-none">Kein Symbol</button><button type="button" class="go" id="ip-ok">Schließen</button></div></div></dialog>';
   const TK = "wfn-theme";
   let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (t === "standard") savedTheme = t; } catch (e) { /* ohne Speicher */ }
-  const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, pad: "auto", fit: "content", fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {} };
+  const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, pad: "auto", fit: "content", fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {}, w: "button" };
   const OPENHINT = { tab: "Normaler Tab des Browsers bzw. der Notion-App.", side: "Notions Seitenansicht (Side Peek) des Eintrags.", center: "Notions zentrierte Ansicht (Center Peek) des Eintrags.", full: "Notions Vollseite des Eintrags." };
   const SCHEMEHINT = { dark: "Notion läuft im Dunkelmodus: Hintergrund des Widgets bleibt transparent.", light: "Notion läuft im Hellmodus: Hintergrund des Widgets bleibt transparent.", auto: "Folgt der Systemeinstellung. Nur transparent, wenn Notion dieselbe Einstellung nutzt; sonst erscheint ein weißer oder schwarzer Kasten." };
 
@@ -1055,8 +1505,10 @@ function applyPage() {
   function drawNav() {
     const nav = $("g-nav"); nav.textContent = "";
     WIDGETS.forEach(([k, label]) => {
-      const b = document.createElement("button"); b.type = "button"; const on = k === "button"; b.setAttribute("aria-current", on ? "true" : "false");
-      b.textContent = label; if (!on) { b.disabled = true; b.title = "Folgt in einer der nächsten Etappen"; const s = document.createElement("small"); s.textContent = "bald"; b.appendChild(s); }
+      const b = document.createElement("button"); b.type = "button"; const ready = k === "button" || WTYPES.includes(k), on = k === S.w; b.setAttribute("aria-current", on ? "true" : "false");
+      b.textContent = WLABEL[k] || label;
+      if (!ready) { b.disabled = true; b.title = "Folgt später"; const sm = document.createElement("small"); sm.textContent = "später"; b.appendChild(sm); }
+      else b.addEventListener("click", () => switchWidget(k));
       nav.appendChild(b);
     });
   }
@@ -1123,7 +1575,7 @@ function applyPage() {
   const drawAll = () => {
     drawThemes(); drawNav(); drawDiyBtn(); drawPv(true);
     seg("g-font", FONTS.map((f) => [f[0], f[1]]), "font"); seg("g-caps", [[true, "GROSSBUCHSTABEN"], [false, "Normal"]], "caps");
-    seg("g-align", ALIGNS, "align"); seg("g-fit", [["content", "Nach Inhalt"], ["frame", "Rahmen ausfüllen"]], "fit"); seg("g-pad", [["auto", "Auto"], ["0", "0 px"], ["6", "6 px"], ["12", "12 px"], ["20", "20 px"]], "pad"); seg("g-open", OPEN, "open"); seg("g-scheme", SCHEMES, "scheme"); drawIcoBtn();
+    seg("g-align", S.w === "textfeld" ? ALIGNS_T : ALIGNS, "align"); seg("g-fit", [["content", "Nach Inhalt"], ["frame", "Rahmen ausfüllen"]], "fit"); seg("g-pad", [["auto", "Auto"], ["0", "0 px"], ["6", "6 px"], ["12", "12 px"], ["20", "20 px"]], "pad"); seg("g-open", OPEN, "open"); seg("g-scheme", SCHEMES, "scheme"); drawIcoBtn();
   };
 
   /* ---- DIY-Popup + gespeicherte Kombis ---- */
@@ -1240,8 +1692,9 @@ function applyPage() {
   }
   function render() {
     drawPv();
+    if (S.w !== "button") { renderW(); return; }
     const cfg = cfgNow();
-    prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align];
+    prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align] || "flex-start"; if (prev._wk !== undefined && prev._wk !== "btn") { prev._wk = "btn"; prev.style.height = ""; }
     prev.classList.toggle("ff", S.fit === "frame");
     btn = buildButton(cfg, prev); btn.addEventListener("click", (e) => { if (!okUrl(cfg.url)) e.preventDefault(); });
     const raw = cfg.url, ok = !!okUrl(raw), href = ok ? okUrl(raw) : "";
@@ -1285,12 +1738,14 @@ function applyPage() {
     try { u = new URL($("g-load").value.trim()); } catch (e) { m.textContent = "Keine gültige Adresse."; return; }
     if (!u.searchParams.has("url") && !u.searchParams.has("w")) { m.textContent = "Adresse enthält keine Widget-Werte (Teil „?url=…“ fehlt)."; return; }
     const wt = (u.searchParams.get("w") || "button").toLowerCase();
-    if (wt !== "button") { m.textContent = "Widget-Typ „" + wt + "“ ist noch nicht verfügbar."; return; }
+    if (wt !== "button" && !WTYPES.includes(wt)) { m.textContent = "Widget-Typ „" + wt + "“ ist nicht verfügbar."; return; }
     const c = cfgFromParams(u.searchParams);
+    if (wt !== S.w) { const snap = {}; STYLE_KEYS.forEach((k) => { snap[k] = Array.isArray(S[k]) ? S[k].slice() : S[k]; }); SW[S.w] = snap; S.w = wt; }
+    loadWidgetParams(u.searchParams);
     $("g-label").value = c.label; $("g-sub").value = c.sub; $("g-url").value = c.url;
     S.theme = THEMES[c.theme] ? c.theme : "standard"; S.fill = pick(FILLS, c.fill, "solid"); S.shape = pick(SHAPES, c.shape, "cut"); S.frame = pick(FRAMES, c.frame, "auto"); S.pat = pick(PATTERNS, c.pat, "scan");
     S.hov = pick(HOVERS, c.hov, "bright"); S.clk = pick(CLICKS, c.clk, "press"); S.scheme = pick(SCHEMES, c.scheme, "auto"); S.caps = c.caps; S.fx = c.fx;
-    S.open = pick(OPEN, c.open, "tab"); S.size = pick(SIZES, c.size, "mid"); S.align = JUST[c.align] ? c.align : "left"; S.font = pick(FONTS, c.font, "rajdhani"); S.icon = c.icon; S.diy = {}; S.pad = c.pad; S.fit = c.fit;
+    S.open = pick(OPEN, c.open, "tab"); S.size = pick(SIZES, c.size, "mid"); S.align = (JUST[c.align] || c.align === "justify") ? c.align : "left"; S.font = pick(FONTS, c.font, "rajdhani"); S.icon = c.icon; S.diy = {}; S.pad = c.pad; S.fit = c.fit;
     DIY_KEYS.forEach(([k]) => { if (HEX.test(c[k] || "")) S.diy[k] = c[k].toLowerCase(); });
     applyPage(); drawAll(); render(); m.textContent = "Geladen. Nach dem Anpassen neue Adresse in der Notion-Einbettung ersetzen.";
   });
@@ -1303,7 +1758,7 @@ function applyPage() {
     "g-open": () => lbl(OPEN, S.open), "g-colors": () => activeName(),
     "g-fill": () => lbl(FILLS, S.fill), "g-shape": () => lbl(SHAPES, S.shape), "g-frame": () => lbl(FRAMES, S.frame), "g-pat": () => lbl(PATTERNS, S.pat),
     "g-font": () => lbl(FONTS, S.font), "g-size": () => { const z = SIZES.find((x) => x[0] === S.size) || SIZES[1]; return z[1] + " · " + z[2] + " px"; },
-    "g-caps": () => (S.caps ? "Großbuchstaben" : "Normal"), "g-align": () => lbl(ALIGNS, S.align), "g-fit": () => (S.fit === "frame" ? "Rahmen ausfüllen" : "Nach Inhalt"),
+    "g-caps": () => (S.caps ? "Großbuchstaben" : "Normal"), "g-align": () => lbl(ALIGNS_T, S.align), "g-fit": () => (S.fit === "frame" ? "Rahmen ausfüllen" : "Nach Inhalt"),
     "g-pad": () => (S.pad === "auto" ? "Auto" : S.pad + " px"), "g-fx": () => (S.fx.length ? S.fx.map((k) => lbl(FX, k)).join(", ") : "Keiner"),
     "g-hov": () => lbl(HOVERS, S.hov), "g-clk": () => lbl(CLICKS, S.clk), "g-scheme": () => lbl(SCHEMES, S.scheme),
   };
@@ -1330,8 +1785,105 @@ function applyPage() {
       h.addEventListener("click", tog); h.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tog(); } });
     });
   }
-  setupCollapse(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:28"; $("app").appendChild(st); }
+  /* ================= Weitere Widgets im Generator ================= */
+  const W_STYLE_DEF = (t) => ({ fill: "outline", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", caps: true, fx: W_DEFAULT_FX.slice(), size: "mid", align: ["lauftext", "banner", "textfeld"].includes(t) ? "left" : "center", pad: "auto", fit: t === "lauftext" ? "content" : "frame", font: "rajdhani" });
+  const STYLE_KEYS = ["fill", "shape", "frame", "pat", "hov", "clk", "caps", "fx", "size", "align", "pad", "fit", "font"];
+  const SW = {};
+  const ALIGNS_T = ALIGNS.concat([["justify", "Blocksatz"]]);
+  const ALL_ROWS = ["g-colors", "g-fill", "g-shape", "g-frame", "g-pat", "g-font", "g-size", "g-caps", "g-align", "g-fit", "g-pad", "g-fx", "g-hov", "g-clk", "g-open", "g-scheme"];
+  const BASE = ["g-colors", "g-fill", "g-shape", "g-frame", "g-pat", "g-font", "g-size", "g-caps", "g-pad", "g-fx", "g-scheme"];
+  const ROWSV = { button: ALL_ROWS, lauftext: BASE, banner: BASE.concat(["g-align", "g-fit", "g-hov", "g-clk"]), textfeld: BASE.concat(["g-align", "g-fit"]), uhr: BASE.concat(["g-align", "g-fit"]), countdown: BASE.concat(["g-align", "g-fit"]), kalender: BASE.concat(["g-align", "g-fit"]), fun: BASE.concat(["g-align", "g-fit"]) };
+  const WPREV = { lauftext: 80, banner: 130, textfeld: 210, uhr: 170, countdown: 170, kalender: 340, fun: 230 };
+  const in7 = (() => { const d = new Date(Date.now() + 7 * 86400000); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + "T18:00"; })();
+  const YN = (a, b) => [["1", a], ["0", b]];
+  const F = (k, label, kind, x) => Object.assign({ k, label, kind, def: "" }, x || {});
+  const WSCHEMA = {
+    lauftext: [F("text", "Text", "area", { max: 300, ph: "Lauftext, z. B. Willkommen in der Welt von Quest & Würfel", hint: "Leer = Beispieltext. Zeilenumbrüche werden zu Leerzeichen." }), F("speed", "Tempo", "seg", { items: [["slow", "Langsam"], ["mid", "Mittel"], ["fast", "Schnell"]], def: "mid" }), F("dir", "Richtung", "seg", { items: [["left", "Nach links"], ["right", "Nach rechts"]], def: "left" }), F("sep", "Trennzeichen", "text", { max: 6, def: "✦", ph: "z. B. ✦", hint: "Steht zwischen den Wiederholungen. Leer = keins." }), F("fade", "Kanten ausblenden", "seg", { items: YN("An", "Aus"), def: "1" }), F("pause", "Pause bei Hover", "seg", { items: YN("An", "Aus"), def: "1" })],
+    banner: [F("title", "Titel", "text", { max: 80, ph: "z. B. Neue Quest verfügbar" }), F("text", "Text", "area", { max: 300, ph: "Beschreibung, mehrere Zeilen möglich" }), F("bar", "Akzentleiste", "seg", { items: [["left", "Links"], ["top", "Oben"], ["none", "Keine"]], def: "left" })],
+    textfeld: [F("title", "Überschrift", "text", { max: 80, ph: "optional" }), F("text", "Text", "area", { max: 700, ph: "Dein Text. Neue Zeile = neuer Absatz.", rows: 6 }), F("lh", "Zeilenabstand", "seg", { items: [["tight", "Eng"], ["mid", "Normal"], ["loose", "Weit"]], def: "mid" }), F("type", "Tipp-Animation", "seg", { items: [["0", "Aus"], ["1", "Schreibmaschine"]], def: "0", hint: "Text tippt sich selbst; Klick zeigt ihn sofort." })],
+    uhr: [F("mode", "Anzeige", "seg", { items: [["digital", "Digital"], ["analog", "Analog"]], def: "digital" }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("h12", "Format", "seg", { items: [["0", "24 Stunden"], ["1", "12 Stunden"]], def: "0", hint: "Nur bei digitaler Anzeige." }), F("date", "Datum", "seg", { items: [["none", "Keins"], ["short", "Kurz"], ["long", "Lang"]], def: "short" }), F("name", "Name", "text", { max: 30, ph: "optional, z. B. Berlin" })],
+    countdown: [F("title", "Titel", "text", { max: 60, ph: "z. B. Bis zur nächsten Session" }), F("to", "Zieldatum", "dt", { def: in7, req: true }), F("tz", "Zeitzone", "tz", { def: "Europe/Berlin" }), F("sec", "Sekunden", "seg", { items: YN("An", "Aus"), def: "1" }), F("units", "Einheiten", "seg", { items: [["full", "Ausgeschrieben"], ["short", "Kurz"]], def: "full" }), F("done", "Text nach Ablauf", "text", { max: 60, def: "Es ist soweit!" })],
+    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("mark", "Markierte Tage", "dates", { ph: "z. B. 28.11.2026, 05.12.2026", hint: "Kommagetrennt, Format TT.MM.JJJJ." })],
+    fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zur Summe addiert." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
+  };
+  const X = {}; WTYPES.forEach((t) => { X[t] = {}; WSCHEMA[t].forEach((f) => { X[t][f.k] = String(f.def); }); });
+  const normDates = (raw) => String(raw || "").split(/[\s,;]+/).map((s) => { let m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(s); if (m) return m[3] + "-" + pad2(+m[2]) + "-" + pad2(+m[1]); return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : ""; }).filter(Boolean).join(",");
+  const oFor = (t) => { const o = Object.assign({}, X[t]); if (t === "kalender") o.mark = normDates(o.mark); return o; };
+  function drawWc() {
+    const host = $("wc"); host.textContent = "";
+    WTYPES.forEach((t) => {
+      const box = document.createElement("div"); box.className = "wcs"; box.dataset.wt = t; box.hidden = t !== S.w;
+      WSCHEMA[t].forEach((f) => {
+        const row = document.createElement("div"); row.className = "row"; const lab = document.createElement("span"); lab.className = "lab"; lab.textContent = f.label; row.appendChild(lab);
+        let ctl;
+        if (f.kind === "seg") {
+          ctl = document.createElement("div"); ctl.className = "seg";
+          const redraw = () => { ctl.textContent = ""; f.items.forEach(([v, l]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = l; b.setAttribute("aria-pressed", String(X[t][f.k] === v)); b.addEventListener("click", () => { X[t][f.k] = v; redraw(); render(); }); ctl.appendChild(b); }); };
+          redraw();
+        } else if (f.kind === "tz") {
+          ctl = document.createElement("select"); TZS.forEach(([v, l]) => { const op = document.createElement("option"); op.value = v; op.textContent = l; ctl.appendChild(op); }); ctl.value = X[t][f.k];
+          ctl.addEventListener("change", () => { X[t][f.k] = ctl.value; render(); });
+        } else if (f.kind === "area") {
+          ctl = document.createElement("textarea"); ctl.rows = f.rows || 3; ctl.maxLength = f.max || 300; ctl.placeholder = f.ph || ""; ctl.value = X[t][f.k]; ctl.addEventListener("input", () => { X[t][f.k] = ctl.value; render(); });
+        } else {
+          ctl = document.createElement("input"); ctl.type = f.kind === "num" ? "number" : f.kind === "dt" ? "datetime-local" : f.kind === "month" ? "month" : "text";
+          if (f.max && f.kind === "text") ctl.maxLength = f.max; if (f.kind === "num") { ctl.min = f.min; ctl.max = f.max; } if (f.ph) ctl.placeholder = f.ph; ctl.value = X[t][f.k]; ctl.autocomplete = "off"; ctl.spellcheck = false;
+          ctl.addEventListener("input", () => { X[t][f.k] = ctl.value; render(); });
+        }
+        ctl.dataset.f = f.k; row.appendChild(ctl); if (f.hint) { const h = document.createElement("p"); h.className = "hint2"; h.textContent = f.hint; row.appendChild(h); }
+        box.appendChild(row);
+      });
+      host.appendChild(box);
+    });
+  }
+  function applyWidgetUI() {
+    const t = S.w, isB = t === "button", show = (id, on) => { const r = $(id).closest(".row"); if (r) r.style.display = on ? "" : "none"; };
+    document.querySelectorAll("#wc .wcs").forEach((e) => { e.hidden = e.dataset.wt !== t; });
+    show("g-label", isB); show("g-sub", isB); show("g-ico", isB || t === "banner"); show("g-url", isB || t === "banner"); show("g-open", isB);
+    ALL_ROWS.forEach((id) => { if (id !== "g-open") show(id, ROWSV[t].includes(id)); });
+    $("opt-h").textContent = "OPTIONEN · " + WLABEL[t].toUpperCase();
+    seg("g-align", t === "textfeld" ? ALIGNS_T : ALIGNS, "align");
+    const sz = $("g-size").closest(".row").querySelector(".hint2"); if (sz) sz.textContent = isB ? "Der Button ist so groß wie die Schrift plus 5 px Rand rundum." : "Grundgröße des Inhalts. Bei „Rahmen ausfüllen“ passt sich bei Uhr, Countdown, Kalender und Würfel-Roboter der Inhalt dem Rahmen an.";
+    const ft = $("g-fit").closest(".row").querySelector(".hint2"); if (ft) ft.textContent = isB ? "„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, Schrift und Symbol wachsen und schrumpfen mit dem Rahmen mit (Einstellung „Größe“ gilt dann nicht)." : (WSCALE[t] ? "„Rahmen ausfüllen“: Fläche und Inhalt füllen den Notion-Rahmen und skalieren mit (Einstellung „Größe“ gilt dann nicht)." : "„Rahmen ausfüllen“: Fläche füllt den Notion-Rahmen; die Schriftgröße bleibt wie eingestellt.");
+    { const hn = $("g-innotion"); if (hn) hn.innerHTML = isB ? "<b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen." : "<b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmen auf die gewünschte Größe ziehen."; }
+    const ad = $("g-url").closest(".row").querySelector("label"); if (ad) ad.textContent = isB ? "Ziel-Adresse" : "Ziel (optional)";
+  }
+  function switchWidget(t) {
+    if (t === S.w) return;
+    const snap = {}; STYLE_KEYS.forEach((k) => { snap[k] = Array.isArray(S[k]) ? S[k].slice() : S[k]; }); SW[S.w] = snap;
+    const nxt = SW[t] || (t === "button" ? null : W_STYLE_DEF(t));
+    if (nxt) STYLE_KEYS.forEach((k) => { S[k] = Array.isArray(nxt[k]) ? nxt[k].slice() : nxt[k]; });
+    else { const d = { fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", caps: true, fx: FX_DEFAULT.slice(), size: "mid", align: "left", pad: "auto", fit: "content", font: "rajdhani" }; STYLE_KEYS.forEach((k) => { S[k] = Array.isArray(d[k]) ? d[k].slice() : d[k]; }); }
+    S.w = t; wClear(prev); prev._wk = ""; prev.style.width = t === "button" ? "" : "100%"; applyWidgetUI(); drawAll(); render();
+  }
+  function renderW() {
+    const t = S.w, cfg = cfgNow(); cfg.label = ""; cfg.sub = ""; if (t !== "banner") { cfg.icon = ""; cfg.url = ""; }
+    prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align] || "flex-start"; prev.classList.remove("ff");
+    { const key = t + (t === "uhr" ? X.uhr.mode : ""); if (prev._wk !== key) { prev._wk = key; prev.style.height = (t === "uhr" && X.uhr.mode === "analog" ? 250 : WPREV[t]) + "px"; } }
+    const sh = buildWidget(t, cfg, oFor(t), prev); btn = sh.b;
+    const raw = cfg.url, ok = !!okUrl(raw);
+    $("g-msg").textContent = t !== "banner" ? "" : !raw ? "Optional: Mit Ziel-Adresse wird das Banner anklickbar." : ok ? "" : "Ziel nicht erlaubt oder unvollständig: Das Banner bleibt nicht anklickbar (erlaubt: https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";
+    { const pd = parseFloat(getComputedStyle(prev).paddingLeft) || 0, r = sh.b.getBoundingClientRect(), w = Math.ceil(r.width + 2 * pd), h = Math.ceil(r.height + 2 * pd);
+      $("g-fitnote").textContent = S.fit === "frame" ? (WSCALE[t] ? "Fläche und Inhalt füllen den Rahmen bis auf den Randabstand (" + pd + " px) und skalieren mit. Rahmen in Notion beliebig ziehen. Vorschau: Kasten an der Ecke ziehen." : "Die Fläche füllt den Rahmen bis auf den Randabstand (" + pd + " px). Rahmen in Notion beliebig ziehen.") : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Widget ab."; }
+    updateSums(); $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
+    const p = new URLSearchParams(), D = W_STYLE_DEF(t); p.set("w", t);
+    if (t === "banner") { if (cfg.url) p.set("url", ok && isMail(cfg.url) ? okUrl(raw) : cfg.url); if (cfg.icon) p.set("icon", cfg.icon); }
+    if (cfg.theme !== "standard") p.set("theme", cfg.theme);
+    ["fill", "shape", "frame", "pat", "size", "align", "pad", "font"].forEach((k) => { if (S[k] !== D[k]) p.set(k, S[k]); });
+    if (t === "banner") { if (S.hov !== "bright") p.set("hov", S.hov); if (S.clk !== "press") p.set("clk", S.clk); }
+    if (!S.caps) p.set("caps", "0"); if (S.fit !== D.fit) p.set("fit", S.fit); if (S.scheme !== "auto") p.set("scheme", S.scheme);
+    if (S.fx.slice().sort().join() !== W_DEFAULT_FX.slice().sort().join()) p.set("fx", S.fx.length ? S.fx.join(",") : "none");
+    DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
+    WSCHEMA[t].forEach((f) => { let v = X[t][f.k]; if (f.kind === "dates") v = normDates(v); if (f.req ? v !== "" : v !== String(f.def)) p.set(f.k, v); });
+    $("g-out").value = location.origin + location.pathname + "?" + p.toString(); $("g-copy").disabled = false;
+  }
+  function loadWidgetParams(u) {
+    const wt = (u.get("w") || "button").toLowerCase(); if (wt === "button" || !WTYPES.includes(wt)) return;
+    WSCHEMA[wt].forEach((f) => { X[wt][f.k] = u.has(f.k) ? u.get(f.k) : String(f.def); }); drawWc(); applyWidgetUI();
+  }
+  const NAV_READY = ["button"].concat(WTYPES);
+  drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 21:39"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

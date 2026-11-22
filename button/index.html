@@ -19,23 +19,49 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .wrap[data-fx~="glow"] { filter: drop-shadow(0 0 5px rgb(var(--arg) / .45)); }
 .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; cursor: pointer; max-width: 100%;
   font-family: var(--ff); padding: 5px 5px 5px calc(5px + .12em); line-height: 1.1; letter-spacing: .12em; user-select: none; -webkit-tap-highlight-color: transparent; overflow: hidden;
-  background: var(--a); color: var(--ink); border: 0; --cut: clamp(5px, .32em, 9px);
-  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+  background: var(--a); color: var(--ink); border: 0; --cut: clamp(5px, .32em, 9px); --pt: rgb(0 0 0 / .16);
+  transition: background-color .12s, color .12s, transform .12s; }
 .btn.caps .lbl { text-transform: uppercase; }
-.btn::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgb(0 0 0 / .16) 0 1px, transparent 1px 3px); }
-/* Stile */
-.btn.st-outline { background: var(--panel); color: var(--a); box-shadow: inset 0 0 0 1px var(--line); }
-.btn.st-ghost { background: transparent; color: var(--a); clip-path: none; box-shadow: inset 0 0 0 1px transparent; }
-.btn.st-ghost::after { display: none; }
-.btn.st-ghost:hover, .btn.st-ghost:focus-visible { box-shadow: inset 0 0 0 1px var(--a); filter: none; }
-.btn.st-double { background: var(--panel); color: var(--a); box-shadow: inset 0 0 0 1px var(--a), inset 0 0 0 3px var(--panel), inset 0 0 0 4px var(--line); }
-.btn.st-square { clip-path: none; }
-.btn.st-round { clip-path: none; border-radius: .45em; }
-.btn.st-pill { clip-path: none; border-radius: 999px; padding-left: calc(5px + .7em); padding-right: calc(5px + .6em); }
-.btn:hover, .btn:focus-visible { filter: brightness(1.12); outline: none; }
-.btn:active { transform: scale(.985); }
+/* Füllung */
+.btn.f-outline { background: var(--panel); color: var(--a); }
+.btn.f-ghost { background: transparent; color: var(--a); }
+/* Form */
+.btn.sh-cut { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+.btn.sh-round { border-radius: .45em; }
+.btn.sh-pill { border-radius: 999px; padding-left: calc(5px + .7em); padding-right: calc(5px + .6em); }
+/* Rahmen */
+.btn.fr-thin { box-shadow: inset 0 0 0 1px var(--fr); }
+.btn.fr-thick { box-shadow: inset 0 0 0 2px var(--fr); }
+.btn.fr-double { box-shadow: inset 0 0 0 1px var(--fr); }
+.btn.fr-double::before, .btn.fr-dashed::before, .btn.fr-dotted::before { content: ""; position: absolute; pointer-events: none; z-index: 1; border: 1px solid var(--fr); }
+.btn.fr-double::before { inset: 3px; }
+.btn.fr-dashed::before, .btn.fr-dotted::before { inset: 2px; border-style: dashed; }
+.btn.fr-dotted::before { border-style: dotted; }
+.btn.sh-round.fr-double::before, .btn.sh-round.fr-dashed::before, .btn.sh-round.fr-dotted::before { border-radius: .3em; }
+.btn.sh-pill.fr-double::before, .btn.sh-pill.fr-dashed::before, .btn.sh-pill.fr-dotted::before { border-radius: 999px; }
+/* Muster */
+.btn::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.btn.pt-scan::after { background: repeating-linear-gradient(0deg, var(--pt) 0 1px, transparent 1px 3px); }
+.btn.pt-dots::after { background: radial-gradient(var(--pt) 1px, transparent 1.3px) 0 0 / 5px 5px; }
+.btn.pt-grid::after { background: linear-gradient(var(--pt) 1px, transparent 1px) 0 0 / 6px 6px, linear-gradient(90deg, var(--pt) 1px, transparent 1px) 0 0 / 6px 6px; }
+.btn.pt-diag::after { background: repeating-linear-gradient(45deg, var(--pt) 0 1px, transparent 1px 5px); }
+.btn.pt-check::after { background: conic-gradient(var(--pt) 25%, transparent 0 50%, var(--pt) 0 75%, transparent 0) 0 0 / 8px 8px; }
+.btn.pt-none::after { display: none; }
+/* Hover */
+.btn.hv-bright:hover, .btn.hv-bright:focus-visible { filter: brightness(1.12); }
+.btn.hv-invert:hover, .btn.hv-invert:focus-visible { background: var(--ink); color: var(--a); box-shadow: inset 0 0 0 1px var(--a); }
+.btn.hv-invert.f-outline:hover, .btn.hv-invert.f-ghost:hover, .btn.hv-invert.f-outline:focus-visible, .btn.hv-invert.f-ghost:focus-visible { background: var(--a); color: var(--ink); }
+.btn.hv-lift:hover, .btn.hv-lift:focus-visible { transform: translateY(-2px); filter: brightness(1.08); }
+.btn.f-ghost.fr-none:hover, .btn.f-ghost.fr-none:focus-visible { box-shadow: inset 0 0 0 1px var(--a); }
+.btn:hover, .btn:focus-visible { outline: none; }
+/* Klick */
+.btn.ck-press:active { transform: scale(.96); }
+.btn.ck-flash:active { animation: ckf .28s ease-out; }
+.btn.ck-shake:active { animation: cks .28s linear; }
+@keyframes ckf { 0% { filter: brightness(2.4) saturate(1.4); } 100% { filter: none; } }
+@keyframes cks { 0%, 100% { transform: none; } 20% { transform: translateX(-3px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
 .btn.off { cursor: not-allowed; opacity: .55; filter: grayscale(.6); }
-.main { display: flex; flex-direction: column; align-items: center; gap: .1em; position: relative; z-index: 1; }
+.main { display: flex; flex-direction: column; align-items: center; gap: .1em; position: relative; z-index: 2; }
 .line { display: flex; align-items: center; justify-content: center; gap: .45em; }
 .ico { display: inline-flex; align-items: center; letter-spacing: 0; }
 .ico svg { width: 1.05em; height: 1.05em; display: block; }
@@ -72,64 +98,87 @@ svg.defs { position: absolute; width: 0; height: 0; }
   @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 3px rgb(var(--arg) / .3)); } 50% { filter: drop-shadow(0 0 10px rgb(var(--arg) / .65)); } }
 }
 
+
 /* ---------- Generator ---------- */
-body.gen { background: #0c120d; padding: 18px; height: auto; min-height: 100%; }
+body.gen { background: var(--pb); padding: 18px; height: auto; min-height: 100%; }
 .gen main { max-width: 780px; margin: 0 auto; }
-.gen h1 { margin: 0 0 4px; font-size: 1.45rem; letter-spacing: .1em; color: #c1f130; }
-.gen .intro { margin: 0 0 18px; color: #8fa58a; }
-.card { background: #141d15; border: 1px solid #2a3a2b; padding: 14px 16px 16px; margin-bottom: 14px;
+.gen h1 { margin: 0 0 4px; font-size: 1.45rem; letter-spacing: .1em; color: var(--pa); }
+.gen .intro { margin: 0 0 18px; color: var(--pm); }
+.card { background: var(--pp); border: 1px solid var(--pl); padding: 14px 16px 16px; margin-bottom: 14px;
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
-.card h2 { margin: 0 0 10px; font-size: 1rem; letter-spacing: .12em; color: #c1f130; font-weight: 500; }
+.card h2 { margin: 0 0 10px; font-size: 1rem; letter-spacing: .12em; color: var(--pa); font-weight: 500; }
 .row { display: grid; grid-template-columns: 150px 1fr; gap: 8px 12px; align-items: center; margin-bottom: 10px; }
-.row label, .row .lab { color: #8fa58a; }
-input[type=text], input[type=url] { width: 100%; font: inherit; font-size: 1rem; color: #d9f58c; background: rgb(0 0 0 / .25); border: 1px solid #2a3a2b; padding: 8px 10px; border-radius: 3px; }
-input::placeholder { color: #566a55; }
-input:focus-visible, button:focus-visible { outline: 1px solid #c1f130; border-color: #c1f130; }
+.row label, .row .lab { color: var(--pm); }
+input[type=text], input[type=url] { width: 100%; font: inherit; font-size: 1rem; color: var(--ptx); background: rgb(0 0 0 / .25); border: 1px solid var(--pl); padding: 8px 10px; border-radius: 3px; }
+input::placeholder { color: var(--pm); }
+input:focus-visible, button:focus-visible { outline: 1px solid var(--pa); border-color: var(--pa); }
 .seg { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.seg button, .copy, .dlg button { font: inherit; font-size: .95rem; cursor: pointer; color: #dbe8c8; background: transparent; border: 1px solid #2a3a2b; padding: 6px 14px; border-radius: 3px; }
-.seg button[aria-pressed=true] { border-color: #c1f130; color: #c1f130; }
-.seg .sw { width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 2px solid #2a3a2b; background: var(--c); }
+.seg button, .copy, .dlg button { font: inherit; font-size: .95rem; cursor: pointer; color: var(--ptx); background: transparent; border: 1px solid var(--pl); padding: 6px 14px; border-radius: 3px; }
+.seg button[aria-pressed=true] { border-color: var(--pa); color: var(--pa); }
+.seg .sw { width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 2px solid var(--pl); background: var(--c); }
 .seg .sw[aria-pressed=true] { border-color: #fff; transform: scale(1.12); }
 .seg .diy { border-style: dashed; letter-spacing: .1em; }
-.seg .diy.on { border-color: #c1f130; color: #c1f130; border-style: solid; }
+.seg .diy.on { border-color: var(--pa); color: var(--pa); border-style: solid; }
 .seg button.mchk[aria-pressed=true]::before { content: "✓ "; }
 .seg .icobtn { min-width: 120px; display: inline-flex; gap: 8px; align-items: center; }
 .seg .icobtn svg { width: 1.1em; height: 1.1em; }
 .seg.fonts button { font-size: 1.05rem; padding: 6px 12px; }
-.copy, .dlg button.go { background: #c1f130; color: #10170a; border-color: #c1f130; }
+.copy, .dlg button.go { background: var(--pa); color: var(--pink); border-color: var(--pa); }
 .copy:disabled { opacity: .45; cursor: not-allowed; }
-.hint2 { grid-column: 2; margin: -4px 0 0; color: #8fa58a; font-size: .85rem; line-height: 1.35; }
+.hint2 { grid-column: 2; margin: -4px 0 0; color: var(--pm); font-size: .85rem; line-height: 1.35; }
 .hint2.warn { color: #ffd23f; }
-.prev { height: 70px; padding: 10px; background: repeating-linear-gradient(45deg, rgb(255 255 255 / .04) 0 10px, transparent 10px 20px); border: 1px dashed #2a3a2b; resize: both; overflow: hidden; min-height: 24px; min-width: 120px; }
-.prevhint { margin: 6px 0 0; color: #8fa58a; font-size: .85rem; }
+.prev { height: 70px; padding: 10px; background: repeating-linear-gradient(45deg, rgb(255 255 255 / .04) 0 10px, transparent 10px 20px); border: 1px dashed var(--pl); resize: both; overflow: hidden; min-height: 24px; min-width: 120px; }
+.prevhint { margin: 6px 0 0; color: var(--pm); font-size: .85rem; }
 .msg { margin: 6px 0 0; min-height: 1.2em; color: #ffd23f; font-size: .95rem; }
 .out, .inl { display: flex; gap: 8px; } .out input, .inl input { flex: 1; }
-.hl { margin: 8px 0 0; color: #8fa58a; font-size: .95rem; line-height: 1.5; }
-.hl b { color: #dbe8c8; font-weight: 500; }
-dialog.dlg { color: #dbe8c8; background: #141d15; border: 1px solid #c1f130; padding: 0; width: min(92vw, 480px); max-height: 88vh; overflow: auto;
+.hl { margin: 8px 0 0; color: var(--pm); font-size: .95rem; line-height: 1.5; }
+.hl b { color: var(--ptx); font-weight: 500; }
+dialog.dlg { color: var(--ptx); background: var(--pp); border: 1px solid var(--pa); padding: 0; width: min(92vw, 480px); max-height: 88vh; overflow: auto;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); }
 dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .dlg-in { padding: 16px 18px 18px; }
-.dlg h3 { margin: 0 0 12px; font-size: 1.05rem; letter-spacing: .12em; color: #c1f130; font-weight: 500; }
-.dlg h4 { margin: 16px 0 8px; font-size: .95rem; letter-spacing: .1em; color: #c1f130; font-weight: 500; }
+.dlg h3 { margin: 0 0 12px; font-size: 1.05rem; letter-spacing: .12em; color: var(--pa); font-weight: 500; }
+.dlg h4 { margin: 16px 0 8px; font-size: .95rem; letter-spacing: .1em; color: var(--pa); font-weight: 500; }
 .crow { display: grid; grid-template-columns: 1fr 44px 96px 30px; gap: 8px; align-items: center; margin-bottom: 8px; }
-.crow label { color: #dbe8c8; }
-.crow small { display: block; color: #8fa58a; font-size: .78rem; }
-.crow input[type=color] { width: 44px; height: 32px; padding: 0; border: 1px solid #2a3a2b; background: transparent; cursor: pointer; }
+.crow label { color: var(--ptx); }
+.crow small { display: block; color: var(--pm); font-size: .78rem; }
+.crow input[type=color] { width: 44px; height: 32px; padding: 0; border: 1px solid var(--pl); background: transparent; cursor: pointer; }
 .crow input[type=text] { padding: 5px 8px; font-size: .9rem; }
 .crow .x { padding: 2px 0; width: 30px; }
 .combo { display: grid; grid-template-columns: auto 1fr auto auto; gap: 8px; align-items: center; margin-bottom: 6px; }
 .combo .dots { display: inline-flex; gap: 3px; }
-.combo .dots i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #2a3a2b; display: inline-block; }
+.combo .dots i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--pl); display: inline-block; }
 .dact { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
 .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
 .tabs button { flex: 1; }
-.tabs button[aria-selected=true] { border-color: #c1f130; color: #c1f130; }
+.tabs button[aria-selected=true] { border-color: var(--pa); color: var(--pa); }
 .igrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 6px; max-height: 46vh; overflow: auto; padding: 2px; }
 .igrid button { padding: 0; height: 46px; font-size: 1.45rem; line-height: 1; display: grid; place-items: center; }
 .igrid button svg { width: 24px; height: 24px; }
-.igrid button[aria-pressed=true] { border-color: #c1f130; color: #c1f130; background: rgb(193 241 48 / .12); }
+.igrid button[aria-pressed=true] { border-color: var(--pa); color: var(--pa); background: color-mix(in srgb, var(--pa) 14%, transparent); }
 @media (max-width: 560px) { .row { grid-template-columns: 1fr; } .hint2 { grid-column: 1; } }
+
+/* ---- Layout (Skizze) ---- */
+.shell { max-width: 900px; margin: 0 auto; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; background: var(--pp); border: 1px solid var(--pl); padding: 10px 14px; margin-bottom: 14px;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.topbar h1 { margin: 0; font-size: 1.3rem; letter-spacing: .1em; color: var(--pa); }
+.themes { display: flex; gap: 8px; flex-wrap: wrap; }
+.themes .tb { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: .92rem; cursor: pointer; color: var(--ptx); background: transparent; border: 1px solid var(--pl); padding: 5px 12px; border-radius: 3px; }
+.themes .tb i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.themes .tb[aria-pressed=true] { border-color: var(--pa); color: var(--pa); }
+.stage { display: grid; grid-template-columns: 170px 1fr; gap: 14px; }
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav button { font: inherit; font-size: 1rem; text-align: left; cursor: pointer; color: var(--ptx); background: transparent; border: 0; border-left: 2px solid transparent; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; }
+.nav button[aria-current=true] { border-left-color: var(--pa); color: var(--pa); background: color-mix(in srgb, var(--pa) 10%, transparent); }
+.nav button:disabled { color: var(--pm); cursor: not-allowed; opacity: .7; }
+.nav small { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--pl); padding: 0 5px; }
+.prevcol { min-width: 0; }
+.stage .prev { height: 120px; }
+.sub3 { margin: 18px 0 10px; padding-top: 10px; border-top: 1px solid var(--pl); font-size: .9rem; letter-spacing: .14em; text-transform: uppercase; color: var(--pm); font-weight: 500; }
+.sub3:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+.ghostbtn { font: inherit; font-size: .95rem; cursor: pointer; color: var(--ptx); background: transparent; border: 1px solid var(--pl); padding: 6px 14px; border-radius: 3px; }
+@media (max-width: 640px) { .stage { grid-template-columns: 1fr; } .nav { flex-direction: row; flex-wrap: wrap; } }
 
 </style>
 </head>
@@ -160,12 +209,21 @@ const ICON_LABELS = {"pin":"Pinnwand","map-pin":"Ort","plus":"Plus","circle-plus
 const EMOJIS = "📌 📍 📎 🔗 ➕ ✏️ ✍️ 📝 🖋️ 📖 📚 📜 📒 🗂️ 📁 📦 🗓️ 📅 ⏳ ⌛ ⏰ 🔔 💡 🎯 🚀 ⭐ 🌟 ✨ 🔥 ⚡ 💥 🎲 🎭 🎨 🖼️ 🎵 ⚔️ 🗡️ 🛡️ 🏹 🪄 🔮 🧙 🧝 🧚 🐉 👑 💎 🗝️ 🔑 🔒 🧭 🗺️ 🏰 🌲 🌙 ☀️ ❄️ 💀 👁️ 🧩 🧪 🧿 🐝 🦋 🐺 🦉 🐙 🕯️ 📣 💬 👥 👤 🏠 🌍 🛠️ 🔧 ⚙️ 🧰 🧱 ✅ ☑️ ❌ ❗ ❓ ⚠️ 🔍 📊 📈 🏁 🚩 🎁 🏆 🥇 ❤️ 💜 💙 💚 🧡 🖤".split(" ");
 const $ = (id) => document.getElementById(id);
 const THEMES = {
-  standard: { a: "#c1f130", ink: "#10170a", panel: "#141d15", line: "#2a3a2b", text: "#dbe8c8" },
-  bernstein: { a: "#ffb000", ink: "#1a1000", panel: "#1d1810", line: "#3a3020", text: "#eadcc0" },
-  cyan: { a: "#2fe0ff", ink: "#04171c", panel: "#0f1c26", line: "#1f3545", text: "#cfe6f0" },
-  violett: { a: "#d77bff", ink: "#1a0a22", panel: "#1a1222", line: "#35244a", text: "#e6d6f2" },
+  standard: { name: "Cybercriminal", a: "#c1f130", ink: "#10170a", panel: "#141d15", line: "#2a3a2b", text: "#dbe8c8", pb: "#0c120d", mu: "#8fa58a" },
+  bernstein: { name: "Bernstein", a: "#ffb000", ink: "#1a1000", panel: "#1d1810", line: "#3a3020", text: "#eadcc0", pb: "#120e08", mu: "#a89874" },
+  cyan: { name: "Cyan", a: "#2fe0ff", ink: "#04171c", panel: "#0f1c26", line: "#1f3545", text: "#cfe6f0", pb: "#091017", mu: "#7f9bab" },
+  violett: { name: "Violett", a: "#d77bff", ink: "#1a0a22", panel: "#1a1222", line: "#35244a", text: "#e6d6f2", pb: "#100b16", mu: "#a08fb5" },
 };
-const STYLES = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transparent"], ["double", "Doppelrahmen"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"]];
+const FILLS = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transparent"]];
+const SHAPES = [["cut", "Geschnitten"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"]];
+const FRAMES = [["auto", "Automatisch"], ["none", "Keiner"], ["thin", "Dünn"], ["thick", "Dick"], ["double", "Doppelt"], ["dashed", "Gestrichelt"], ["dotted", "Gepunktet"]];
+const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], ["grid", "Gitter"], ["diag", "Diagonal"], ["check", "Schachbrett"]];
+const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["none", "Keiner"]];
+const CLICKS = [["press", "Eindrücken"], ["flash", "Aufblitzen"], ["shake", "Rütteln"], ["none", "Keiner"]];
+const SCHEMES = [["dark", "Dunkel"], ["light", "Hell"], ["auto", "Auto"]];
+const WIDGETS = [["button", "Button"], ["lauftext", "Lauftext"], ["banner", "Banner"], ["textfeld", "Textfeld"], ["uhr", "Uhr"], ["countdown", "Countdown"], ["counter", "Counter"], ["kalender", "Kalender"], ["fun", "Fun-Widget"]];
+const LEGACY_STYLE = { solid: { fill: "solid" }, outline: { fill: "outline" }, ghost: { fill: "ghost" }, double: { fill: "outline", frame: "double" }, square: { shape: "square" }, round: { shape: "round" }, pill: { shape: "pill" } };
+const pick = (list, v, d) => (list.some((x) => x[0] === v) ? v : d);
 const FX = [["rgb", "RGB-Split"], ["tear", "Streifen"], ["jitter", "Zittern"], ["noise", "Rauschen"], ["flicker", "Flackern"], ["glow", "Glühen"]];
 const FX_DEFAULT = ["rgb", "tear", "glow"];
 const OPEN = [["tab", "Neuer Tab"], ["side", "Notion: Seitenansicht"], ["center", "Notion: Zentriert"], ["full", "Notion: Vollseite"]];
@@ -229,11 +287,14 @@ function buildButton(cfg, host) {
   host.textContent = "";
   const mode = OPEN.some((o) => o[0] === cfg.open) ? cfg.open : "tab", href0 = okUrl(cfg.url), href = href0 ? resolveTarget(href0, mode) : "";
   const fx = Array.isArray(cfg.fx) ? cfg.fx : FX_DEFAULT, size = SIZES.find((s) => s[0] === cfg.size) || SIZES[1];
-  const st = STYLES.some((s) => s[0] === cfg.style) ? cfg.style : "solid";
+  const fill = pick(FILLS, cfg.fill, "solid"), shape = pick(SHAPES, cfg.shape, "cut"), pat = pick(PATTERNS, cfg.pat, "scan");
+  let frame = pick(FRAMES, cfg.frame, "auto"); if (frame === "auto") frame = fill === "outline" ? "thin" : "none";
+  const hov = pick(HOVERS, cfg.hov, "bright"), clk = pick(CLICKS, cfg.clk, "press");
   const font = FONTS.some((f) => f[0] === cfg.font) ? cfg.font : "rajdhani"; loadFont(font);
   const wrap = document.createElement("div"); wrap.className = "wrap"; wrap.dataset.fx = fx.join(" "); applyTheme(wrap, cfg);
   const b = document.createElement(href ? "a" : "span");
-  b.className = "btn st-" + st + (cfg.caps !== false ? " caps" : "") + (href ? "" : " off");
+  b.className = "btn f-" + fill + " sh-" + shape + " fr-" + frame + " pt-" + pat + " hv-" + hov + " ck-" + clk + (cfg.caps !== false ? " caps" : "") + (href ? "" : " off");
+  { const t = palette(cfg); b.style.setProperty("--fr", HEX.test(cfg.line || "") ? t.line : (fill === "solid" ? t.ink : (cfg.frame && cfg.frame !== "auto" ? t.a : t.line))); b.style.setProperty("--pt", fill === "solid" ? "rgb(0 0 0 / .16)" : "rgb(255 255 255 / .07)"); }
   b.style.fontSize = size[2] + "px"; b.style.setProperty("--ff", famOf(font));
   if (href) { b.href = href; b.target = "_blank"; b.rel = "noopener noreferrer"; } else { b.setAttribute("role", "link"); b.setAttribute("aria-disabled", "true"); }
   const main = document.createElement("span"); main.className = "main";
@@ -275,54 +336,67 @@ function startBursts(getBtn) {
 function cfgFromParams(q) {
   const c = {
     label: (q.get("label") || "").slice(0, 60), url: q.get("url") || "", icon: (q.get("icon") || "").slice(0, 24), sub: (q.get("sub") || "").slice(0, 60),
-    theme: (q.get("theme") || "standard").toLowerCase(), style: (q.get("style") || "solid").toLowerCase(), caps: q.get("caps") !== "0",
+    theme: (q.get("theme") || "standard").toLowerCase(), caps: q.get("caps") !== "0",
+    fill: (q.get("fill") || "").toLowerCase(), shape: (q.get("shape") || "").toLowerCase(), frame: (q.get("frame") || "").toLowerCase(), pat: (q.get("pat") || "scan").toLowerCase(),
+    hov: (q.get("hov") || "bright").toLowerCase(), clk: (q.get("clk") || "press").toLowerCase(), scheme: (q.get("scheme") || "auto").toLowerCase(),
     fx: parseFx(q.get("fx")), open: (q.get("open") || "tab").toLowerCase(), size: (q.get("size") || "mid").toLowerCase(), align: (q.get("align") || "left").toLowerCase(),
     font: (q.get("font") || "rajdhani").toLowerCase(),
   };
   DIY_KEYS.forEach(([k]) => { c[k] = q.get(k) || ""; });
+  const lg = LEGACY_STYLE[(q.get("style") || "").toLowerCase()] || {};
+  c.fill = c.fill || lg.fill || "solid"; c.shape = c.shape || lg.shape || "cut"; c.frame = c.frame || lg.frame || "auto";
   return c;
 }
 const JUST = { left: "flex-start", center: "center", right: "flex-end" };
 const q = new URLSearchParams(location.search);
 
-if (q.has("url")) {
+if (q.has("url") || q.has("w")) {
   /* ---- Widget-Modus: nur der Button, Hintergrund transparent ---- */
   document.body.className = "w";
   const host = $("app"), cfg = cfgFromParams(q);
   /* Notion-Modus: Hintergrund bleibt nur transparent, wenn color-scheme von Widget und Einbettung übereinstimmt (auto = hell/dunkel nach Systemeinstellung) */
   { const sc = (q.get("scheme") || "auto").toLowerCase(); if (sc === "light" || sc === "dark") document.documentElement.style.colorScheme = sc; }
   host.style.cssText = "width:100%;height:100%;display:flex;align-items:center;justify-content:" + (JUST[cfg.align] || "flex-start");
-  const btn = buildButton(cfg, host);
-  document.title = cfg.label || "Button";
-  startBursts(() => btn);
+  const wtype = (q.get("w") || "button").toLowerCase();
+  if (wtype !== "button") { host.textContent = "Widget „" + wtype + "“ folgt."; host.style.color = "#888"; host.style.fontSize = "13px"; }
+  else { const btn = buildButton(cfg, host); document.title = cfg.label || "Button"; startBursts(() => btn); }
 } else {
   /* ---- Generator-Modus ---- */
   document.body.className = "gen"; document.documentElement.style.colorScheme = "dark"; document.title = "Widgets für Notion";
   FONTS.forEach((f) => loadFont(f[0]));
   const app = $("app");
-  app.innerHTML = '<main>' +
-    '<h1>WIDGETS FÜR NOTION</h1><p class="intro">Widget gestalten, Adresse kopieren, in Notion als Einbettung einfügen.</p>' +
-    '<section class="card"><h2>VORHANDENEN BUTTON BEARBEITEN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Button-Adresse hier einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
-    '<section class="card"><h2>INHALT</h2>' +
+  app.innerHTML = '<div class="shell">' +
+    '<header class="topbar"><h1>WIDGETS FÜR NOTION</h1><div class="themes" id="g-themes" role="group" aria-label="Theme"></div></header>' +
+    '<section class="card stage"><nav class="nav" id="g-nav" aria-label="Widgets"></nav><div class="prevcol"><div class="prev" id="g-prev"></div><p class="prevhint">Vorschau. Der Kasten lässt sich unten rechts ziehen und entspricht dem Rahmen in Notion.</p></div></section>' +
+    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
+    '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
+    '<section class="card"><h2 id="opt-h">OPTIONEN · BUTTON</h2>' +
+    '<h3 class="sub3">Inhalt</h3>' +
     '<div class="row"><label for="g-label">Beschriftung</label><input type="text" id="g-label" maxlength="60" placeholder="z. B. Neue Quest anpinnen" autocomplete="off"></div>' +
     '<div class="row"><label for="g-sub">Untertitel</label><input type="text" id="g-sub" maxlength="60" placeholder="optional" autocomplete="off"></div>' +
     '<div class="row"><span class="lab">Symbol</span><div class="seg"><button type="button" class="icobtn" id="g-ico"></button></div></div>' +
-    '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="url" id="g-url" spellcheck="false" placeholder="https://…" autocomplete="off"><button type="button" id="g-formurl" class="copy" style="background:transparent;color:#dbe8c8;border-color:#2a3a2b">Formular</button></div></div>' +
+    '<div class="row"><label for="g-url">Ziel-Adresse</label><div class="inl"><input type="url" id="g-url" spellcheck="false" placeholder="https://…" autocomplete="off"><button type="button" id="g-formurl" class="ghostbtn">Formular</button></div></div>' +
     '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
-    '<p class="msg" id="g-msg"></p></section>' +
-    '<section class="card"><h2>AUSSEHEN</h2>' +
-    '<div class="row"><span class="lab">Farbe</span><div class="seg" id="g-theme"></div></div>' +
-    '<div class="row"><span class="lab">Stil</span><div class="seg" id="g-style"></div></div>' +
+    '<p class="msg" id="g-msg"></p>' +
+    '<h3 class="sub3">Aussehen</h3>' +
+    '<div class="row"><span class="lab">Farbe</span><div class="seg"><button type="button" class="diy" id="g-diy"></button></div><p class="hint2">Theme oben wählen. DIY überschreibt einzelne Farben des Themes.</p></div>' +
+    '<div class="row"><span class="lab">Füllung</span><div class="seg" id="g-fill"></div></div>' +
+    '<div class="row"><span class="lab">Form</span><div class="seg" id="g-shape"></div></div>' +
+    '<div class="row"><span class="lab">Rahmen</span><div class="seg" id="g-frame"></div></div>' +
+    '<div class="row"><span class="lab">Muster</span><div class="seg" id="g-pat"></div></div>' +
     '<div class="row"><span class="lab">Schriftart</span><div class="seg fonts" id="g-font"></div></div>' +
     '<div class="row"><span class="lab">Schriftgröße</span><div class="seg" id="g-size"></div><p class="hint2">Der Button ist so groß wie die Schrift plus 5 px Rand rundum.</p></div>' +
     '<div class="row"><span class="lab">Schreibweise</span><div class="seg" id="g-caps"></div></div>' +
     '<div class="row"><span class="lab">Ausrichtung</span><div class="seg" id="g-align"></div></div>' +
-    '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl: beliebig kombinieren, keine Auswahl = ruhiger Button.</p></div></section>' +
-    '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Der Kasten lässt sich unten rechts ziehen und entspricht dem Rahmen in Notion.</p></section>' +
-    '<section class="card"><h2>ADRESSE FÜR NOTION</h2><div class="out"><input type="text" id="g-out" readonly><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
-    '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b>. Rahmenhöhe auf die Buttonhöhe ziehen.</p>' +
-    '<p class="hl"><b>Ändern später:</b> alte Adresse oben unter „Vorhandenen Button bearbeiten“ laden, anpassen, die neue Adresse in der Einbettung ersetzen.</p>' +
-    '<p class="hl">Erlaubte Ziele: notion.so, notion.com, notion.site und die Formular-Adresse. Symbole: Lucide (ISC-Lizenz). Schriften: Google Fonts (OFL / Apache 2.0).</p></section></main>' +
+    '<h3 class="sub3">Animation</h3>' +
+    '<div class="row"><span class="lab">Glitch</span><div class="seg" id="g-fx"></div><p class="hint2">Mehrfachauswahl, keine Auswahl = ruhiger Button.</p></div>' +
+    '<div class="row"><span class="lab">Hover</span><div class="seg" id="g-hov"></div></div>' +
+    '<div class="row"><span class="lab">Klick</span><div class="seg" id="g-clk"></div></div>' +
+    '<h3 class="sub3">Notion</h3>' +
+    '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
+    '</section>' +
+    '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p>' +
+    '<p class="hl">Geändert wird eine Kopie: Nach dem Anpassen die neue Adresse in der Notion-Einbettung ersetzen. Erlaubte Ziele: notion.so, notion.com, notion.site und die Formular-Adresse. Symbole: Lucide (ISC). Schriften: Google Fonts (OFL / Apache 2.0).</p></section></div>' +
     '<dialog class="dlg" id="diy" aria-labelledby="diy-t"><div class="dlg-in"><h3 id="diy-t">EIGENE FARBEN</h3><div id="diy-rows"></div>' +
     '<h4>KOMBINATIONEN</h4><div class="inl"><input type="text" id="cb-name" maxlength="24" placeholder="Name der Kombi" autocomplete="off"><button type="button" class="go" id="cb-save">Speichern</button></div><div id="cb-list" style="margin-top:10px"></div>' +
     '<p class="hl" id="cb-note">Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen.</p>' +
@@ -331,25 +405,47 @@ if (q.has("url")) {
     '<dialog class="dlg" id="ipick" aria-labelledby="ip-t"><div class="dlg-in"><h3 id="ip-t">SYMBOL WÄHLEN</h3>' +
     '<div class="tabs" role="tablist"><button type="button" role="tab" id="tab-e" aria-selected="true">Emojis</button><button type="button" role="tab" id="tab-s" aria-selected="false">Symbole</button></div>' +
     '<div class="igrid" id="ip-grid"></div><div class="dact"><button type="button" id="ip-none">Kein Symbol</button><button type="button" class="go" id="ip-ok">Schließen</button></div></div></dialog>';
-  const S = { theme: "standard", style: "solid", caps: true, fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {} };
+  const TK = "wfn-theme";
+  let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (THEMES[t]) savedTheme = t; } catch (e) { /* ohne Speicher */ }
+  const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {} };
   const OPENHINT = { tab: "Normaler Tab des Browsers bzw. der Notion-App.", side: "Notions Seitenansicht (Side Peek) des Eintrags.", center: "Notions zentrierte Ansicht (Center Peek) des Eintrags.", full: "Notions Vollseite des Eintrags." };
-  const diyCount = () => Object.values(S.diy).filter(Boolean).length;
-  const seg = (id, items, key, extra) => {
-    const host = $(id); host.textContent = "";
-    items.forEach(([val, label, color]) => {
-      const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(S[key] === val));
-      if (color && typeof color === "string") { b.className = "sw"; b.style.setProperty("--c", color); b.title = label; b.setAttribute("aria-label", label); } else b.textContent = label;
-      if (key === "font") b.style.fontFamily = famOf(val);
-      b.addEventListener("click", () => { S[key] = val; seg(id, items, key, extra); render(); });
+  const SCHEMEHINT = { dark: "Notion läuft im Dunkelmodus: Hintergrund des Widgets bleibt transparent.", light: "Notion läuft im Hellmodus: Hintergrund des Widgets bleibt transparent.", auto: "Folgt der Systemeinstellung. Nur transparent, wenn Notion dieselbe Einstellung nutzt; sonst erscheint ein weißer oder schwarzer Kasten." };
+
+  /* ---- Theme (Seite und Widgets) ---- */
+  function applyPage() {
+    const t = THEMES[S.theme], r = document.documentElement.style;
+    r.setProperty("--pa", t.a); r.setProperty("--pp", t.panel); r.setProperty("--pl", t.line); r.setProperty("--ptx", t.text); r.setProperty("--pm", t.mu); r.setProperty("--pb", t.pb); r.setProperty("--pink", t.ink);
+  }
+  function drawThemes() {
+    const host = $("g-themes"); host.textContent = "";
+    Object.keys(THEMES).forEach((k) => {
+      const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(S.theme === k)); b.className = "tb";
+      const dot = document.createElement("i"); dot.style.background = THEMES[k].a; b.appendChild(dot); b.appendChild(document.createTextNode(THEMES[k].name));
+      b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); render(); });
       host.appendChild(b);
     });
-    if (extra) extra(host);
+  }
+  /* ---- Navigation ---- */
+  function drawNav() {
+    const nav = $("g-nav"); nav.textContent = "";
+    WIDGETS.forEach(([k, label]) => {
+      const b = document.createElement("button"); b.type = "button"; const on = k === "button"; b.setAttribute("aria-current", on ? "true" : "false");
+      b.textContent = label; if (!on) { b.disabled = true; b.title = "Folgt in einer der nächsten Etappen"; const s = document.createElement("small"); s.textContent = "bald"; b.appendChild(s); }
+      nav.appendChild(b);
+    });
+  }
+
+  const diyCount = () => Object.values(S.diy).filter(Boolean).length;
+  const seg = (id, items, key) => {
+    const host = $(id); host.textContent = "";
+    items.forEach(([val, label]) => {
+      const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(S[key] === val)); b.textContent = label;
+      if (key === "font") b.style.fontFamily = famOf(val);
+      b.addEventListener("click", () => { S[key] = val; seg(id, items, key); render(); });
+      host.appendChild(b);
+    });
   };
-  const themeExtra = (host) => {
-    const b = document.createElement("button"); b.type = "button"; b.id = "g-diy"; b.className = "diy" + (diyCount() ? " on" : ""); b.textContent = "DIY" + (diyCount() ? " · " + diyCount() : "");
-    b.title = "Eigene Farben"; b.addEventListener("click", openDiy); host.appendChild(b);
-  };
-  const drawThemes = () => seg("g-theme", Object.keys(THEMES).map((k) => [k, k[0].toUpperCase() + k.slice(1), THEMES[k].a]), "theme", themeExtra);
+  const drawDiyBtn = () => { const b = $("g-diy"); b.className = "diy" + (diyCount() ? " on" : ""); b.textContent = "DIY" + (diyCount() ? " · " + diyCount() : ""); };
   const drawFx = () => {
     const host = $("g-fx"); host.textContent = "";
     FX.forEach(([k, label]) => {
@@ -359,9 +455,9 @@ if (q.has("url")) {
     });
   };
   const drawAll = () => {
-    drawThemes(); seg("g-style", STYLES, "style"); seg("g-font", FONTS.map((f) => [f[0], f[1]]), "font");
-    seg("g-size", SIZES.map((s) => [s[0], s[1] + " · " + s[2] + " px"]), "size"); seg("g-caps", [[true, "GROSSBUCHSTABEN"], [false, "Normal"]], "caps");
-    seg("g-align", ALIGNS, "align"); seg("g-open", OPEN, "open"); drawFx(); drawIcoBtn();
+    drawThemes(); drawNav(); drawDiyBtn(); seg("g-fill", FILLS, "fill"); seg("g-shape", SHAPES, "shape"); seg("g-frame", FRAMES, "frame"); seg("g-pat", PATTERNS, "pat");
+    seg("g-font", FONTS.map((f) => [f[0], f[1]]), "font"); seg("g-size", SIZES.map((s) => [s[0], s[1] + " · " + s[2] + " px"]), "size"); seg("g-caps", [[true, "GROSSBUCHSTABEN"], [false, "Normal"]], "caps");
+    seg("g-align", ALIGNS, "align"); seg("g-open", OPEN, "open"); seg("g-hov", HOVERS, "hov"); seg("g-clk", CLICKS, "clk"); seg("g-scheme", SCHEMES, "scheme"); drawFx(); drawIcoBtn();
   };
 
   /* ---- DIY-Popup + gespeicherte Kombis ---- */
@@ -369,7 +465,7 @@ if (q.has("url")) {
   const getCombos = () => { try { const a = JSON.parse(localStorage.getItem(CK) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } };
   const putCombos = (a) => { try { localStorage.setItem(CK, JSON.stringify(a)); return true; } catch (e) { return false; } };
   const encCombo = (c) => btoa(unescape(encodeURIComponent(JSON.stringify(c))));
-  const decCombo = (s) => { try { const c = JSON.parse(decodeURIComponent(escape(atob(s.trim())))); return cleanCombo(c); } catch (e) { return null; } };
+  const decCombo = (s) => { try { return cleanCombo(JSON.parse(decodeURIComponent(escape(atob(s.trim()))))); } catch (e) { return null; } };
   function cleanCombo(c) {
     if (!c || typeof c !== "object") return null;
     const out = { name: String(c.name || "Kombi").slice(0, 24), theme: THEMES[c.theme] ? c.theme : "standard", diy: {} };
@@ -387,12 +483,12 @@ if (q.has("url")) {
       [p.a, p.ink, p.panel, p.g1, p.g2].forEach((col) => { const d = document.createElement("i"); d.style.background = col; dots.appendChild(d); });
       const nm = document.createElement("span"); nm.textContent = c.name;
       const use = document.createElement("button"); use.type = "button"; use.textContent = "Laden";
-      use.addEventListener("click", () => { S.theme = c.theme; S.diy = Object.assign({}, c.diy); drawDiy(); drawThemes(); render(); });
+      use.addEventListener("click", () => { S.theme = c.theme; S.diy = Object.assign({}, c.diy); applyPage(); drawThemes(); drawDiyBtn(); drawDiy(); render(); });
       const cp = document.createElement("button"); cp.type = "button"; cp.textContent = "Code"; cp.title = "Code kopieren";
       cp.addEventListener("click", async () => { const code = encCombo(c); try { await navigator.clipboard.writeText(code); cp.textContent = "Kopiert"; } catch (e) { $("cb-code").value = code; cp.textContent = "Unten"; } setTimeout(() => { cp.textContent = "Code"; }, 1500); });
       const del = document.createElement("button"); del.type = "button"; del.textContent = "×"; del.title = "Löschen"; del.setAttribute("aria-label", c.name + " löschen");
       del.addEventListener("click", () => { const a = getCombos(); a.splice(i, 1); putCombos(a); drawCombos(); });
-      r.append(dots, nm, use, cp); r.appendChild(del); r.style.gridTemplateColumns = "auto 1fr auto auto auto"; box.appendChild(r);
+      r.append(dots, nm, use, cp, del); r.style.gridTemplateColumns = "auto 1fr auto auto auto"; box.appendChild(r);
     });
   }
   function drawDiy() {
@@ -401,20 +497,21 @@ if (q.has("url")) {
       const cur = S.diy[k] ? "#" + S.diy[k] : def[k];
       const r = document.createElement("div"); r.className = "crow";
       const lab = document.createElement("label"); lab.textContent = label; const sm = document.createElement("small"); sm.textContent = hint; lab.appendChild(sm);
-      const pick = document.createElement("input"); pick.type = "color"; pick.value = cur; pick.setAttribute("aria-label", label);
+      const pk = document.createElement("input"); pk.type = "color"; pk.value = cur; pk.setAttribute("aria-label", label);
       const hex = document.createElement("input"); hex.type = "text"; hex.maxLength = 7; hex.value = cur; hex.spellcheck = false; hex.setAttribute("aria-label", label + " (Hex)");
       const x = document.createElement("button"); x.type = "button"; x.className = "x"; x.textContent = "×"; x.title = "Zurück auf Vorgabe"; x.setAttribute("aria-label", label + " zurücksetzen");
-      const set = (v) => { const h = v.replace("#", ""); if (HEX.test(h)) { S.diy[k] = h.toLowerCase(); pick.value = "#" + h.toLowerCase(); render(); drawThemes(); } };
-      pick.addEventListener("input", () => { hex.value = pick.value; set(pick.value); });
+      const set = (v) => { const h = v.replace("#", ""); if (HEX.test(h)) { S.diy[k] = h.toLowerCase(); pk.value = "#" + h.toLowerCase(); render(); drawDiyBtn(); } };
+      pk.addEventListener("input", () => { hex.value = pk.value; set(pk.value); });
       hex.addEventListener("input", () => set(hex.value));
-      x.addEventListener("click", () => { delete S.diy[k]; drawDiy(); render(); drawThemes(); });
-      r.append(lab, pick, hex, x); rows.appendChild(r);
+      x.addEventListener("click", () => { delete S.diy[k]; drawDiy(); render(); drawDiyBtn(); });
+      r.append(lab, pk, hex, x); rows.appendChild(r);
     });
     drawCombos();
   }
   function openDiy() { drawDiy(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
+  $("g-diy").addEventListener("click", openDiy);
   $("diy-ok").addEventListener("click", () => dlg.close());
-  $("diy-reset").addEventListener("click", () => { S.diy = {}; drawDiy(); render(); drawThemes(); });
+  $("diy-reset").addEventListener("click", () => { S.diy = {}; drawDiy(); render(); drawDiyBtn(); });
   dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
   $("cb-save").addEventListener("click", () => {
     const a = getCombos(), name = $("cb-name").value.trim() || "Kombi " + (a.length + 1);
@@ -449,7 +546,9 @@ if (q.has("url")) {
 
   /* ---- Vorschau, Adresse ---- */
   const prev = $("g-prev"); let btn = null;
-  function cfgNow() { return Object.assign({ label: $("g-label").value.trim(), sub: $("g-sub").value.trim(), icon: S.icon, url: $("g-url").value.trim(), theme: S.theme, style: S.style, caps: S.caps, fx: S.fx, open: S.open, size: S.size, font: S.font }, S.diy); }
+  function cfgNow() {
+    return Object.assign({ label: $("g-label").value.trim(), sub: $("g-sub").value.trim(), icon: S.icon, url: $("g-url").value.trim(), theme: S.theme, fill: S.fill, shape: S.shape, frame: S.frame, pat: S.pat, hov: S.hov, clk: S.clk, caps: S.caps, fx: S.fx, open: S.open, size: S.size, font: S.font }, S.diy);
+  }
   function render() {
     const cfg = cfgNow();
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align];
@@ -460,10 +559,13 @@ if (q.has("url")) {
     if (S.open === "tab") { hint.textContent = OPENHINT.tab; hint.className = "hint2"; }
     else if (ok && !peekPossible(href)) { hint.textContent = "Nur mit Link auf einen Datenbank-Eintrag (Adresse enthält p=…). Sonst öffnet ein normaler Tab."; hint.className = "hint2 warn"; }
     else { hint.textContent = OPENHINT[S.open] + " Ungetestet: Notion kann die Ansicht ignorieren."; hint.className = "hint2"; }
-    const p = new URLSearchParams(); p.set("url", cfg.url);
+    $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
+    const p = new URLSearchParams(); p.set("w", "button"); p.set("url", cfg.url);
     if (cfg.label) p.set("label", cfg.label); if (cfg.sub) p.set("sub", cfg.sub); if (cfg.icon) p.set("icon", cfg.icon);
-    if (cfg.theme !== "standard") p.set("theme", cfg.theme); if (cfg.style !== "solid") p.set("style", cfg.style); if (!cfg.caps) p.set("caps", "0");
-    if (cfg.size !== "mid") p.set("size", cfg.size); if (S.align !== "left") p.set("align", S.align); if (cfg.font !== "rajdhani") p.set("font", cfg.font);
+    if (cfg.theme !== "standard") p.set("theme", cfg.theme);
+    if (S.fill !== "solid") p.set("fill", S.fill); if (S.shape !== "cut") p.set("shape", S.shape); if (S.frame !== "auto") p.set("frame", S.frame); if (S.pat !== "scan") p.set("pat", S.pat);
+    if (S.hov !== "bright") p.set("hov", S.hov); if (S.clk !== "press") p.set("clk", S.clk); if (S.scheme !== "auto") p.set("scheme", S.scheme);
+    if (!cfg.caps) p.set("caps", "0"); if (cfg.size !== "mid") p.set("size", cfg.size); if (S.align !== "left") p.set("align", S.align); if (cfg.font !== "rajdhani") p.set("font", cfg.font);
     if (cfg.fx.slice().sort().join() !== FX_DEFAULT.slice().sort().join()) p.set("fx", cfg.fx.length ? cfg.fx.join(",") : "none");
     if (cfg.open !== "tab") p.set("open", cfg.open);
     DIY_KEYS.forEach(([k]) => { if (S.diy[k]) p.set(k, S.diy[k]); });
@@ -477,20 +579,22 @@ if (q.has("url")) {
     try { await navigator.clipboard.writeText(o.value); $("g-copy").textContent = "Kopiert"; } catch (e) { document.execCommand && document.execCommand("copy"); $("g-copy").textContent = "Markiert – Strg+C"; }
     setTimeout(() => { $("g-copy").textContent = "Kopieren"; }, 1800);
   });
-  /* ---- Vorhandenen Button laden ---- */
+  /* ---- Vorhandenes Widget laden ---- */
   $("g-loadgo").addEventListener("click", () => {
     const m = $("g-loadmsg"); let u;
     try { u = new URL($("g-load").value.trim()); } catch (e) { m.textContent = "Keine gültige Adresse."; return; }
-    if (!u.searchParams.has("url")) { m.textContent = "Adresse enthält keine Button-Werte (Teil „?url=…“ fehlt)."; return; }
+    if (!u.searchParams.has("url") && !u.searchParams.has("w")) { m.textContent = "Adresse enthält keine Widget-Werte (Teil „?url=…“ fehlt)."; return; }
+    const wt = (u.searchParams.get("w") || "button").toLowerCase();
+    if (wt !== "button") { m.textContent = "Widget-Typ „" + wt + "“ ist noch nicht verfügbar."; return; }
     const c = cfgFromParams(u.searchParams);
     $("g-label").value = c.label; $("g-sub").value = c.sub; $("g-url").value = c.url;
-    S.theme = THEMES[c.theme] ? c.theme : "standard"; S.style = STYLES.some((s) => s[0] === c.style) ? c.style : "solid"; S.caps = c.caps; S.fx = c.fx;
-    S.open = OPEN.some((o) => o[0] === c.open) ? c.open : "tab"; S.size = SIZES.some((s) => s[0] === c.size) ? c.size : "mid"; S.align = JUST[c.align] ? c.align : "left";
-    S.font = FONTS.some((f) => f[0] === c.font) ? c.font : "rajdhani"; S.icon = c.icon; S.diy = {};
+    S.theme = THEMES[c.theme] ? c.theme : "standard"; S.fill = pick(FILLS, c.fill, "solid"); S.shape = pick(SHAPES, c.shape, "cut"); S.frame = pick(FRAMES, c.frame, "auto"); S.pat = pick(PATTERNS, c.pat, "scan");
+    S.hov = pick(HOVERS, c.hov, "bright"); S.clk = pick(CLICKS, c.clk, "press"); S.scheme = pick(SCHEMES, c.scheme, "auto"); S.caps = c.caps; S.fx = c.fx;
+    S.open = pick(OPEN, c.open, "tab"); S.size = pick(SIZES, c.size, "mid"); S.align = JUST[c.align] ? c.align : "left"; S.font = pick(FONTS, c.font, "rajdhani"); S.icon = c.icon; S.diy = {};
     DIY_KEYS.forEach(([k]) => { if (HEX.test(c[k] || "")) S.diy[k] = c[k].toLowerCase(); });
-    drawAll(); render(); m.textContent = "Geladen. Nach dem Anpassen neue Adresse in der Notion-Einbettung ersetzen.";
+    applyPage(); drawAll(); render(); m.textContent = "Geladen. Nach dem Anpassen neue Adresse in der Notion-Einbettung ersetzen.";
   });
-  drawAll(); render();
+  applyPage(); drawAll(); render();
   startBursts(() => btn);
 }
 

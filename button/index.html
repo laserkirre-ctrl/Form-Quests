@@ -181,6 +181,33 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .ghostbtn { font: inherit; font-size: .95rem; cursor: pointer; color: var(--ptx); background: transparent; border: 1px solid var(--pl); padding: 6px 14px; border-radius: 3px; }
 @media (max-width: 640px) { .stage { grid-template-columns: 1fr; } .nav { flex-direction: row; flex-wrap: wrap; } }
 
+/* ---- Zwei Spalten: Inhalt links, Vorschau rechts mitlaufend ---- */
+.shell { max-width: 1240px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 14px; align-items: start; }
+.side { position: sticky; top: 12px; align-self: start; max-height: calc(100vh - 24px); overflow: auto; }
+.side .card { margin-bottom: 10px; }
+.side .prev { height: 120px; max-width: 100%; }
+.navcard { padding: 8px 10px; }
+.navcard .nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+.navcard .nav button { border-left: 0; border-bottom: 2px solid transparent; padding: 6px 12px; gap: 8px; }
+.navcard .nav button[aria-current=true] { border-bottom-color: var(--pa); }
+.card h2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.allbtns { display: flex; gap: 6px; }
+.allbtns button { font: inherit; font-size: .8rem; letter-spacing: .06em; cursor: pointer; color: var(--pm); background: transparent; border: 1px solid var(--pl); padding: 2px 10px; border-radius: 3px; }
+.allbtns button:hover { color: var(--pa); border-color: var(--pa); }
+.sub3[role=button] { cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.sub3[role=button]::before { content: "▾"; color: var(--pa); }
+.sub3[data-open=false]::before { content: "▸"; }
+.grp.closed { display: none; }
+.rowhead { font: inherit; font-size: 1rem; text-align: left; cursor: pointer; color: var(--ptx); background: transparent; border: 0; padding: 4px 0; display: inline-flex; align-items: center; gap: 8px; }
+.rowhead:hover { color: var(--pa); }
+.rowhead .chev { color: var(--pa); width: 1em; display: inline-block; }
+.row .sum { display: none; color: var(--pm); font-size: .92rem; }
+.row.closed .sum { display: block; }
+.row.closed > :not(.rowhead):not(.sum) { display: none; }
+.row.cr.closed { margin-bottom: 4px; }
+@media (max-width: 920px) { .cols { grid-template-columns: 1fr; } .side { order: -1; top: 6px; z-index: 5; max-height: none; background: var(--pb); } }
+
 </style>
 </head>
 <body>
@@ -372,10 +399,9 @@ if (q.has("url") || q.has("w")) {
   const app = $("app");
   app.innerHTML = '<div class="shell">' +
     '<header class="topbar"><h1>WIDGETS FÜR NOTION</h1><div class="themes" id="g-themes" role="group" aria-label="Theme"></div></header>' +
-    '<section class="card stage"><nav class="nav" id="g-nav" aria-label="Widgets"></nav><div class="prevcol"><div class="prev" id="g-prev"></div><p class="prevhint">Vorschau. Der Kasten lässt sich unten rechts ziehen und entspricht dem Rahmen in Notion.</p><p class="prevhint" id="g-fitnote"></p></div></section>' +
-    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
-    '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
-    '<section class="card"><h2 id="opt-h">OPTIONEN · BUTTON</h2>' +
+    '<div class="cols"><div class="main">' +
+    '<section class="card navcard"><nav class="nav" id="g-nav" aria-label="Widgets"></nav></section>' +
+    '<section class="card"><h2 id="opt-h">OPTIONEN · BUTTON</h2><div class="allbtns"><button type="button" id="g-allopen">Alle auf</button><button type="button" id="g-allclose">Alle zu</button></div>' +
     '<h3 class="sub3">Inhalt</h3>' +
     '<div class="row"><label for="g-label">Beschriftung</label><input type="text" id="g-label" maxlength="60" placeholder="z. B. Neue Quest anpinnen" autocomplete="off"></div>' +
     '<div class="row"><label for="g-sub">Untertitel</label><input type="text" id="g-sub" maxlength="60" placeholder="optional" autocomplete="off"></div>' +
@@ -403,7 +429,12 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
     '</section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p>' +
-    '<p class="hl">Geändert wird eine Kopie: Nach dem Anpassen die neue Adresse in der Notion-Einbettung ersetzen. Erlaubte Ziele: notion.so, notion.com, notion.site und die Formular-Adresse. Symbole: Lucide (ISC). Schriften: Google Fonts (OFL / Apache 2.0).</p></section></div>' +
+    '<p class="hl">Geändert wird eine Kopie: Nach dem Anpassen die neue Adresse in der Notion-Einbettung ersetzen. Erlaubte Ziele: notion.so, notion.com, notion.site und die Formular-Adresse. Symbole: Lucide (ISC). Schriften: Google Fonts (OFL / Apache 2.0).</p></section>' +
+    '</div><aside class="side" aria-label="Vorschau">' +
+    '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
+    '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Ziel-Adresse eintragen"><button type="button" class="copy" id="g-copy">Kopieren</button></div>' +
+    '<p class="hl"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
+    '</aside></div></div>' +
     '<dialog class="dlg" id="diy" aria-labelledby="diy-t"><div class="dlg-in"><h3 id="diy-t">EIGENE FARBEN</h3><div id="diy-rows"></div>' +
     '<h4>KOMBINATIONEN</h4><div class="inl"><input type="text" id="cb-name" maxlength="24" placeholder="Name der Kombi" autocomplete="off"><button type="button" class="go" id="cb-save">Speichern</button></div><div id="cb-list" style="margin-top:10px"></div>' +
     '<p class="hl" id="cb-note">Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen.</p>' +
@@ -568,6 +599,7 @@ if (q.has("url") || q.has("w")) {
     else { hint.textContent = OPENHINT[S.open] + " Ungetestet: Notion kann die Ansicht ignorieren."; hint.className = "hint2"; }
     { const pd = parseFloat(getComputedStyle(prev).paddingLeft) || 0, w = Math.ceil(btn.getBoundingClientRect().width + 2 * pd), h = Math.ceil(btn.getBoundingClientRect().height + 2 * pd);
       $("g-fitnote").textContent = S.fit === "frame" ? "Der Button füllt den Rahmen bis auf den Randabstand (" + pd + " px)." : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Button ab."; }
+    updateSums();
     $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
     const p = new URLSearchParams(); p.set("w", "button"); p.set("url", cfg.url);
     if (cfg.label) p.set("label", cfg.label); if (cfg.sub) p.set("sub", cfg.sub); if (cfg.icon) p.set("icon", cfg.icon);
@@ -603,7 +635,45 @@ if (q.has("url") || q.has("w")) {
     DIY_KEYS.forEach(([k]) => { if (HEX.test(c[k] || "")) S.diy[k] = c[k].toLowerCase(); });
     applyPage(); drawAll(); render(); m.textContent = "Geladen. Nach dem Anpassen neue Adresse in der Notion-Einbettung ersetzen.";
   });
-  applyPage(); drawAll(); render();
+  /* ---- Einklappbare Zeilen und Gruppen ---- */
+  const OK = "wfn-open";
+  let openState = {}; try { openState = JSON.parse(localStorage.getItem(OK) || "{}") || {}; } catch (e) { openState = {}; }
+  const saveOpen = () => { try { localStorage.setItem(OK, JSON.stringify(openState)); } catch (e) { /* ignorieren */ } };
+  const lbl = (list, v) => { const x = list.find((i) => i[0] === v); return x ? x[1] : String(v); };
+  const SUMS = {
+    "g-open": () => lbl(OPEN, S.open), "g-diy": () => THEMES[S.theme].name + (diyCount() ? " · DIY " + diyCount() : ""),
+    "g-fill": () => lbl(FILLS, S.fill), "g-shape": () => lbl(SHAPES, S.shape), "g-frame": () => lbl(FRAMES, S.frame), "g-pat": () => lbl(PATTERNS, S.pat),
+    "g-font": () => lbl(FONTS, S.font), "g-size": () => { const z = SIZES.find((x) => x[0] === S.size) || SIZES[1]; return z[1] + " · " + z[2] + " px"; },
+    "g-caps": () => (S.caps ? "Großbuchstaben" : "Normal"), "g-align": () => lbl(ALIGNS, S.align), "g-fit": () => (S.fit === "frame" ? "Rahmen ausfüllen" : "Nach Inhalt"),
+    "g-pad": () => (S.pad === "auto" ? "Auto" : S.pad + " px"), "g-fx": () => (S.fx.length ? S.fx.map((k) => lbl(FX, k)).join(", ") : "Keiner"),
+    "g-hov": () => lbl(HOVERS, S.hov), "g-clk": () => lbl(CLICKS, S.clk), "g-scheme": () => lbl(SCHEMES, S.scheme),
+  };
+  function updateSums() { Object.keys(SUMS).forEach((id) => { const e = $(id + "-sum"); if (e) e.textContent = SUMS[id](); }); }
+  const rowSetters = [];
+  function setupCollapse() {
+    Object.keys(SUMS).forEach((id) => {
+      const row = $(id).closest(".row"), lab = row.querySelector(".lab"); if (!lab) return;
+      const head = document.createElement("button"); head.type = "button"; head.className = "rowhead";
+      const chev = document.createElement("span"); chev.className = "chev"; head.append(chev, document.createTextNode(lab.textContent));
+      const sum = document.createElement("span"); sum.className = "sum"; sum.id = id + "-sum";
+      lab.replaceWith(head); head.after(sum); row.classList.add("cr");
+      const set = (open) => { row.classList.toggle("closed", !open); head.setAttribute("aria-expanded", String(open)); chev.textContent = open ? "▾" : "▸"; };
+      set(!!openState[id]); rowSetters.push([id, set]);
+      head.addEventListener("click", () => { const open = row.classList.contains("closed"); set(open); openState[id] = open; saveOpen(); });
+    });
+    document.querySelectorAll(".sub3").forEach((h) => {
+      const name = h.textContent, grp = document.createElement("div"); grp.className = "grp";
+      let n = h.nextElementSibling; while (n && !n.classList.contains("sub3")) { const nx = n.nextElementSibling; grp.appendChild(n); n = nx; }
+      h.after(grp); h.setAttribute("role", "button"); h.tabIndex = 0;
+      const set = (open) => { grp.classList.toggle("closed", !open); h.dataset.open = String(open); h.setAttribute("aria-expanded", String(open)); };
+      set(openState["g:" + name] !== false);
+      const tog = () => { const open = grp.classList.contains("closed"); set(open); openState["g:" + name] = open; saveOpen(); };
+      h.addEventListener("click", tog); h.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tog(); } });
+    });
+    const all = (open) => { rowSetters.forEach(([id, set]) => { set(open); openState[id] = open; }); saveOpen(); };
+    $("g-allopen").addEventListener("click", () => all(true)); $("g-allclose").addEventListener("click", () => all(false));
+  }
+  setupCollapse(); applyPage(); drawAll(); render();
   startBursts(() => btn);
 }
 

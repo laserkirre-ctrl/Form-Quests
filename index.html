@@ -490,7 +490,7 @@ main { width: min(100%, 1240px); }
   </div></div>
 </dialog>
 
-<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363221070}</script>
+<script id="baked" type="application/json">{"webhook": "https://hook.eu1.make.com/w9ws1mw26zh5jsagdsrm175j6x934rte", "secret": "szeifei", "rev": 1795363676570}</script>
 <script>
 "use strict";
 const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unveränderter Stand für den Export */
@@ -1152,7 +1152,7 @@ function toApiProps(F) {
 }
 async function sendWebhook(F, files) {
   const payload = { secret: cfg.secret || "", database_id: DB_ID, created: new Date().toISOString(), properties: toApiProps(F), files: files || [] };
-  const body = new URLSearchParams(); body.set("payload", JSON.stringify(payload)); body.set("secret", cfg.secret || ""); body.set("body", JSON.stringify({ parent: { database_id: DB_ID }, properties: payload.properties }));
+  const body = new URLSearchParams(); body.set("payload", JSON.stringify(payload)); body.set("secret", cfg.secret || ""); body.set("properties", JSON.stringify(payload.properties)); body.set("body", JSON.stringify({ parent: { database_id: DB_ID }, properties: payload.properties }));
   await fetch(cfg.webhook, { method: "POST", mode: "no-cors", body });
 }
 

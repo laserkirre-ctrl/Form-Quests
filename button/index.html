@@ -764,7 +764,7 @@ a.btn.wp { cursor: pointer; }
   .us-schmelz .drip.d1 { animation: us-drip 3.8s cubic-bezier(.45,0,.4,1) infinite; } .us-schmelz .drip.d2 { animation: us-drip2 5.2s cubic-bezier(.45,0,.4,1) -1.8s infinite; }
   .us-schmelz .dropf { animation: us-dropfall 4.2s ease-in infinite; }
   .us-tasche .chain { animation: us-csway 3.6s ease-in-out infinite alternate; }
-  .us-tasche .tdial.tk0 { animation: us-tk0 .46s cubic-bezier(.3,1.9,.5,1); } .us-tasche .tdial.tk1 { animation: us-tk1 .46s cubic-bezier(.3,1.9,.5,1); }
+ 
   .us-led .led-all { animation: us-ledsw 7s ease-in-out infinite alternate; }
   .us-led.ringing .led-all { animation: us-rattle .09s linear infinite; }
   .us-led.ringing .led-ring { opacity: 1; animation: us-pulse .32s ease-in-out infinite alternate; }
@@ -796,8 +796,6 @@ a.btn.wp { cursor: pointer; }
   @keyframes us-drip2 { 0%, 100% { transform: scaleY(.8); } 55% { transform: scaleY(1.55); } }
   @keyframes us-drip { 0%, 100% { transform: scaleY(.85); } 50% { transform: scaleY(1.7); } }
   @keyframes us-dropfall { 0% { transform: translateY(-8px) scale(.3); opacity: 0; } 18% { transform: translateY(0) scale(1); opacity: 1; } 88% { transform: translateY(30px); opacity: 1; } 100% { transform: translateY(38px); opacity: 0; } }
-  @keyframes us-tk0 { 0% { transform: scale(1) rotate(0); } 22% { transform: scale(1.018) rotate(.9deg); } 100% { transform: scale(1) rotate(0); } }
-  @keyframes us-tk1 { 0% { transform: scale(1) rotate(0); } 22% { transform: scale(1.018) rotate(-.9deg); } 100% { transform: scale(1) rotate(0); } }
   @keyframes us-csway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
   @keyframes us-ledsw { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
   @keyframes us-flash { 0% { opacity: 1; } 50% { opacity: .25; } }
@@ -1136,7 +1134,10 @@ input[type=number] { max-width: 9em; }
 .sepsel .sl:first-child { margin-top: 0; }
 
 .mdl { display: grid; gap: 8px; }
+.mdw { display: grid; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--pl, #333); }
 .mdr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mds { display: flex; gap: 10px; flex-wrap: wrap; }
+.mdsl { display: grid; gap: 2px; font-size: 12px; opacity: .9; } .mdsl select { font: inherit; font-size: 13px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--pl, #444); background: transparent; color: inherit; } .mdsl option { background: var(--pp, #222); color: var(--ptx, #eee); }
 .mdr input[type=date] { flex: 1 1 150px; min-width: 0; }
 .mdy { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; white-space: nowrap; cursor: pointer; }
 .mdx, .mdp { font: inherit; cursor: pointer; border: 1px solid var(--pl, #444); background: transparent; color: inherit; border-radius: 6px; padding: 5px 10px; }
@@ -1691,6 +1692,7 @@ function naviNode(kind, prev) {
   return s;
 }
 /* Besondere Tage: Umrandung (SVG) + Füllung (Teilchen) */
+const MK_TOK = /^(\d{4})-(\d{2})-(\d{2})(y?)(?:~([a-z]*)\.([a-z]*)\.([01]?))?$/;
 const MK_BORDERS = ["dot", "flower", "double", "dash"], MK_FILLS = ["hearts", "dots", "stars", "fw", "glit"];
 const MK_BORDER_LIST = [["", "Standard"], ["dot", "Gepunktet"], ["flower", "Blumen"], ["double", "Doppelt"], ["dash", "Gestrichelt"]];
 const MK_FILL_LIST = [["", "Keine"], ["hearts", "Herzchen"], ["dots", "Polka Dots"], ["stars", "Sterne"], ["fw", "Feuerwerk"], ["glit", "Glitzer"]];
@@ -1727,13 +1729,15 @@ function wKalender(sh) {
   const { body, o, host, b } = sh;
   const sunStart = o.start === "su", nav = o.nav !== "0", wk = o.wk === "1", we = o.we !== "0";
   const now = new Date(), mm = /^(\d{4})-(\d{2})$/.exec(o.month || ""); let vy = now.getFullYear(), vm = now.getMonth() + 1; if (mm && +mm[2] >= 1 && +mm[2] <= 12) { vy = +mm[1]; vm = +mm[2]; }
-  const marks = new Set(), yearly = new Set();
-  (o.mark || "").split(",").forEach((s) => { const m = /^(\d{4})-(\d{2})-(\d{2})(y?)$/.exec(s.trim()); if (!m) return; if (m[4]) yearly.add(m[2] + "-" + m[3]); else marks.add(m[1] + "-" + m[2] + "-" + m[3]); });
+  const marks = new Map(), yearly = new Map();
+  (o.mark || "").split(",").forEach((s) => { const m = MK_TOK.exec(s.trim()); if (!m) return; const st = { bd: m[5] || "", fl: m[6] || "", an: m[7] || "" }; if (m[4]) yearly.set(m[2] + "-" + m[3], st); else marks.set(m[1] + "-" + m[2] + "-" + m[3], st); });
   const base = { y: vy, m: vm }, mbd = MK_BORDERS.includes(o.mbd) ? o.mbd : "", mba = o.mba !== "0", mfl = MK_FILLS.includes(o.mfl) ? o.mfl : "";
+  const eff = (st) => ({ bd: st.bd === "std" ? "" : (MK_BORDERS.includes(st.bd) ? st.bd : mbd), fl: st.fl === "none" ? "" : (MK_FILLS.includes(st.fl) ? st.fl : mfl), an: st.an === "1" ? true : st.an === "0" ? false : mba });
+  const anyFill = !!mfl || Array.from(marks.values()).concat(Array.from(yearly.values())).some((st) => MK_FILLS.includes(st.fl));
   const head = el("div", "kh"), navk = NAVI[o.navi] || /^a:[a-z0-9]+$/.test(o.navi || "") ? o.navi : "txt", prevB = el("button", "kb"), nextB = el("button", "kb"), ttl = el("div", "kt gl"); prevB.appendChild(naviNode(navk, true)); nextB.appendChild(naviNode(navk, false)); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
   if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
   const grid = el("div", "kg"); body.append(head, grid);
-  if (mfl) { let tmo = 0; const on = () => grid.classList.add("hv"), off = () => { clearTimeout(tmo); grid.classList.remove("hv"); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
+  if (anyFill) { let tmo = 0; const on = () => grid.classList.add("hv"), off = () => { clearTimeout(tmo); grid.classList.remove("hv"); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
   const draw = () => {
     ttl.textContent = MONTHS[vm - 1] + " " + vy; grid.textContent = ""; grid.classList.toggle("wk", wk); grid.classList.toggle("nowe", !we);
     const names = sunStart ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
@@ -1748,9 +1752,10 @@ function wKalender(sh) {
         if (i >= 1 && i <= dim && r < rows) {
           const dow = sunStart ? (c + 6) % 7 : c; cell.textContent = String(i);
           if (dow >= 5) cell.classList.add("we"); if (vy === ty && vm === tm && i === td) cell.classList.add("td");
-          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.has(pad2(vm) + "-" + pad2(i))) {
-            cell.classList.add("mk");
-            if (mbd || mfl) { cell.textContent = ""; cell.appendChild(el("span", "kn", String(i))); if (mbd) { cell.classList.add("mk2"); cell.appendChild(mkBorder(mbd, mba)); } if (mfl) { cell.classList.add("mkx"); cell.appendChild(mkFill(mfl)); } }
+          const mst = marks.get(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.get(pad2(vm) + "-" + pad2(i));
+          if (mst) {
+            cell.classList.add("mk"); const ef = eff(mst);
+            if (ef.bd || ef.fl) { cell.textContent = ""; cell.appendChild(el("span", "kn", String(i))); if (ef.bd) { cell.classList.add("mk2"); cell.appendChild(mkBorder(ef.bd, ef.an)); } if (ef.fl) { cell.classList.add("mkx"); cell.appendChild(mkFill(ef.fl)); } }
           }
         } else cell.classList.add("em");
         grid.appendChild(cell);
@@ -1967,8 +1972,8 @@ US.tasche = { vb: [250, 262], build: () => {
     '<g class="lid"><circle cx="46" cy="86" r="56" fill="url(#' + u + 'h)"/><circle cx="46" cy="86" r="48" fill="none" stroke="#7a4f0e" stroke-width="1.6" stroke-opacity=".7"/><circle cx="46" cy="86" r="38" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M30 80Q46 56 62 80Q46 96 30 80Z" fill="none" stroke="#7a4f0e" stroke-opacity=".6" stroke-width="2"/></g>' +
     '<rect x="111" y="52" width="18" height="14" rx="3" fill="url(#' + u + 'g)"/><circle cx="120" cy="44" r="14" fill="none" stroke="url(#' + u + 'g)" stroke-width="6"/>' +
     '<circle cx="120" cy="140" r="72" fill="url(#' + u + 'g)"/><circle cx="120" cy="140" r="65" fill="none" stroke="#7a4f0e" stroke-width="1.6"/><circle cx="120" cy="140" r="60" fill="url(#' + u + 'c)" stroke="#a77d2c" stroke-width="2"/>' +
-    '<g class="tdial" style="transform-origin:120px 140px">' + usTicks(120, 140, 57, 0, 4, 0, .8, "#6a4a1a") + usNums(120, 140, 42, ROMAN, 11, "#2b1c0c", false) +
-    '<g class="sub" transform="translate(120 172)"><circle r="14" fill="#f7efd2" stroke="#9b7226" stroke-width="1.8"/>' + usTicks(0, 0, 12, 3, 0, 1, 0, "#6a4a1a") + usSec(0, 0, 10, 1, 3, "#b0301f", 1.4) + "</g></g>" +
+    usTicks(120, 140, 57, 0, 4, 0, .8, "#6a4a1a") + usNums(120, 140, 42, ROMAN, 11, "#2b1c0c", false) +
+    '<g class="sub" transform="translate(120 172)"><circle r="14" fill="#f7efd2" stroke="#9b7226" stroke-width="1.8"/>' + usTicks(0, 0, 12, 3, 0, 1, 0, "#6a4a1a") + usSec(0, 0, 10, 1, 3, "#b0301f", 1.4) + "</g>" +
     usHand("uhh", 120, 140, 31, 3.6, 5, "spade", "#1c1209") + usHand("uhm", 120, 140, 46, 3, 7, "spade", "#1c1209") +
     '<circle cx="120" cy="140" r="4.6" fill="url(#' + u + 'g)" stroke="#5a3a12" stroke-width="1"/>' +
     '<path d="M70 96C84 76 106 70 128 74C104 78 88 90 80 108Z" fill="#fff" fill-opacity=".28"/></g>';
@@ -2185,7 +2190,7 @@ function wUhrStil(sh, key, tz, o) {
   const dl = el("div", "udt"); if (dmode !== "none") body.appendChild(dl);
   const dateTxt = (p) => { const wd = WDAYS[p.dow]; return dmode === "long" ? wd + ", " + p.d + ". " + MONTHS[p.m - 1] + " " + p.y : wd.slice(0, 2) + " " + pad2(p.d) + "." + pad2(p.m) + "." + p.y; };
   const setSeg = (g, n) => { const on = SEG7[n] || ""; Array.from(g.querySelectorAll(".sg")).forEach((s) => s.classList.toggle("on", on.indexOf(s.getAttribute("class").split(" ")[1].slice(1)) >= 0)); };
-  let sAng = 0, lastS = -1, lastTk = -1, rung = "", lastDot = -1, busy = false, litS = -1; const dmap = []; for (let i = 0; i < 60; i++) if (i % 5 !== 0) dmap.push(i);
+  let sAng = 0, lastS = -1, rung = "", lastDot = -1, busy = false, litS = -1; const dmap = []; for (let i = 0; i < 60; i++) if (i % 5 !== 0) dmap.push(i);
   if (hS && !reduced()) hS.style.transition = "transform .45s cubic-bezier(.3,2.2,.5,1)";
   const later = (fn, ms) => { const t = setTimeout(fn, ms); wReg(host, { o: t }); return t; };
   const show = (n) => {
@@ -2200,7 +2205,6 @@ function wUhrStil(sh, key, tz, o) {
   const upd = () => {
     const p = partsIn(new Date(), tz);
     if (hH) hH.style.transform = "rotate(" + (((p.h % 12) + p.mi / 60) * 30) + "deg)"; if (hM) hM.style.transform = "rotate(" + ((p.mi + p.s / 60) * 6) + "deg)";
-    if (key === "tasche" && sec && p.s !== lastTk && !reduced()) { lastTk = p.s; const td = $q(".tdial"); if (td) { td.classList.remove("tk0", "tk1"); void td.getBoundingClientRect(); td.classList.add(p.s % 2 ? "tk1" : "tk0"); } }
     if (hS && p.s !== lastS) { if (lastS === -1) sAng = p.s * 6; else sAng += ((p.s - lastS + 60) % 60) * 6; lastS = p.s; hS.style.transform = "rotate(" + sAng + "deg)"; }
     if (segs.length) { const h = h12 ? (p.h % 12 || 12) : p.h, t = pad2(h) + pad2(p.mi); segs.forEach((g, i) => { if (g.dataset.v !== t[i]) { g.dataset.v = t[i]; setSeg(g, +t[i]); } }); const ap = $q(".led-ap"); if (ap) ap.textContent = h12 ? (p.h < 12 ? "AM" : "PM") : ""; const wd = $q(".led-wd"); if (wd) wd.textContent = WDAYS[p.dow].slice(0, 2).toUpperCase(); const c = $q(".led-c"); if (c) c.style.opacity = p.s % 2 === 0 ? 1 : .12; }
     if (key === "schwein") { const h = h12 ? (p.h % 12 || 12) : p.h, t = pad2(h) + pad2(p.mi); ["d1", "d2", "d3", "d4"].forEach((k, i) => { const e = $q("." + k); if (e && e.textContent !== t[i]) e.textContent = t[i]; }); const c = $q(".dc"); if (c) c.style.opacity = p.s % 2 === 0 ? 1 : .15; const ap = $q(".pg-ap"); if (ap) ap.textContent = h12 ? (p.h < 12 ? "AM" : "PM") : ""; }
@@ -2470,7 +2474,7 @@ function applyPage() {
     set("fxd", [c.dfx, c.jfx, c.pfx].some(Boolean));
   }
   function calVis() {
-    if (S.w !== "kalender") return; const k = X.kalender, e = document.querySelector('#wc [data-f="mba"]'), r = e ? e.closest(".row") : null; if (r) r.style.display = k.mbd ? "" : "none";
+    if (S.w !== "kalender") return; const k = X.kalender, e = document.querySelector('#wc [data-f="mba"]'), r = e ? e.closest(".row") : null; if (r) r.style.display = (k.mbd || /~[a-z]+\./.test(k.mark || "")) ? "" : "none";
   }
   function uhrVis() {
     if (S.w !== "uhr") return; const u = X.uhr, row = (k) => { const e = document.querySelector('#wc [data-f="' + k + '"]'); return e ? e.closest(".row") : null; }, set = (k, on) => { const r = row(k); if (r) r.style.display = on ? "" : "none"; };
@@ -2796,11 +2800,11 @@ function applyPage() {
       F("jub", "Jubiläum", "seg", { items: [["", "Keins"], ["w", "Wöchentlich"], ["m", "Monatlich"], ["y", "Jährlich"]], def: "", hint: "Meldung und Effekt am Jahrestag, Monatstag bzw. Wochentag des Startdatums (24 Stunden lang)." }), F("jmsg", "Meldung zum Jubiläum", "text", { max: 80, def: "{n}. Jubiläum!", hint: "{n} = Anzahl Wochen, Monate bzw. Jahre." }), F("jfx", "Effekt zum Jubiläum", "efx", { def: "" }),
       F("pre", "Vorab-Meldung ab", "num", { min: 0, max: 999, def: "0", hint: "0 = aus. Countdown: vor dem Zieldatum. Countup: vor dem nächsten Jubiläum." }), F("preu", "Einheit", "seg", { items: [["d", "Tage vorher"], ["h", "Stunden vorher"]], def: "d" }), F("pmsg", "Vorab-Meldung", "text", { max: 80, def: "", ph: "z. B. Nur noch kurz!", hint: "{n} = nächstes Jubiläum (nur Countup)." }), F("pfx", "Vorab-Effekt", "efx", { def: "" }),
       F("fxd", "Effekt-Dauer", "seg", { items: [["5", "5 s"], ["8", "8 s"], ["15", "15 s"], ["30", "30 s"], ["0", "Dauerhaft"]], def: "8" })],
-    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag)." }), F("mbd", "Umrandung der markierten Tage", "seg", { items: MK_BORDER_LIST, def: "", hint: "Standard = Ring mit Punkt." }), F("mba", "Umrandung animiert", "seg", { items: YN("An", "Aus"), def: "1" }), F("mfl", "Füllung der markierten Tage", "seg", { items: MK_FILL_LIST, def: "", hint: "Die Effekte laufen im Feld. Bewegt sich die Maus über den Kalender, wandern sie über das Feld hinaus." })],
+    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag). Je Tag eigener Stil möglich; „wie Vorgabe“ nutzt die Einstellungen darunter." }), F("mbd", "Vorgabe: Umrandung", "seg", { items: MK_BORDER_LIST, def: "", hint: "Für alle markierten Tage ohne eigenen Stil. Standard = Ring mit Punkt." }), F("mba", "Vorgabe: Umrandung animiert", "seg", { items: YN("An", "Aus"), def: "1" }), F("mfl", "Vorgabe: Füllung", "seg", { items: MK_FILL_LIST, def: "", hint: "Die Effekte laufen im Feld. Bewegt sich die Maus über den Kalender, wandern sie über das Feld hinaus." })],
     fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mult", "Multiplikator", "num", { min: 1, max: 20, def: "1", hint: "Würfelsumme × Multiplikator." }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zuletzt addiert: (Summe × Multiplikator) + Modifikator." }), F("ctl", "Bedienung im Widget", "seg", { items: YN("An", "Aus"), def: "1", hint: "Würfel, Anzahl, Multiplikator und Modifikator lassen sich im Widget selbst ändern (wird im Browser gemerkt). Die Werte oben sind die Startwerte." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
   };
   const X = {}; WTYPES.forEach((t) => { X[t] = {}; WSCHEMA[t].forEach((f) => { X[t][f.k] = String(f.def); }); });
-  const normDates = (raw) => String(raw || "").split(/[\s,;]+/).map((s) => { let m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(s); if (m) return m[3] + "-" + pad2(+m[2]) + "-" + pad2(+m[1]); return /^\d{4}-\d{2}-\d{2}y?$/.test(s) ? s : ""; }).filter(Boolean).join(",");
+  const normDates = (raw) => String(raw || "").split(/[\s,;]+/).map((s) => { let m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(s); if (m) return m[3] + "-" + pad2(+m[2]) + "-" + pad2(+m[1]); return /^\d{4}-\d{2}-\d{2}y?(~[a-z]*\.[a-z]*\.[01]?)?$/.test(s) ? s : ""; }).filter(Boolean).join(",");
   const oFor = (t) => { const o = Object.assign({}, X[t]); if (t === "kalender") o.mark = normDates(o.mark); return o; };
   function drawWc() {
     const host = $("wc"); host.textContent = "";
@@ -2840,18 +2844,26 @@ function applyPage() {
           redraw(); ctl._redraw = redraw;
         } else if (f.kind === "mdates") {
           ctl = document.createElement("div"); ctl.className = "mdl";
-          let arr = [""]; const load = () => { arr = String(X[t][f.k] || "").split(",").map((s) => s.trim()).filter((s) => /^\d{4}-\d{2}-\d{2}y?$/.test(s)); if (!arr.length) arr = [""]; };
+          let arr = [""]; const TKR = /^(\d{4}-\d{2}-\d{2})(y?)(?:~([a-z]*)\.([a-z]*)\.([01]?))?$/;
+          const parse = (v) => { const m = TKR.exec(v); return m ? { d: m[1], y: !!m[2], bd: m[3] || "", fl: m[4] || "", an: m[5] || "" } : { d: "", y: false, bd: "", fl: "", an: "" }; };
+          const compose = (q) => q.d ? q.d + (q.y ? "y" : "") + ((q.bd || q.fl || q.an) ? "~" + q.bd + "." + q.fl + "." + q.an : "") : "";
+          const SELS = [["bd", "Umrandung", [["", "wie Vorgabe"], ["std", "Standard"]].concat(MK_BORDER_LIST.slice(1))], ["fl", "Füllung", [["", "wie Vorgabe"], ["none", "Keine"]].concat(MK_FILL_LIST.slice(1))], ["an", "Animiert", [["", "wie Vorgabe"], ["1", "An"], ["0", "Aus"]]]];
+          const load = () => { arr = String(X[t][f.k] || "").split(",").map((s) => s.trim()).filter((s) => TKR.test(s)); if (!arr.length) arr = [""]; };
           const redraw = () => {
             ctl.textContent = "";
             const commit = () => { X[t][f.k] = arr.filter(Boolean).join(","); render(); };
             arr.forEach((v, i) => {
-              const r = document.createElement("div"); r.className = "mdr"; const inp = document.createElement("input"); inp.type = "date"; inp.value = v.slice(0, 10); inp.setAttribute("aria-label", "Markierter Tag " + (i + 1));
-              const yl = document.createElement("label"); yl.className = "mdy"; const yc = document.createElement("input"); yc.type = "checkbox"; yc.checked = v.endsWith("y"); yl.append(yc, document.createTextNode(" jährlich"));
+              const q = parse(v), w = document.createElement("div"); w.className = "mdw";
+              const r = document.createElement("div"); r.className = "mdr"; const inp = document.createElement("input"); inp.type = "date"; inp.value = q.d; inp.setAttribute("aria-label", "Markierter Tag " + (i + 1));
+              const yl = document.createElement("label"); yl.className = "mdy"; const yc = document.createElement("input"); yc.type = "checkbox"; yc.checked = q.y; yl.append(yc, document.createTextNode(" jährlich"));
               const x = document.createElement("button"); x.type = "button"; x.className = "mdx"; x.textContent = "✕"; x.title = "Entfernen"; x.setAttribute("aria-label", "Tag entfernen");
-              const upd = () => { arr[i] = inp.value ? inp.value + (yc.checked ? "y" : "") : ""; commit(); };
+              const upd = () => { q.d = inp.value; q.y = yc.checked; arr[i] = compose(q); commit(); };
               inp.addEventListener("input", () => { upd(); const pl = ctl.querySelector(".mdp"); if (pl) pl.hidden = !arr[arr.length - 1]; }); yc.addEventListener("change", upd);
               x.addEventListener("click", () => { arr.splice(i, 1); if (!arr.length) arr = [""]; X[t][f.k] = arr.filter(Boolean).join(","); redraw(); render(); });
-              r.append(inp, yl, x); ctl.appendChild(r);
+              r.append(inp, yl, x);
+              const sr = document.createElement("div"); sr.className = "mds";
+              SELS.forEach(([k, lab, items]) => { const l = document.createElement("label"); l.className = "mdsl"; const sp = document.createElement("span"); sp.textContent = lab; const se = document.createElement("select"); se.setAttribute("aria-label", lab + " für Tag " + (i + 1)); items.forEach(([val, name]) => { const op = document.createElement("option"); op.value = val; op.textContent = name; se.appendChild(op); }); se.value = q[k]; se.addEventListener("change", () => { q[k] = se.value; arr[i] = compose(q); commit(); }); l.append(sp, se); sr.appendChild(l); });
+              w.append(r, sr); ctl.appendChild(w);
             });
             const plus = document.createElement("button"); plus.type = "button"; plus.className = "mdp"; plus.textContent = "+ Weiterer Tag"; plus.hidden = !arr[arr.length - 1] || arr.length >= 20;
             plus.addEventListener("click", () => { arr.push(""); redraw(); const ins = ctl.querySelectorAll("input[type=date]"); if (ins.length) ins[ins.length - 1].focus(); });

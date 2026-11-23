@@ -1342,6 +1342,26 @@ input[type=number] { max-width: 9em; }
   @keyframes kswL { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-14deg); } } @keyframes kswR { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(14deg); } }
   @keyframes us-blink2 { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
 }
+
+/* Sanrio-Formen und -Muster (verspielt, rund) */
+.btn.sh-soft { border-radius: 1.15em; padding-left: calc(5px + .5em); padding-right: calc(5px + .45em); }
+.btn.sh-blob { border-radius: 1.5em 2.1em 1.6em 2.2em / 2.1em 1.5em 2.2em 1.6em; padding-left: calc(5px + .6em); padding-right: calc(5px + .55em); }
+.btn.sh-soft.fr-double::before, .btn.sh-soft.fr-dashed::before, .btn.sh-soft.fr-dotted::before { border-radius: 1em; }
+.btn.sh-blob.fr-double::before, .btn.sh-blob.fr-dashed::before, .btn.sh-blob.fr-dotted::before { border-radius: 1.3em 1.9em 1.4em 2em / 1.9em 1.3em 2em 1.4em; }
+.wp.sh-soft.bar-left, .wp.sh-soft.bar-top, .wp.sh-blob.bar-left, .wp.sh-blob.bar-top { box-shadow: none; }
+.btn.sh-soft.fr-thick, .btn.sh-blob.fr-thick { box-shadow: inset 0 0 0 2.5px var(--fr), 0 .16em 0 color-mix(in srgb, var(--fr) 55%, transparent); }
+.btn.pt-hearts::after, .btn.pt-stars::after { background: var(--pt); -webkit-mask-size: 18px 18px; mask-size: 18px 18px; opacity: .9; }
+.btn.pt-hearts::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M5 9.5C1 6.800 1.200 3.600 3.200 3.100 4.300 2.900 5 3.500 5 4.300 5 3.500 5.700 2.900 6.800 3.100 8.800 3.600 9 6.800 5 9.500Z'/%3E%3Cpath d='M14 16.500C11 14.500 11.100 12.200 12.600 11.800 13.400 11.600 14 12.100 14 12.700 14 12.100 14.600 11.600 15.400 11.800 16.900 12.200 17 14.500 14 16.500Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M5 9.5C1 6.800 1.200 3.600 3.200 3.100 4.300 2.900 5 3.500 5 4.300 5 3.500 5.700 2.900 6.800 3.100 8.800 3.600 9 6.800 5 9.500Z'/%3E%3Cpath d='M14 16.500C11 14.500 11.100 12.200 12.600 11.800 13.400 11.600 14 12.100 14 12.700 14 12.100 14.600 11.600 15.400 11.800 16.900 12.200 17 14.500 14 16.500Z'/%3E%3C/svg%3E"); }
+.btn.pt-stars::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M5 2l1 2.200 2.400.3-1.800 1.700.5 2.400L5 7.400 2.900 8.600l.5-2.400L1.600 4.500 4 4.200Z'/%3E%3Cpath d='M14 10l.8 1.700 1.900.2-1.400 1.300.4 1.900-1.700-1-1.700 1 .4-1.900-1.400-1.300 1.900-.2Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M5 2l1 2.200 2.400.3-1.800 1.700.5 2.400L5 7.400 2.900 8.600l.5-2.400L1.600 4.500 4 4.200Z'/%3E%3Cpath d='M14 10l.8 1.700 1.900.2-1.400 1.300.4 1.900-1.700-1-1.700 1 .4-1.900-1.400-1.300 1.900-.2Z'/%3E%3C/svg%3E"); }
+.ico.kc svg { stroke: none; fill: none; overflow: visible; }
+#ip-grid .ico.kc { width: 34px; height: 34px; } #ip-grid .ico.kc svg { width: 100%; height: 100%; }
+
+/* Sanrio-Oberfläche: rund, weich, verspielt statt geschnitten */
+html[data-theme="sanrio"] .card, html[data-theme="sanrio"] .topbar, html[data-theme="sanrio"] dialog.dlg { clip-path: none; border-radius: 22px; border: 2px solid var(--pl); box-shadow: 0 4px 0 color-mix(in srgb, var(--pl) 60%, transparent); }
+html[data-theme="sanrio"] dialog.dlg { border-color: var(--pa); }
+html[data-theme="sanrio"] :is(button, input, select, textarea, .pv, .tb, .seg, .tabs):not(.btn):not(.ico) { clip-path: none; border-radius: 14px; }
+html[data-theme="sanrio"] .tb, html[data-theme="sanrio"] .seg button, html[data-theme="sanrio"] .tabs button { border-radius: 999px; }
+html[data-theme="sanrio"] .stamp, html[data-theme="sanrio"] h1, html[data-theme="sanrio"] .lab { letter-spacing: .06em; }
 </style>
 </head>
 <body>
@@ -1381,9 +1401,10 @@ const THEMES = {
   violett: { name: "Violett", a: "#d77bff", ink: "#1a0a22", panel: "#1a1222", line: "#35244a", text: "#e6d6f2", pb: "#100b16", mu: "#a08fb5" },
 };
 const FILLS = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transparent"]];
-const SHAPES = [["cut", "Geschnitten"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"]];
+const SHAPES = [["cut", "Geschnitten"], ["square", "Eckig"], ["round", "Abgerundet"], ["pill", "Kapsel"], ["soft", "Wolke"], ["blob", "Blob"]];
 const FRAMES = [["auto", "Automatisch"], ["none", "Keiner"], ["thin", "Dünn"], ["thick", "Dick"], ["double", "Doppelt"], ["dashed", "Gestrichelt"], ["dotted", "Gepunktet"]];
-const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], ["grid", "Gitter"], ["diag", "Diagonal"], ["check", "Schachbrett"]];
+const PATTERNS = [["scan", "Scanlines"], ["none", "Keins"], ["dots", "Punkte"], ["grid", "Gitter"], ["diag", "Diagonal"], ["check", "Schachbrett"], ["hearts", "Herzchen"], ["stars", "Sternchen"]];
+const SANRIO_ONLY = new Set(["soft", "blob", "hearts", "stars"]), SANRIO_PRESET = { shape: "soft", frame: "thick", pat: "dots", font: "fredoka", caps: false }, BASE_STYLE = { shape: "cut", frame: "auto", pat: "scan", font: "rajdhani", caps: true };
 const HOVERS = [["bright", "Aufhellen"], ["invert", "Invertieren"], ["lift", "Anheben"], ["glitch", "Glitch"], ["zittern", "Zittern"], ["none", "Keiner"]];
 const CLICKS = [["press", "Eindrücken"], ["flash", "Aufblitzen"], ["shake", "Rütteln"], ["none", "Keiner"]];
 const SCHEMES = [["dark", "Dunkel"], ["light", "Hell"], ["auto", "Auto"]];
@@ -1456,7 +1477,7 @@ const FX_DEFAULT = ["rgb", "tear", "glow"];
 const OPEN = [["tab", "Neuer Tab"], ["side", "Notion: Seitenansicht"], ["center", "Notion: Zentriert"], ["full", "Notion: Vollseite"]];
 const SIZES = [["small", "Klein", 12], ["mid", "Mittel", 16], ["big", "Groß", 22], ["huge", "Riesig", 30]];
 const ALIGNS = [["left", "Links"], ["center", "Mitte"], ["right", "Rechts"]];
-const FONTS = [["rajdhani", "Rajdhani"], ["orbitron", "Orbitron"], ["oxanium", "Oxanium"], ["chakra-petch", "Chakra Petch"], ["audiowide", "Audiowide"], ["share-tech-mono", "Share Tech Mono"], ["vt323", "VT323"], ["press-start-2p", "Press Start 2P"], ["bebas-neue", "Bebas Neue"], ["special-elite", "Special Elite"], ["cinzel", "Cinzel"], ["metamorphous", "Metamorphous"], ["medievalsharp", "MedievalSharp"], ["pirata-one", "Pirata One"], ["uncial-antiqua", "Uncial Antiqua"]];
+const FONTS = [["rajdhani", "Rajdhani"], ["orbitron", "Orbitron"], ["oxanium", "Oxanium"], ["chakra-petch", "Chakra Petch"], ["audiowide", "Audiowide"], ["share-tech-mono", "Share Tech Mono"], ["vt323", "VT323"], ["press-start-2p", "Press Start 2P"], ["bebas-neue", "Bebas Neue"], ["special-elite", "Special Elite"], ["cinzel", "Cinzel"], ["metamorphous", "Metamorphous"], ["medievalsharp", "MedievalSharp"], ["pirata-one", "Pirata One"], ["uncial-antiqua", "Uncial Antiqua"], ["fredoka", "Fredoka (rund)"]];
 const DIY_KEYS = [["color", "Füllung / Akzent", "Fläche, Glühen (Gefüllt), Schrift (Umriss)"], ["ink", "Schrift", "Schriftfarbe bei gefülltem Button"], ["panel", "Hintergrund", "Fläche bei Umriss-Stilen"], ["line", "Rahmen", "Rahmenfarbe bei Umriss-Stilen"], ["glow", "Glühen", "Farbe des Leuchtens"], ["g1", "Glitch 1", "erste Glitch-Ebene"], ["g2", "Glitch 2", "zweite Glitch-Ebene"]];
 const ALLOW = [/^(www\.|app\.)?notion\.(so|com)$/, /\.notion\.site$/, /^laserkirre-ctrl\.github\.io$/];
 const FORM_URL = "https://laserkirre-ctrl.github.io/Form-Quests/?v=7";
@@ -1508,12 +1529,41 @@ function parseFx(v) {
   return v.toLowerCase().split(",").filter((x) => FX.some((f) => f[0] === x));
 }
 let uid = 0;
-/* Sanrio-Symbole (eigene Linienzeichnungen) */
-const SANRIO_ICONS = {"kw-herz":"<path d=\"M12 20C4 14 3 8 7 6.2c2.4-1 4 .4 5 2 1-1.6 2.6-3 5-2C21 8 20 14 12 20Z\"/><circle cx=\"9\" cy=\"11.5\" r=\".6\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"11.5\" r=\".6\" fill=\"currentColor\"/><path d=\"M11 14q1 1 2 0\"/>","kw-stern":"<path d=\"M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7Z\"/><circle cx=\"9\" cy=\"12.5\" r=\".6\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"12.5\" r=\".6\" fill=\"currentColor\"/><path d=\"M11 15q1 .9 2 0\"/>","kw-wolke":"<path d=\"M7 18a4 4 0 0 1-.6-7.9A5.5 5.5 0 0 1 17 9.5a4.2 4.2 0 0 1 .5 8.5Z\"/><circle cx=\"9\" cy=\"14\" r=\".6\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"14\" r=\".6\" fill=\"currentColor\"/><path d=\"M11 16q1 .9 2 0\"/>","kw-mond":"<path d=\"M19 14.5A8 8 0 0 1 9.5 5a8 8 0 1 0 9.5 9.5Z\"/><path d=\"M8.5 13l1 .8M12.5 16.2l.9.4\"/><path d=\"M16 4v3M14.5 5.5h3\"/>","kw-blume":"<circle cx=\"12\" cy=\"12\" r=\"2.6\"/><path d=\"M12 9.4C10.4 7 10.6 4.4 12 3.4c1.4 1 1.6 3.6 0 6ZM14.6 12c2.4-1.6 5-1.4 6 0-1 1.4-3.6 1.6-6 0ZM12 14.6c1.6 2.4 1.4 5 0 6-1.4-1-1.6-3.6 0-6ZM9.4 12C7 13.6 4.4 13.4 3.4 12c1-1.4 3.6-1.6 6 0Z\"/>","kw-schleife":"<path d=\"M12 12C8 7 4 7 4 10.5S8 16.5 12 12C16 16.5 20 14 20 10.5S16 7 12 12Z\"/><circle cx=\"12\" cy=\"12\" r=\"1.8\"/><path d=\"M11 14l-2 6M13 14l2 6\"/>","kw-pfote":"<path d=\"M12 12.5c3 0 5 2.6 5 4.6 0 1.6-1.4 2.4-3 2-.8-.2-1.3-.4-2-.4s-1.2.2-2 .4c-1.6.4-3-.4-3-2 0-2 2-4.6 5-4.6Z\"/><ellipse cx=\"6.5\" cy=\"10\" rx=\"1.6\" ry=\"2.1\"/><ellipse cx=\"10\" cy=\"6.4\" rx=\"1.6\" ry=\"2.1\"/><ellipse cx=\"14\" cy=\"6.4\" rx=\"1.6\" ry=\"2.1\"/><ellipse cx=\"17.5\" cy=\"10\" rx=\"1.6\" ry=\"2.1\"/>","kw-kirsche":"<circle cx=\"8\" cy=\"17\" r=\"3.600\"/><circle cx=\"16.500\" cy=\"16\" r=\"3.600\"/><path d=\"M8 13.400C9 9 12 5.500 17 4c0 4-.5 8-.5 8.400M17 4c1.500 0 3 .3 4 1\"/>","kw-kuchen":"<path d=\"M4 19h16v-6a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3Z\"/><path d=\"M4 14.500c1.500 1.500 3 1.500 4 0 1 1.500 3 1.500 4 0 1 1.500 3 1.500 4 0 1 1.500 2.500 1.500 4 0\"/><path d=\"M12 10V6.500\"/><path d=\"M12 3c1 1.300 1 2.500 0 3.500-1-1-1-2.200 0-3.500Z\"/>","kw-eis":"<path d=\"M7 11a5 5 0 0 1 10 0Z\"/><path d=\"M7 11l5 10 5-10\"/><path d=\"M10 14l2 3M13.5 13.5l-1 2\"/>","kw-krone":"<path d=\"M4 18l-1-10 5 4 4-7 4 7 5-4-1 10Z\"/><path d=\"M4 18h16\"/><circle cx=\"3\" cy=\"8\" r=\"1\"/><circle cx=\"12\" cy=\"5\" r=\"1\"/><circle cx=\"21\" cy=\"8\" r=\"1\"/>","kw-fisch":"<path d=\"M3 12c3-5 9-6 13-2l5-3v10l-5-3c-4 4-10 3-13-2Z\"/><circle cx=\"8\" cy=\"11\" r=\".7\" fill=\"currentColor\"/>","kw-tasse":"<path d=\"M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5Z\"/><path d=\"M16 10h1.500a2.500 2.500 0 0 1 0 5H16\"/><path d=\"M8 3.500c-1 1 1 2 0 3M12 3.500c-1 1 1 2 0 3\"/>","kw-brief":"<rect x=\"3\" y=\"6\" width=\"18\" height=\"13\" rx=\"2.500\"/><path d=\"M3.500 8l8.500 6 8.500-6\"/>"};
-Object.assign(ICONS, SANRIO_ICONS);
-const SANRIO_LABELS = {"kw-herz":"Herz","kw-stern":"Stern","kw-wolke":"Wolke","kw-mond":"Mond","kw-blume":"Blume","kw-schleife":"Schleife","kw-pfote":"Pfote","kw-kirsche":"Kirschen","kw-kuchen":"Törtchen","kw-eis":"Eis","kw-krone":"Krone","kw-fisch":"Fisch","kw-tasse":"Tasse","kw-brief":"Brief"};
+/* Sanrio-Symbole: bunte Kawaii-Figuren mit Gesicht (eigene Zeichnungen, Viewbox 48) */
+const KC_O = (c, w) => ' stroke="' + c + '" stroke-width="' + (w || 2.4) + '" stroke-linecap="round" stroke-linejoin="round"';
+const kcFace = (x, y, s) => { s = s || 1; const e = (dx) => '<circle cx="' + (x + dx * s) + '" cy="' + y + '" r="' + 1.7 * s + '" fill="#4a2f3a"/>', b = (dx) => '<ellipse cx="' + (x + dx * s) + '" cy="' + (y + 3.6 * s) + '" rx="' + 2.7 * s + '" ry="' + 1.7 * s + '" fill="#ff8fb0" opacity=".75"/>';
+  return b(-7.2) + b(7.2) + e(-4.6) + e(4.6) + '<path d="M' + (x - 2 * s) + " " + (y + 3.2 * s) + "q" + 2 * s + " " + 2.4 * s + " " + 4 * s + ' 0" fill="none" stroke="#4a2f3a" stroke-width="' + 1.5 * s + '" stroke-linecap="round"/>'; };
+const SANRIO_ICONS = {
+  "kw-herz": '<path d="M24 41C7 30 5 16 13 11.500c5-2.800 9.500.5 11 5 1.500-4.500 6-7.800 11-5C43 16 41 30 24 41Z" fill="#ff9ec0"' + KC_O("#d9467a") + '/><path d="M13 15q2-3 5-2.500" fill="none" stroke="#fff" stroke-width="2.200" stroke-linecap="round" opacity=".8"/>' + kcFace(24, 24, 1),
+  "kw-stern": '<path d="M24 5l5.800 12 13 1.600-9.600 9 2.600 13L24 34.400 12.200 40.600l2.600-13L5.200 18.600l13-1.600Z" fill="#ffd84d"' + KC_O("#d99a1f") + '/>' + kcFace(24, 24, .95),
+  "kw-wolke": '<path d="M14 37a9 9 0 0 1-1-17.900A11 11 0 0 1 34 17a8.500 8.500 0 0 1 1.500 17.800L35 37Z" fill="#fff"' + KC_O("#6aa7d8") + '/><path d="M16 24a7 7 0 0 1 5-5" fill="none" stroke="#cfe6fa" stroke-width="2.400" stroke-linecap="round"/>' + kcFace(24, 27, 1),
+  "kw-krone": '<path d="M6 36L4 15l10 8 10-14 10 14 10-8-2 21Z" fill="#ffd84d"' + KC_O("#d99a1f") + '/><path d="M6 36h36" stroke="#d99a1f" stroke-width="2.400" stroke-linecap="round"/><circle cx="4" cy="14" r="2.200" fill="#ff8fb0"/><circle cx="24" cy="8" r="2.200" fill="#ff8fb0"/><circle cx="44" cy="14" r="2.200" fill="#ff8fb0"/>' + kcFace(24, 27, .9),
+  "kw-kassette": '<rect x="5" y="9" width="38" height="30" rx="5" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/><rect x="10" y="14" width="28" height="12" rx="3" fill="#efe8ff"' + KC_O("#7b5fb8", 1.800) + '/><circle cx="17" cy="20" r="3" fill="#c9b6f2"/><circle cx="31" cy="20" r="3" fill="#c9b6f2"/>' + kcFace(24, 31, .8) + '<path d="M12 39l3-5h18l3 5" fill="none" stroke="#7b5fb8" stroke-width="1.800"/>',
+  "kw-kamera": '<path d="M7 15h8l3-5h12l3 5h8a3 3 0 0 1 3 3v19a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V18a3 3 0 0 1 3-3Z" fill="#ffc2d8"' + KC_O("#c8567e") + '/><circle cx="24" cy="26" r="10" fill="#e6f3ff"' + KC_O("#6aa7d8") + '/>' + kcFace(24, 25, .85),
+  "kw-pilz": '<path d="M17 28h14l1 12a3 3 0 0 1-3 3h-10a3 3 0 0 1-3-3Z" fill="#fff2dc"' + KC_O("#c99a6a") + '/><path d="M5 28C5 14 14 6 24 6s19 8 19 22Z" fill="#ff6b5e"' + KC_O("#b8332b") + '/><circle cx="15" cy="19" r="3.400" fill="#fff"/><circle cx="29" cy="14" r="2.600" fill="#fff"/><circle cx="35" cy="23" r="2.800" fill="#fff"/>' + kcFace(24, 34, .8),
+  "kw-kerze": '<path d="M24 4c3 3 4 6 2 9-2-1-5-2-4-5Z" fill="#ffb347"' + KC_O("#e0762a", 1.800) + '/><rect x="14" y="14" width="20" height="28" rx="4" fill="#ffe9a8"' + KC_O("#d9a73a") + '/><path d="M14 22c3 3 7 3 10 0s7-3 10 0" fill="none" stroke="#d9a73a" stroke-width="2"/>' + kcFace(24, 31, .9),
+  "kw-rakete": '<path d="M24 3c8 6 11 16 9 28H15C13 19 16 9 24 3Z" fill="#fff"' + KC_O("#8a7fb8") + '/><path d="M15 31l-7 8 1-12 6-6ZM33 31l7 8-1-12-6-6Z" fill="#ff9ec0"' + KC_O("#c8567e", 2) + '/><circle cx="24" cy="17" r="4.500" fill="#cfe6fa"' + KC_O("#6aa7d8", 1.800) + '/><path d="M20 31l4 11 4-11" fill="#ffb347"' + KC_O("#e0762a", 1.800) + '/>' + kcFace(24, 26, .6),
+  "kw-schwerter": '<path d="M8 6l5 0 22 24-3 3L8 11Z" fill="#dfe6ee"' + KC_O("#7a8aa0", 2) + '/><path d="M40 6l-5 0L13 30l3 3L40 11Z" fill="#dfe6ee"' + KC_O("#7a8aa0", 2) + '/><path d="M6 36l8-8 3 3-8 8ZM42 36l-8-8-3 3 8 8Z" fill="#ffd84d"' + KC_O("#d99a1f", 2) + '/><circle cx="24" cy="21" r="0"/>',
+  "kw-mikro": '<rect x="16" y="4" width="16" height="24" rx="8" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/><path d="M10 22a14 14 0 0 0 28 0M24 36v7M17 43h14" fill="none"' + KC_O("#7b5fb8") + '/>' + kcFace(24, 15, .7),
+  "kw-buch": '<path d="M7 8h26a4 4 0 0 1 4 4v28H11a4 4 0 0 1-4-4Z" fill="#ffb8b0"' + KC_O("#c8645a") + '/><path d="M7 36a4 4 0 0 1 4-4h26" fill="none" stroke="#c8645a" stroke-width="2.400"/><path d="M33 8v32" stroke="#fff3" stroke-width="2"/>' + kcFace(22, 20, .9),
+  "kw-geist": '<path d="M8 42V22C8 11 15 5 24 5s16 6 16 17v20l-5-4-5 4-6-4-6 4-5-4Z" fill="#efe8ff"' + KC_O("#9b86d0") + '/>' + kcFace(24, 22, 1),
+  "kw-schere": '<circle cx="12" cy="36" r="6" fill="#ffc2d8"' + KC_O("#c8567e") + '/><circle cx="36" cy="36" r="6" fill="#ffc2d8"' + KC_O("#c8567e") + '/><path d="M15 31L33 6M33 31L15 6" fill="none" stroke="#9aa9bd" stroke-width="4.500" stroke-linecap="round"/><circle cx="24" cy="21" r="1.800" fill="#fff"/>',
+  "kw-pille": '<g transform="rotate(-35 24 24)"><rect x="6" y="14" width="36" height="20" rx="10" fill="#ffd84d"' + KC_O("#d99a1f") + '/><path d="M24 14h8a10 10 0 0 1 0 20h-8Z" fill="#ff9ec0"' + KC_O("#c8567e") + '/></g>' + kcFace(24, 22, .75),
+  "kw-ordner": '<path d="M4 12a3 3 0 0 1 3-3h12l4 5h18a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3Z" fill="#b8ecd0"' + KC_O("#4aa57a") + '/><path d="M4 20h40" stroke="#4aa57a" stroke-width="2.200"/>' + kcFace(24, 29, .95),
+  "kw-postit": '<path d="M6 6h36v26l-10 10H6Z" fill="#fff08a"' + KC_O("#d9b83a") + '/><path d="M32 42V32h10" fill="#f0d85a"' + KC_O("#d9b83a", 2) + '/>' + kcFace(22, 20, 1),
+  "kw-kalender": '<rect x="5" y="9" width="38" height="33" rx="5" fill="#fff"' + KC_O("#c8567e") + '/><path d="M5 18V14a5 5 0 0 1 5-5h28a5 5 0 0 1 5 5v4Z" fill="#ff9ec0"' + KC_O("#c8567e") + '/><path d="M14 5v8M34 5v8" stroke="#c8567e" stroke-width="3" stroke-linecap="round"/>' + kcFace(24, 29, .9),
+  "kw-laptop": '<rect x="9" y="8" width="30" height="22" rx="3" fill="#dccdf7"' + KC_O("#7b5fb8") + '/><path d="M3 36h42l-3 4H6Z" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/>' + kcFace(24, 17, .85),
+  "kw-controller": '<path d="M13 12h22a9 9 0 0 1 9 9l1.500 12a5 5 0 0 1-8.500 3.500L33 31H15l-4 5.500A5 5 0 0 1 2.500 33L4 21a9 9 0 0 1 9-9Z" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/><path d="M13 18v6M10 21h6" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/><circle cx="34" cy="19" r="1.800" fill="#ff9ec0"/><circle cx="38" cy="23" r="1.800" fill="#ffd84d"/>' + kcFace(24, 21, .6),
+  "kw-zahn": '<path d="M10 10c4-4 9-3 14-1 5-2 10-3 14 1 4 5 1 12-1 18-1 6-2 14-5 14-3 0-2-9-8-9s-5 9-8 9-4-8-5-14c-2-6-4-13-1-18Z" fill="#fff"' + KC_O("#8fb6d6") + '/>' + kcFace(24, 20, 1),
+  "kw-plus": '<path d="M18 5h12v13h13v12H30v13H18V30H5V18h13Z" fill="#ff9ec0"' + KC_O("#c8567e") + '/>' + kcFace(24, 22, .9),
+  "kw-bleistift": '<path d="M14 4h20v28l-10 12-10-12Z" fill="#ffd84d"' + KC_O("#d99a1f") + '/><path d="M14 32h20l-10 12Z" fill="#ffe9c8"' + KC_O("#d99a1f", 2) + '/><path d="M20 38l4 6 4-6Z" fill="#6b4a5a"/><path d="M14 10h20" stroke="#d99a1f" stroke-width="2.400"/>' + kcFace(24, 19, .8),
+  "kw-kopfhoerer": '<path d="M8 28V24a16 16 0 0 1 32 0v4" fill="none"' + KC_O("#7b5fb8", 3.400) + '/><rect x="5" y="26" width="9" height="15" rx="4.500" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/><rect x="34" y="26" width="9" height="15" rx="4.500" fill="#c9b6f2"' + KC_O("#7b5fb8") + '/>' + kcFace(24, 24, .9),
+  "kw-mond": '<path d="M36 33A17 17 0 0 1 17 7a17 17 0 1 0 19 26Z" fill="#ffe58a"' + KC_O("#d99a1f") + '/><path d="M35 6v6M32 9h6" stroke="#d99a1f" stroke-width="2.200" stroke-linecap="round"/>' + kcFace(20, 25, .75)
+};
+const SANRIO_LABELS = {"kw-herz":"Herz","kw-stern":"Stern","kw-wolke":"Wolke","kw-krone":"Krone","kw-kassette":"Kassette","kw-kamera":"Kamera","kw-pilz":"Pilz","kw-kerze":"Kerze","kw-rakete":"Rakete","kw-schwerter":"Schwerter","kw-mikro":"Mikro","kw-buch":"Buch","kw-geist":"Geist","kw-schere":"Schere","kw-pille":"Pille","kw-ordner":"Ordner","kw-postit":"Post-it","kw-kalender":"Kalender","kw-laptop":"Laptop","kw-controller":"Controller","kw-zahn":"Zahn","kw-plus":"Plus","kw-bleistift":"Bleistift","kw-kopfhoerer":"Kopfhörer","kw-mond":"Mond"};
 function iconNode(name) {
   const span = document.createElement("span"); span.className = "ico";
+  if (SANRIO_ICONS[name]) { span.classList.add("kc"); span.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true">' + SANRIO_ICONS[name] + "</svg>"; return span; }
   const an = name.startsWith("a-") ? ANIMS.find((x) => "a-" + x[0] === name) : null;
   let inner = "";
   if (an) {
@@ -2924,6 +2974,7 @@ const HIDE_STATIC = new Set(Object.keys(SANRIO_ICONS).concat(["briefcase-busines
 function applyPage() {
     const t = THEMES[S.theme], r = document.documentElement.style;
     r.setProperty("--pa", t.a); r.setProperty("--pp", t.panel); r.setProperty("--pl", t.line); r.setProperty("--ptx", t.text); r.setProperty("--pm", t.mu); r.setProperty("--pb", t.pb); r.setProperty("--pink", t.ink);
+    document.documentElement.dataset.theme = S.theme; if (S.theme === "sanrio") { loadFont("fredoka"); r.setProperty("--ff", famOf("fredoka")); } else r.removeProperty("--ff");
     refreshDs();
   }
   function refreshDs() {
@@ -2954,7 +3005,7 @@ function applyPage() {
       if (ready) { const dot = document.createElement("i"); dot.style.background = THEMES[k].a; b.appendChild(dot); }
       b.appendChild(document.createTextNode(name));
       if (!ready) { b.disabled = true; b.title = "Folgt später"; const sm = document.createElement("small"); sm.textContent = "bald"; b.appendChild(sm); }
-      else b.addEventListener("click", () => { S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); drawColors(); render(); });
+      else b.addEventListener("click", () => { themePreset(S.theme, k); S.theme = k; try { localStorage.setItem(TK, k); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); drawColors(); render(); });
       host.appendChild(b);
     });
   }
@@ -3024,6 +3075,12 @@ function applyPage() {
   const SF_ALL = [["", "Standard"]].concat(Object.keys(SF).map((k) => [k, SF[k].n]));
   const sfList = () => SF_ALL.filter(([k]) => !k || SF[k].f.includes(SF_CODE[S.w] || "-"));
   const sfVis = () => { const on = S.theme === "sanrio" && !!SF_CODE[S.w]; const r = $("r-sf"); if (r) r.style.display = on ? "" : "none"; if (S.sf && !sfList().some(([k]) => k === S.sf)) S.sf = ""; };
+  const PKEYS = ["shape", "frame", "pat", "font", "caps"];
+  const themePreset = (from, to) => {  /* Theme-Vorgaben: nur unveränderte Werte wechseln mit */
+    if ((from === "sanrio") === (to === "sanrio")) return;
+    const fix = (o) => { PKEYS.forEach((k) => { if (to === "sanrio" ? o[k] === BASE_STYLE[k] : o[k] === SANRIO_PRESET[k]) o[k] = to === "sanrio" ? SANRIO_PRESET[k] : BASE_STYLE[k]; }); if (to !== "sanrio" && SANRIO_ONLY.has(o.shape)) o.shape = "cut"; if (to !== "sanrio" && SANRIO_ONLY.has(o.pat)) o.pat = "scan"; };
+    fix(S); Object.keys(SW).forEach((k) => fix(SW[k])); if (to !== "sanrio") S.sf = "";
+  };
   let pvSig = "";
   const pvCfg = (key, val, label) => {
     const c = cfgNow(); c.label = label; c.sub = ""; c.icon = ""; c.url = ""; c.fx = []; c.pad = "0"; c.fit = "content"; c.open = "tab"; c.demo = true;
@@ -3036,7 +3093,7 @@ function applyPage() {
     const sig = JSON.stringify([S.w, S.sf, S.theme, S.fill, S.shape, S.frame, S.pat, S.hov, S.clk, S.caps, S.size, S.font, S.fx, S.diy, S.scheme]);
     if (!force && sig === pvSig) return; pvSig = sig;
     PV_ROWS.forEach(([id, items0, key]) => {
-      const items = key === "sf" ? sfList() : items0;
+      const items = key === "sf" ? sfList() : (key === "shape" || key === "pat") ? items0.filter(([v]) => !SANRIO_ONLY.has(v) || S.theme === "sanrio") : items0;
       const host = $(id); host.textContent = ""; host.classList.add("pvrow");
       items.forEach(([val, label]) => {
         const on = key === "fx" ? S.fx.includes(val) : S[key] === val;
@@ -3265,7 +3322,7 @@ function applyPage() {
     });
   }
   /* ================= Weitere Widgets im Generator ================= */
-  const W_STYLE_DEF = (t) => ({ fill: "outline", shape: "cut", frame: "auto", pat: "scan", hov: t === "banner" ? "bright" : "none", clk: "press", caps: true, fx: W_DEFAULT_FX.slice(), size: "mid", align: ["lauftext", "banner", "textfeld"].includes(t) ? "left" : "center", pad: "auto", fit: t === "lauftext" ? "content" : "frame", font: "rajdhani", sf: "" });
+  const W_STYLE_DEF = (t, raw) => Object.assign({ fill: "outline", shape: "cut", frame: "auto", pat: "scan", hov: t === "banner" ? "bright" : "none", clk: "press", caps: true, fx: W_DEFAULT_FX.slice(), size: "mid", align: ["lauftext", "banner", "textfeld"].includes(t) ? "left" : "center", pad: "auto", fit: t === "lauftext" ? "content" : "frame", font: "rajdhani", sf: "" }, !raw && S.theme === "sanrio" ? SANRIO_PRESET : {});
   const STYLE_KEYS = ["fill", "shape", "frame", "pat", "hov", "clk", "caps", "fx", "size", "align", "pad", "fit", "font", "sf"];
   const SW = {};
   const ALIGNS_T = ALIGNS.concat([["justify", "Blocksatz"]]);
@@ -3416,7 +3473,7 @@ function applyPage() {
     const snap = {}; STYLE_KEYS.forEach((k) => { snap[k] = Array.isArray(S[k]) ? S[k].slice() : S[k]; }); SW[S.w] = snap;
     const nxt = SW[t] || (t === "button" ? null : W_STYLE_DEF(t));
     if (nxt) STYLE_KEYS.forEach((k) => { S[k] = Array.isArray(nxt[k]) ? nxt[k].slice() : nxt[k]; });
-    else { const d = { fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", caps: true, fx: FX_DEFAULT.slice(), size: "mid", align: "left", pad: "auto", fit: "content", font: "rajdhani", sf: "" }; STYLE_KEYS.forEach((k) => { S[k] = Array.isArray(d[k]) ? d[k].slice() : d[k]; }); }
+    else { const d = { fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", caps: true, fx: FX_DEFAULT.slice(), size: "mid", align: "left", pad: "auto", fit: "content", font: "rajdhani", sf: "" }; if (S.theme === "sanrio") Object.assign(d, SANRIO_PRESET); STYLE_KEYS.forEach((k) => { S[k] = Array.isArray(d[k]) ? d[k].slice() : d[k]; }); }
     S.w = t; wClear(prev); prev._wk = ""; prev.style.width = t === "button" ? "" : "100%"; applyWidgetUI(); drawAll(); render();
   }
   function renderW() {
@@ -3430,7 +3487,7 @@ function applyPage() {
     { const pd = parseFloat(getComputedStyle(prev).paddingLeft) || 0, r = sh.b.getBoundingClientRect(), w = Math.ceil(r.width + 2 * pd), h = Math.ceil(r.height + 2 * pd);
       $("g-fitnote").textContent = S.fit === "frame" ? (WSCALE[t] ? "Fläche und Inhalt füllen den Rahmen bis auf den Randabstand (" + pd + " px) und skalieren mit. Rahmen in Notion beliebig ziehen. Vorschau: Kasten an der Ecke ziehen." : "Die Fläche füllt den Rahmen bis auf den Randabstand (" + pd + " px). Rahmen in Notion beliebig ziehen.") : "Rahmen in Notion mindestens ca. " + w + " × " + h + " px, dann schließt er mit dem Widget ab."; }
     updateSums(); $("g-schemehint").textContent = SCHEMEHINT[S.scheme]; $("g-schemehint").className = "hint2" + (S.scheme === "auto" ? " warn" : "");
-    const p = new URLSearchParams(), D = W_STYLE_DEF(t); p.set("w", t);
+    const p = new URLSearchParams(), D = W_STYLE_DEF(t, true); p.set("w", t);
     if (t === "banner") { if (cfg.url) p.set("url", ok && isMail(cfg.url) ? okUrl(raw) : cfg.url); if (cfg.icon) p.set("icon", cfg.icon); }
     if (cfg.theme !== "standard") p.set("theme", cfg.theme); if (cfg.theme === "sanrio" && S.sf) p.set("sf", S.sf);
     ["fill", "shape", "frame", "pat", "size", "align", "pad", "font"].forEach((k) => { if (S[k] !== D[k]) p.set(k, S[k]); });
@@ -3446,8 +3503,8 @@ function applyPage() {
     WSCHEMA[wt].forEach((f) => { X[wt][f.k] = u.has(f.k) ? u.get(f.k) : String(f.def); }); drawWc(); applyWidgetUI();
   }
   const NAV_READY = ["button"].concat(WTYPES);
-  drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 23.11.2026 08:40"; $("app").appendChild(st); }
+  themePreset("standard", S.theme); drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 23.11.2026 07:20"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

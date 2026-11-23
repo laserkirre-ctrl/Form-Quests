@@ -649,6 +649,7 @@ a.btn.wp { cursor: pointer; }
 .kc.mk2::after, .kc.mkx::after { display: none; } .kc.mk2 { box-shadow: none; }
 .kc.mk2, .kc.mkx { z-index: 2; }
 .kc .kn { position: relative; z-index: 3; }
+.mkf.fr { z-index: 4; }
 .mkb { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: var(--ac); }
 .mkb .l2 { color: color-mix(in srgb, var(--ac) 55%, #fff); }
 .mkb .fl { transform-box: fill-box; transform-origin: center; }
@@ -664,12 +665,17 @@ a.btn.wp { cursor: pointer; }
   .mkb-flower .fl { animation: mk-fl 3.2s cubic-bezier(.3, 1.8, .5, 1) var(--dl, 0s) infinite; }
   .mkb-flower .vine { animation: mk-vine 3.2s ease-in-out infinite; }
   .mkf-hearts .p { animation: mk-heart var(--t, 3s) cubic-bezier(.2, .8, .3, 1) var(--dl, 0s) infinite; }
-  .mkf-dots .p { animation: mk-dot var(--t, 2.6s) cubic-bezier(.3, 1.6, .5, 1) var(--dl, 0s) infinite; }
-  .mkf-stars .p { animation: mk-star var(--t, 3s) cubic-bezier(.3, 1.4, .5, 1) var(--dl, 0s) infinite; }
-  .mkf-glit .p { animation: mk-glit var(--t, 1.8s) ease-in-out var(--dl, 0s) infinite; }
-  .mkf-fw .p { animation: mk-fw var(--t, 2.8s) cubic-bezier(.15, .8, .3, 1) var(--dl, 0s) infinite; }
+  .mkf-dots .p { animation: mk-pop var(--t, 2.6s) linear var(--dl, 0s) infinite; }
+  .mkf-stars .p { animation: mk-sfade var(--t, 3s) ease-in-out var(--dl, 0s) infinite; }
+  .mkf-glit .p { animation: mk-gfade var(--t, 1.8s) ease-in-out var(--dl, 0s) infinite; }
+  .mkf-fw .p { animation: mk-fwb var(--t, 3.6s) linear var(--dl, 0s) infinite; }
+  .mkf-fw .rk, .mkf-fw .ar, .mkf-fw .td, .mkf-fw .rg { animation-duration: var(--t, 3.6s); animation-delay: var(--dl, 0s); animation-iteration-count: infinite; animation-timing-function: cubic-bezier(.2, .7, .3, 1); }
+  .mkf-fw .rk { stroke-dasharray: .3 1; animation-name: fw-rk; }
+  .mkf-fw .ar { stroke-dasharray: .45 1; animation-name: fw-ar; }
+  .mkf-fw .td { transform-box: fill-box; transform-origin: center; animation-name: fw-td; }
+  .mkf-fw .rg { transform-box: fill-box; transform-origin: center; animation-name: fw-rg; }
 }
-@media (prefers-reduced-motion: reduce) { .mkf .p { opacity: .85; } .mkf-fw .p { transform: scale(.9); } }
+@media (prefers-reduced-motion: reduce) { .mkf .p { opacity: .85; } .mkf-fw .rk { display: none; } .mkf-fw .rg { opacity: .35; } }
 @keyframes mk-march { to { stroke-dashoffset: -4.6; } }
 @keyframes mk-march2 { to { stroke-dashoffset: -11.2; } }
 @keyframes mk-dbl { 0%, 100% { transform: scale(1); opacity: .95; } 50% { transform: scale(.93); opacity: .55; } }
@@ -677,10 +683,21 @@ a.btn.wp { cursor: pointer; }
 @keyframes mk-fl { 0%, 100% { transform: rotate(0) scale(1); } 35% { transform: rotate(40deg) scale(1.35); } 60% { transform: rotate(72deg) scale(.95); } }
 @keyframes mk-vine { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
 @keyframes mk-heart { 0% { transform: translate(0, .35em) scale(.25); opacity: 0; } 16% { opacity: .95; } 100% { transform: translate(calc(var(--dx) * var(--amp)), calc(var(--dy) * var(--amp))) scale(calc(.55 + .28 * var(--amp))) rotate(var(--rot, 0deg)); opacity: 0; } }
-@keyframes mk-dot { 0%, 100% { transform: translate(0, 0) scale(.5); opacity: .5; } 50% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.95 + .04 * var(--amp))); opacity: .95; } }
-@keyframes mk-star { 0% { transform: translate(0, 0) scale(.15) rotate(0); opacity: 0; } 45% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.8 + .1 * var(--amp))) rotate(100deg); opacity: 1; } 100% { transform: translate(calc(var(--dx) * (var(--amp) - 1) * 1.5), calc(var(--dy) * (var(--amp) - 1) * 1.5)) scale(.15) rotate(200deg); opacity: 0; } }
-@keyframes mk-glit { 0%, 100% { transform: translate(0, 0) scale(.1) rotate(0); opacity: 0; } 50% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.9 + .06 * var(--amp))) rotate(45deg); opacity: 1; } }
-@keyframes mk-fw { 0% { transform: scale(.1); opacity: 0; } 12% { opacity: 1; } 70% { transform: scale(calc(.9 + (var(--amp) - 1) * .5)); opacity: .9; } 100% { transform: scale(calc(1.1 + (var(--amp) - 1) * .6)); opacity: 0; } }
+@keyframes mk-pop {
+  0% { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(.2, 1.8, .4, 1); }
+  14% { transform: scale(1); opacity: 1; }
+  68% { transform: scale(1); opacity: 1; animation-timing-function: ease-out; }
+  78% { transform: scale(1.28); opacity: 1; animation-timing-function: ease-in; }
+  88% { transform: scale(0); opacity: 1; }
+  88.1%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes mk-sfade { 0% { opacity: 0; transform: scale(.25) rotate(-25deg); } 28% { opacity: 1; transform: scale(1) rotate(0deg); } 52% { opacity: 1; transform: scale(1.12) rotate(12deg); } 100% { opacity: 0; transform: scale(.3) rotate(40deg); } }
+@keyframes mk-gfade { 0% { opacity: 0; transform: scale(.2) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } 100% { opacity: 0; transform: scale(.2) rotate(90deg); } }
+@keyframes mk-fwb { 0% { opacity: 0; } 2%, 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes fw-rk { 0% { stroke-dashoffset: .3; opacity: 1; } 19% { stroke-dashoffset: -.7; opacity: 1; } 20%, 100% { stroke-dashoffset: -1; opacity: 0; } }
+@keyframes fw-ar { 0%, 19% { stroke-dashoffset: .45; opacity: 0; } 20% { stroke-dashoffset: .45; opacity: 1; } 45% { stroke-dashoffset: -.05; opacity: 1; } 65% { stroke-dashoffset: -.55; opacity: 1; } 88% { stroke-dashoffset: -1; opacity: .6; } 100% { stroke-dashoffset: -1; opacity: 0; } }
+@keyframes fw-td { 0%, 55% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.3); opacity: 1; } 80% { transform: scale(.9); opacity: 1; } 92%, 100% { transform: scale(0); opacity: 0; } }
+@keyframes fw-rg { 0%, 19% { transform: scale(.15); opacity: 0; } 22% { transform: scale(.3); opacity: .8; } 55%, 100% { transform: scale(1); opacity: 0; } }
 
 /* Würfel-Roboter */
 .wp.fnb { user-select: none; }
@@ -1516,11 +1533,11 @@ function wShell(type, cfg, o, host) {
   /* Skalierende Widgets: Inhalt passt sich dem Rahmen an (Schrift = Größe des Inhalts) */
   if (fitFrame && WSCALE[type] && !cfg.demo && typeof ResizeObserver === "function") {
     const fitNow = () => {
-      const hw = host.clientWidth - 2 * pad, hh = host.clientHeight - 2 * pad; if (hw < 24 || hh < 24 || !b.isConnected) return;
+      const hw = host.clientWidth - 2 * pad, hh = host.clientHeight - 2 * pad; if (hw < 24 || hh < 24 || !b.isConnected) return; const kf = type === "kalender" ? ({ small: .5, mid: .7, big: .85, huge: 1 }[size[0]] || .7) : 1;
       let f = 16; b.style.fontSize = f + "px";
       for (let i = 0; i < 4; i++) {
         const w0 = body.offsetWidth, h0 = body.offsetHeight; if (!w0 || !h0) return;
-        const s = Math.min((hw * .9 - 4) / w0, (hh * .86 - 4) / h0); f = Math.max(5, Math.min(400, f * s)); b.style.fontSize = f.toFixed(1) + "px"; if (Math.abs(s - 1) < .02) break;
+        const s = Math.min((hw * .9 * kf - 4) / w0, (hh * .86 * kf - 4) / h0); f = Math.max(5, Math.min(400, f * s)); b.style.fontSize = f.toFixed(1) + "px"; if (Math.abs(s - 1) < .02) break;
       }
     };
     host._fitRO = new ResizeObserver(fitNow); host._fitRO.observe(host); fitNow(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNow);
@@ -1715,15 +1732,38 @@ function mkBorder(kind, anim) {
 }
 const MKP = {
   hearts: { n: 7, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 21C4 14 2 9 5 6c2-2 5-1 7 2 2-3 5-4 7-2 3 3 1 8-7 15Z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(14 + a * 72) + "%;--y:" + f1(62 + b * 30) + "%;--w:" + f1(.6 + c * .35) + "em;--dx:" + f1((a - .5) * 1.1) + "em;--dy:" + f1(-.9 - c * .7) + "em;--rot:" + Math.round((b - .5) * 50) + "deg;--t:" + f1(2.6 + c * 1.4) + "s;--dl:-" + f1(k * .55) + "s" },
-  dots: { n: 8, svg: () => '<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>', css: (k) => { const G = [[16, 18], [50, 12], [84, 18], [88, 50], [84, 82], [50, 88], [16, 82], [12, 50]], x = G[k][0], y = G[k][1]; return "--x:" + x + "%;--y:" + y + "%;--w:" + (k % 2 ? ".3em" : ".22em") + ";--dx:" + f1((x - 50) / 18) + "em;--dy:" + f1((y - 50) / 18) + "em;--t:" + f1(2.2 + (k % 3) * .35) + "s;--dl:-" + f1(k * .3) + "s"; } },
-  stars: { n: 6, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 1.5l3 7.2 7.7.6-5.9 5 1.8 7.5L12 17.6l-6.6 4.2 1.8-7.5-5.9-5 7.7-.6z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(16 + a * 68) + "%;--y:" + f1(16 + b * 68) + "%;--w:" + f1(.4 + c * .3) + "em;--dx:" + f1((a - .5) * 2.2) + "em;--dy:" + f1((b - .5) * 2.2) + "em;--t:" + f1(2.4 + c * 1.2) + "s;--dl:-" + f1(k * .5) + "s" },
-  glit: { n: 10, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 0C12.8 7.5 16.5 11.2 24 12C16.5 12.8 12.8 16.5 12 24C11.2 16.5 7.5 12.8 0 12C7.5 11.2 11.2 7.5 12 0Z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(10 + a * 80) + "%;--y:" + f1(10 + b * 80) + "%;--w:" + f1(.28 + c * .3) + "em;--dx:" + f1((a - .5) * 2.4) + "em;--dy:" + f1((b - .5) * 2.4) + "em;--t:" + f1(1.4 + c * 1.1) + "s;--dl:-" + f1(k * .33) + "s" },
-  fw: { n: 3, svg: () => { let r = ""; for (let i = 0; i < 8; i++) { const an = i * 45 * Math.PI / 180, ca = Math.cos(an), sa = Math.sin(an); r += '<line x1="' + f1(12 + 4.5 * ca) + '" y1="' + f1(12 + 4.5 * sa) + '" x2="' + f1(12 + 9.5 * ca) + '" y2="' + f1(12 + 9.5 * sa) + '" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="' + f1(12 + 11.2 * ca) + '" cy="' + f1(12 + 11.2 * sa) + '" r=".75" fill="currentColor"/>'; } return '<svg viewBox="0 0 24 24">' + r + '<circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>'; }, css: (k) => { const pt = [[30, 34], [70, 30], [52, 68]][k]; return "--x:" + pt[0] + "%;--y:" + pt[1] + "%;--w:1.3em;--t:" + f1(2.7 + k * .3) + "s;--dl:-" + f1(k * .95) + "s"; } },
+  dots: { n: 8, t: [2.0, 3.4], w: [.14, .4], svg: () => '<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>' },
+  stars: { n: 8, t: [2.2, 3.8], w: [.32, .78], svg: () => '<svg viewBox="0 0 24 24"><path d="M12 1.5l3 7.2 7.7.6-5.9 5 1.8 7.5L12 17.6l-6.6 4.2 1.8-7.5-5.9-5 7.7-.6z" fill="currentColor"/></svg>' },
+  glit: { n: 14, t: [1.1, 2.4], w: [.2, .6], svg: () => '<svg viewBox="0 0 24 24"><path d="M12 0C12.8 7.5 16.5 11.2 24 12C16.5 12.8 12.8 16.5 12 24C11.2 16.5 7.5 12.8 0 12C7.5 11.2 11.2 7.5 12 0Z" fill="currentColor"/></svg>' },
+  fw: { n: 4, t: [3.0, 4.4], w: [1.5, 2.3], box: [22, 78], svg: () => {
+    const N = 10, a0 = Math.random() * 6.283; let h = '<path class="rk" pathLength="1" d="M20 39Q17.5 30 20 21.5"/>', t = "";
+    for (let i = 0; i < N; i++) {
+      const a = a0 + i * 6.283 / N, R = MKR(11, 16.5), cr = R * .52, ca = a + .55, ex = 20 + R * Math.cos(a), ey = 20 + R * Math.sin(a), cx = 20 + cr * Math.cos(ca), cy = 20 + cr * Math.sin(ca);
+      h += '<path class="ar" pathLength="1" d="M20 20Q' + f1(cx) + " " + f1(cy) + " " + f1(ex) + " " + f1(ey) + '"/>'; t += '<circle class="td" cx="' + f1(ex) + '" cy="' + f1(ey) + '" r="1.05"/>';
+    }
+    return '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><circle class="rg" cx="20" cy="20" r="15" stroke-width=".7"/>' + h + '<g fill="currentColor" stroke="none">' + t + "</g></svg>";
+  } },
 };
+const MKC = ["var(--ac)", "color-mix(in srgb, var(--ac) 50%, #fff)", "#fff"], MKR = (a, b) => a + Math.random() * (b - a);
+/* Zufällige Platzierung (Polka Dots, Sterne, Glitzer, Feuerwerk): bei jedem Durchlauf neuer Ort; bei Hover größerer Bereich */
+function mkPlace(p, kind, wide) {
+  const P = MKP[kind], lo = P.box ? (wide ? -35 : P.box[0]) : (wide ? -70 : 10), hi = P.box ? (wide ? 135 : P.box[1]) : (wide ? 170 : 90);
+  p.style.setProperty("--x", f1(MKR(lo, hi)) + "%"); p.style.setProperty("--y", f1(MKR(lo, hi)) + "%");
+  p.style.setProperty("--w", f1(MKR(P.w[0], P.w[1])) + "em"); p.style.setProperty("--c", MKC[Math.floor(Math.random() * 3)]);
+}
+function mkRefill(grid) { /* nur gerade unsichtbare Teilchen sofort in den neuen Bereich setzen (kein Springen) */
+  const w = grid.classList.contains("hv"); grid.querySelectorAll(".mkf .p[data-k]").forEach((p) => { if (parseFloat(getComputedStyle(p).opacity) < .03) mkPlace(p, p.dataset.k, w); });
+}
 function mkFill(kind) {
-  const L = el("span", "mkf mkf-" + kind), P = MKP[kind]; L.setAttribute("aria-hidden", "true");
-  for (let k = 0; k < P.n; k++) { const a = (k * .618034 + .13) % 1, b = (k * .381966 + .37) % 1, c = (k * .7548 + .21) % 1, pe = el("i", "p"); pe.style.cssText = P.css(k, a, b, c); pe.innerHTML = P.svg(k); L.appendChild(pe); }
-  return L;
+  const P = MKP[kind], fr = document.createDocumentFragment(), mkL = (cls) => { const L = el("span", "mkf mkf-" + kind + cls); L.setAttribute("aria-hidden", "true"); return L; }, back = mkL(""), front = mkL(" fr");
+  for (let k = 0; k < P.n; k++) {
+    const pe = el("i", "p");
+    if (P.css) { const a = (k * .618034 + .13) % 1, b = (k * .381966 + .37) % 1, c = (k * .7548 + .21) % 1; pe.style.cssText = P.css(k, a, b, c); }
+    else { const t = MKR(P.t[0], P.t[1]); pe.dataset.k = kind; mkPlace(pe, kind, false); pe.style.setProperty("--t", f1(t) + "s"); pe.style.setProperty("--dl", "-" + f1(MKR(0, t)) + "s"); }
+    pe.innerHTML = P.svg(k); (k % 2 ? front : back).appendChild(pe); /* 50/50 hinter und vor der Tageszahl */
+  }
+  if (!P.css) [back, front].forEach((L) => L.addEventListener("animationiteration", (e) => { const p = e.target; if (p.classList && p.classList.contains("p")) { const g = p.closest(".kg"); mkPlace(p, kind, !!(g && g.classList.contains("hv"))); } }));
+  fr.append(back, front); return fr;
 }
 let KAL_VIEW = null;
 function wKalender(sh) {
@@ -1739,7 +1779,7 @@ function wKalender(sh) {
   const head = el("div", "kh"), navk = NAVI[o.navi] || /^a:[a-z0-9]+$/.test(o.navi || "") ? o.navi : "txt", prevB = el("button", "kb"), nextB = el("button", "kb"), ttl = el("div", "kt gl"); prevB.appendChild(naviNode(navk, true)); nextB.appendChild(naviNode(navk, false)); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
   if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
   const grid = el("div", "kg"); body.append(head, grid);
-  if (anyFill) { let tmo = 0; const on = () => grid.classList.add("hv"), off = () => { clearTimeout(tmo); grid.classList.remove("hv"); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
+  if (anyFill) { let tmo = 0; const on = () => { grid.classList.add("hv"); mkRefill(grid); }, off = () => { clearTimeout(tmo); grid.classList.remove("hv"); mkRefill(grid); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
   const draw = () => {
     if (inGen) KAL_VIEW = { k: o.month || "", y: vy, m: vm };
     ttl.textContent = MONTHS[vm - 1] + " " + vy; grid.textContent = ""; grid.classList.toggle("wk", wk); grid.classList.toggle("nowe", !we);
@@ -2917,8 +2957,8 @@ function applyPage() {
     $("opt-h").textContent = "OPTIONEN · " + WLABEL[t].toUpperCase();
     uhrVis(); calVis();
     seg("g-align", t === "textfeld" ? ALIGNS_T : ALIGNS, "align");
-    const sz = $("g-size").closest(".row").querySelector(".hint2"); if (sz) sz.textContent = isB ? "Der Button ist so groß wie die Schrift plus 5 px Rand rundum." : "Grundgröße des Inhalts. Bei „Rahmen ausfüllen“ passt sich bei Uhr, Countdown, Kalender und Würfel-Roboter der Inhalt dem Rahmen an.";
-    const ft = $("g-fit").closest(".row").querySelector(".hint2"); if (ft) ft.textContent = isB ? "„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, Schrift und Symbol wachsen und schrumpfen mit dem Rahmen mit (Einstellung „Größe“ gilt dann nicht)." : (WSCALE[t] ? "„Rahmen ausfüllen“: Fläche und Inhalt füllen den Notion-Rahmen und skalieren mit (Einstellung „Größe“ gilt dann nicht)." : "„Rahmen ausfüllen“: Fläche füllt den Notion-Rahmen; die Schriftgröße bleibt wie eingestellt.");
+    const sz = $("g-size").closest(".row").querySelector(".hint2"); if (sz) sz.textContent = isB ? "Der Button ist so groß wie die Schrift plus 5 px Rand rundum." : "Grundgröße des Inhalts. Bei „Rahmen ausfüllen“ passt sich bei Uhr, Countdown und Würfel-Roboter der Inhalt dem Rahmen an; beim Kalender bestimmt die Größe, welchen Anteil des Rahmens er füllt (Klein 50 % · Mittel 70 % · Groß 85 % · Riesig 100 %).";
+    const ft = $("g-fit").closest(".row").querySelector(".hint2"); if (ft) ft.textContent = isB ? "„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, Schrift und Symbol wachsen und schrumpfen mit dem Rahmen mit (Einstellung „Größe“ gilt dann nicht)." : (WSCALE[t] ? "„Rahmen ausfüllen“: Fläche und Inhalt füllen den Notion-Rahmen und skalieren mit ("+(t==="kalender"?"„Größe“ = Anteil des Rahmens, den der Kalender füllt":"Einstellung „Größe“ gilt dann nicht")+")." : "„Rahmen ausfüllen“: Fläche füllt den Notion-Rahmen; die Schriftgröße bleibt wie eingestellt.");
     { const hn = $("g-innotion"); if (hn) hn.innerHTML = isB ? "<b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen." : "<b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmen auf die gewünschte Größe ziehen."; }
     const ad = $("g-url").closest(".row").querySelector("label"); if (ad) ad.textContent = isB ? "Ziel-Adresse" : "Ziel (optional)";
   }

@@ -1725,20 +1725,23 @@ function mkFill(kind) {
   for (let k = 0; k < P.n; k++) { const a = (k * .618034 + .13) % 1, b = (k * .381966 + .37) % 1, c = (k * .7548 + .21) % 1, pe = el("i", "p"); pe.style.cssText = P.css(k, a, b, c); pe.innerHTML = P.svg(k); L.appendChild(pe); }
   return L;
 }
+let KAL_VIEW = null;
 function wKalender(sh) {
   const { body, o, host, b } = sh;
   const sunStart = o.start === "su", nav = o.nav !== "0", wk = o.wk === "1", we = o.we !== "0";
   const now = new Date(), mm = /^(\d{4})-(\d{2})$/.exec(o.month || ""); let vy = now.getFullYear(), vm = now.getMonth() + 1; if (mm && +mm[2] >= 1 && +mm[2] <= 12) { vy = +mm[1]; vm = +mm[2]; }
   const marks = new Map(), yearly = new Map();
   (o.mark || "").split(",").forEach((s) => { const m = MK_TOK.exec(s.trim()); if (!m) return; const st = { bd: m[5] || "", fl: m[6] || "", an: m[7] || "" }; if (m[4]) yearly.set(m[2] + "-" + m[3], st); else marks.set(m[1] + "-" + m[2] + "-" + m[3], st); });
-  const base = { y: vy, m: vm }, mbd = MK_BORDERS.includes(o.mbd) ? o.mbd : "", mba = o.mba !== "0", mfl = MK_FILLS.includes(o.mfl) ? o.mfl : "";
+  const base = { y: vy, m: vm }, inGen = !!document.getElementById("g-out"), mbd = MK_BORDERS.includes(o.mbd) ? o.mbd : "", mba = o.mba !== "0", mfl = MK_FILLS.includes(o.mfl) ? o.mfl : "";
   const eff = (st) => ({ bd: st.bd === "std" ? "" : (MK_BORDERS.includes(st.bd) ? st.bd : mbd), fl: st.fl === "none" ? "" : (MK_FILLS.includes(st.fl) ? st.fl : mfl), an: st.an === "1" ? true : st.an === "0" ? false : mba });
+  if (inGen && KAL_VIEW && KAL_VIEW.k === (o.month || "")) { vy = KAL_VIEW.y; vm = KAL_VIEW.m; } /* Vorschau im Generator: gewählten Monat bei Änderungen behalten */
   const anyFill = !!mfl || Array.from(marks.values()).concat(Array.from(yearly.values())).some((st) => MK_FILLS.includes(st.fl));
   const head = el("div", "kh"), navk = NAVI[o.navi] || /^a:[a-z0-9]+$/.test(o.navi || "") ? o.navi : "txt", prevB = el("button", "kb"), nextB = el("button", "kb"), ttl = el("div", "kt gl"); prevB.appendChild(naviNode(navk, true)); nextB.appendChild(naviNode(navk, false)); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
   if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
   const grid = el("div", "kg"); body.append(head, grid);
   if (anyFill) { let tmo = 0; const on = () => grid.classList.add("hv"), off = () => { clearTimeout(tmo); grid.classList.remove("hv"); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
   const draw = () => {
+    if (inGen) KAL_VIEW = { k: o.month || "", y: vy, m: vm };
     ttl.textContent = MONTHS[vm - 1] + " " + vy; grid.textContent = ""; grid.classList.toggle("wk", wk); grid.classList.toggle("nowe", !we);
     const names = sunStart ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
     if (wk) grid.appendChild(el("div", "kw kd0", "KW"));

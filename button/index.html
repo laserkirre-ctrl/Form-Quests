@@ -1073,8 +1073,8 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 @media (max-width: 640px) { .stage { grid-template-columns: 1fr; } .nav { flex-direction: row; flex-wrap: wrap; } }
 
 /* ---- Zwei Spalten: Inhalt links, Vorschau rechts mitlaufend ---- */
-.shell { max-width: 1240px; }
-.cols { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 14px; align-items: start; }
+.shell { max-width: calc(840px + var(--sidew, 400px)); }
+.cols { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) var(--sidew, 400px); gap: 14px; align-items: start; }
 .side { position: sticky; top: 12px; align-self: start; max-height: calc(100vh - 24px); overflow: auto; }
 .side .card { margin-bottom: 10px; }
 .side .prev { height: 120px; max-width: 100%; }
@@ -1097,6 +1097,11 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 .row.closed .sum { display: block; }
 .row.closed > :not(.rowhead):not(.sum) { display: none; }
 .row.cr.closed { margin-bottom: 4px; }
+.split { position: absolute; top: 0; bottom: 0; right: var(--sidew, 400px); width: 14px; cursor: col-resize; touch-action: none; z-index: 6; }
+.split::after { content: ""; position: absolute; left: 6px; top: 12px; bottom: 12px; width: 2px; border-radius: 2px; background: var(--pl); transition: background .15s, left .15s, width .15s; }
+.split:hover::after, .split:focus-visible::after, .split.drag::after { background: var(--pa); left: 5px; width: 4px; }
+.split:focus-visible { outline: none; }
+@media (max-width: 920px) { .split { display: none; } }
 @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } .side { order: -1; top: 6px; z-index: 5; max-height: none; background: var(--pb); } }
 
 /* ---- Rechte Spalte mittig zum Fenster ---- */
@@ -2535,7 +2540,7 @@ if (q.has("url") || q.has("w")) {
     '<section class="card"><h2>ADRESSE FÜR EINBETTUNG</h2><div class="out"><input type="text" id="g-out" readonly placeholder="Adresse erscheint hier"><button type="button" class="copy" id="g-copy">Kopieren</button></div><div class="out2"><button type="button" class="alt" id="g-regen">↻ Adresse neu erzeugen</button><span class="msg" id="g-regenmsg"></span></div>' +
     '<p class="hl" id="g-innotion"><b>In Notion:</b> neue Zeile → <b>/embed</b> → Adresse einfügen → <b>Link einbetten</b> → Rahmenhöhe auf die Buttonhöhe ziehen.</p></section>' +
     '<section class="card"><h2>ADRESSE IMPORTIEREN</h2><div class="inl"><input type="text" id="g-load" spellcheck="false" placeholder="Adresse eines vorhandenen Widgets einfügen"><button type="button" class="copy" id="g-loadgo">Laden</button></div><p class="msg" id="g-loadmsg"></p></section>' +
-    '</div></aside></div></div>' +
+    '</div></aside><div class="split" id="g-split" role="separator" aria-orientation="vertical" tabindex="0" title="Ziehen: Vorschau breiter oder schmaler · Doppelklick: zurücksetzen" aria-label="Breite der Vorschau"></div></div></div>' +
     '<dialog class="dlg" id="diy" aria-labelledby="diy-t"><div class="dlg-in"><h3 id="diy-t">EIGENE FARBEN</h3><div id="diy-rows"></div>' +
     '<h4>KOMBINATIONEN</h4><div class="inl"><input type="text" id="cb-name" maxlength="24" placeholder="Name der Kombi" autocomplete="off"><button type="button" class="go" id="cb-save">Speichern</button></div><div id="cb-list" style="margin-top:10px"></div>' +
     '<p class="hl" id="cb-note">Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen.</p>' +
@@ -2544,6 +2549,22 @@ if (q.has("url") || q.has("w")) {
     '<dialog class="dlg" id="ipick" aria-labelledby="ip-t"><div class="dlg-in"><h3 id="ip-t">SYMBOL WÄHLEN</h3>' +
     '<div class="tabs" role="tablist"><button type="button" role="tab" id="tab-e" aria-selected="true">Emojis</button><button type="button" role="tab" id="tab-s" aria-selected="false">Symbole</button><button type="button" role="tab" id="tab-a" aria-selected="false">Animiert</button></div>' +
     '<div class="igrid" id="ip-grid"></div><div class="dact"><button type="button" id="ip-none">Kein Symbol</button><button type="button" class="go" id="ip-ok">Schließen</button></div></div></dialog>';
+  /* ---- Breite der Vorschau (ziehbar) ---- */
+  const SWK = "wfn-sidew", SW_MIN = 320, SW_DEF = 400, rootSt = document.documentElement.style;
+  const swMax = () => Math.max(SW_MIN, Math.min(960, (document.querySelector(".cols") || document.body).clientWidth - 360));
+  const setSw = (w, save) => { w = Math.round(Math.max(SW_MIN, Math.min(swMax(), w))); rootSt.setProperty("--sidew", w + "px"); if (save) { try { localStorage.setItem(SWK, String(w)); } catch (e) { /* ignorieren */ } } return w; };
+  try { const v = +localStorage.getItem(SWK); if (v) setSw(v, false); } catch (e) { /* ohne Speicher */ }
+  (() => {
+    const sp = $("g-split"), cols = document.querySelector(".cols"); if (!sp || !cols) return;
+    const cur = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sidew")) || SW_DEF;
+    sp.addEventListener("pointerdown", (e) => { e.preventDefault(); sp.setPointerCapture(e.pointerId); sp.classList.add("drag"); document.body.style.userSelect = "none"; });
+    sp.addEventListener("pointermove", (e) => { if (!sp.classList.contains("drag")) return; setSw(cols.getBoundingClientRect().right - e.clientX - 7, false); });
+    const end = () => { if (!sp.classList.contains("drag")) return; sp.classList.remove("drag"); document.body.style.userSelect = ""; setSw(cur(), true); };
+    sp.addEventListener("pointerup", end); sp.addEventListener("pointercancel", end);
+    sp.addEventListener("dblclick", () => setSw(SW_DEF, true));
+    sp.addEventListener("keydown", (e) => { const d = e.key === "ArrowLeft" ? 40 : e.key === "ArrowRight" ? -40 : 0; if (d) { e.preventDefault(); setSw(cur() + d, true); } else if (e.key === "Home") { e.preventDefault(); setSw(SW_DEF, true); } });
+    window.addEventListener("resize", () => setSw(cur(), false));
+  })();
   const TK = "wfn-theme";
   let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (t === "standard" || t === "vintage" || t === "sanrio" || t === "floral" || t === "retro") savedTheme = t; } catch (e) { /* ohne Speicher */ }
   const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, pad: "auto", fit: "content", fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {}, w: "button" };
@@ -3067,7 +3088,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 23.11.2026 03:05"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 23.11.2026 04:10"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

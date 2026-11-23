@@ -642,6 +642,46 @@ a.btn.wp { cursor: pointer; }
 @media (prefers-reduced-motion: no-preference) { .kc.td { animation: ktd 2.4s ease-in-out infinite; } }
 @keyframes ktd { 0%, 100% { box-shadow: 0 0 0 0 rgb(var(--arg) / .0); } 50% { box-shadow: 0 0 .7em 0 rgb(var(--arg) / .55); } }
 
+/* Kalender: besondere Tage (Umrandung + Füllung) */
+@property --amp { syntax: "<number>"; inherits: true; initial-value: 1; }
+.kg { --amp: 1; transition: --amp .8s cubic-bezier(.3, 1.5, .5, 1); }
+.kg.hv { --amp: 3.4; }
+.kc.mk2::after, .kc.mkx::after { display: none; } .kc.mk2 { box-shadow: none; }
+.kc.mk2, .kc.mkx { z-index: 2; }
+.kc .kn { position: relative; z-index: 3; }
+.mkb { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: var(--ac); }
+.mkb .l2 { color: color-mix(in srgb, var(--ac) 55%, #fff); }
+.mkb .fl { transform-box: fill-box; transform-origin: center; }
+.mkf { position: absolute; inset: 0; pointer-events: none; z-index: 1; clip-path: inset(0 round .25em); transition: clip-path .6s cubic-bezier(.3, 1.4, .5, 1); }
+.kg.hv .mkf { clip-path: inset(-4.5em -4.5em -4.5em -4.5em round .25em); }
+.mkf .p { position: absolute; left: var(--x); top: var(--y); width: var(--w, .6em); height: var(--w, .6em); margin: calc(var(--w, .6em) / -2) 0 0 calc(var(--w, .6em) / -2); color: var(--c, var(--ac)); opacity: 0; }
+.mkf .p svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mkf .p:nth-child(3n+1) { --c: var(--ac); } .mkf .p:nth-child(3n+2) { --c: color-mix(in srgb, var(--ac) 50%, #fff); } .mkf .p:nth-child(3n) { --c: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .mkb-dot .a { animation: mk-march 1.6s linear infinite; } .mkb-dash .a { animation: mk-march2 1.4s linear infinite; }
+  .mkb-double .in { transform-box: fill-box; transform-origin: center; animation: mk-dbl 2.4s cubic-bezier(.3, 1.6, .5, 1) infinite; }
+  .mkb-double .out { animation: mk-dbl2 2.4s ease-in-out infinite; }
+  .mkb-flower .fl { animation: mk-fl 3.2s cubic-bezier(.3, 1.8, .5, 1) var(--dl, 0s) infinite; }
+  .mkb-flower .vine { animation: mk-vine 3.2s ease-in-out infinite; }
+  .mkf-hearts .p { animation: mk-heart var(--t, 3s) cubic-bezier(.2, .8, .3, 1) var(--dl, 0s) infinite; }
+  .mkf-dots .p { animation: mk-dot var(--t, 2.6s) cubic-bezier(.3, 1.6, .5, 1) var(--dl, 0s) infinite; }
+  .mkf-stars .p { animation: mk-star var(--t, 3s) cubic-bezier(.3, 1.4, .5, 1) var(--dl, 0s) infinite; }
+  .mkf-glit .p { animation: mk-glit var(--t, 1.8s) ease-in-out var(--dl, 0s) infinite; }
+  .mkf-fw .p { animation: mk-fw var(--t, 2.8s) cubic-bezier(.15, .8, .3, 1) var(--dl, 0s) infinite; }
+}
+@media (prefers-reduced-motion: reduce) { .mkf .p { opacity: .85; } .mkf-fw .p { transform: scale(.9); } }
+@keyframes mk-march { to { stroke-dashoffset: -4.6; } }
+@keyframes mk-march2 { to { stroke-dashoffset: -11.2; } }
+@keyframes mk-dbl { 0%, 100% { transform: scale(1); opacity: .95; } 50% { transform: scale(.93); opacity: .55; } }
+@keyframes mk-dbl2 { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes mk-fl { 0%, 100% { transform: rotate(0) scale(1); } 35% { transform: rotate(40deg) scale(1.35); } 60% { transform: rotate(72deg) scale(.95); } }
+@keyframes mk-vine { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
+@keyframes mk-heart { 0% { transform: translate(0, .35em) scale(.25); opacity: 0; } 16% { opacity: .95; } 100% { transform: translate(calc(var(--dx) * var(--amp)), calc(var(--dy) * var(--amp))) scale(calc(.55 + .28 * var(--amp))) rotate(var(--rot, 0deg)); opacity: 0; } }
+@keyframes mk-dot { 0%, 100% { transform: translate(0, 0) scale(.5); opacity: .5; } 50% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.95 + .04 * var(--amp))); opacity: .95; } }
+@keyframes mk-star { 0% { transform: translate(0, 0) scale(.15) rotate(0); opacity: 0; } 45% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.8 + .1 * var(--amp))) rotate(100deg); opacity: 1; } 100% { transform: translate(calc(var(--dx) * (var(--amp) - 1) * 1.5), calc(var(--dy) * (var(--amp) - 1) * 1.5)) scale(.15) rotate(200deg); opacity: 0; } }
+@keyframes mk-glit { 0%, 100% { transform: translate(0, 0) scale(.1) rotate(0); opacity: 0; } 50% { transform: translate(calc(var(--dx) * (var(--amp) - 1)), calc(var(--dy) * (var(--amp) - 1))) scale(calc(.9 + .06 * var(--amp))) rotate(45deg); opacity: 1; } }
+@keyframes mk-fw { 0% { transform: scale(.1); opacity: 0; } 12% { opacity: 1; } 70% { transform: scale(calc(.9 + (var(--amp) - 1) * .5)); opacity: .9; } 100% { transform: scale(calc(1.1 + (var(--amp) - 1) * .6)); opacity: 0; } }
+
 /* Würfel-Roboter */
 .wp.fnb { user-select: none; }
 .fn { display: flex; align-items: center; gap: 1.4em; }
@@ -721,10 +761,10 @@ a.btn.wp { cursor: pointer; }
   .ust.ringing .uss { animation: us-rattle .11s linear infinite; }
   .us-kamin .pend, .us-pendel .pend, .us-kuckuck .pend { animation: us-swing 2s ease-in-out infinite; }
   .us-kuckuck .wtL { animation: us-wsw 3.4s ease-in-out infinite alternate; } .us-kuckuck .wtR { animation: us-wsw 4.1s ease-in-out -1.2s infinite alternate; }
-  .us-schmelz .sch-sway { animation: us-sway 6.5s ease-in-out infinite alternate; }
-  .us-schmelz .drip.d1 { animation: us-drip 3.6s ease-in-out infinite; } .us-schmelz .drip.d2 { animation: us-drip 4.4s ease-in-out -1.3s infinite; } .us-schmelz .drip.d3 { animation: us-drip 5s ease-in-out -2.6s infinite; }
+  .us-schmelz .drip.d1 { animation: us-drip 3.8s cubic-bezier(.45,0,.4,1) infinite; } .us-schmelz .drip.d2 { animation: us-drip2 5.2s cubic-bezier(.45,0,.4,1) -1.8s infinite; }
   .us-schmelz .dropf { animation: us-dropfall 4.2s ease-in infinite; }
   .us-tasche .chain { animation: us-csway 3.6s ease-in-out infinite alternate; }
+  .us-tasche .tdial.tk0 { animation: us-tk0 .46s cubic-bezier(.3,1.9,.5,1); } .us-tasche .tdial.tk1 { animation: us-tk1 .46s cubic-bezier(.3,1.9,.5,1); }
   .us-led .led-all { animation: us-ledsw 7s ease-in-out infinite alternate; }
   .us-led.ringing .led-all { animation: us-rattle .09s linear infinite; }
   .us-led.ringing .led-ring { opacity: 1; animation: us-pulse .32s ease-in-out infinite alternate; }
@@ -753,9 +793,11 @@ a.btn.wp { cursor: pointer; }
   @keyframes us-rattle { 0%, 100% { transform: rotate(0) translateX(0); } 25% { transform: rotate(-1.4deg) translateX(-1px); } 75% { transform: rotate(1.4deg) translateX(1px); } }
   @keyframes us-swing { 0%, 100% { transform: rotate(-13deg); } 50% { transform: rotate(13deg); } }
   @keyframes us-wsw { from { transform: rotate(-2.4deg); } to { transform: rotate(2.4deg); } }
-  @keyframes us-sway { from { transform: rotate(-14deg); } to { transform: rotate(-4deg); } }
+  @keyframes us-drip2 { 0%, 100% { transform: scaleY(.8); } 55% { transform: scaleY(1.55); } }
   @keyframes us-drip { 0%, 100% { transform: scaleY(.85); } 50% { transform: scaleY(1.7); } }
   @keyframes us-dropfall { 0% { transform: translateY(-8px) scale(.3); opacity: 0; } 18% { transform: translateY(0) scale(1); opacity: 1; } 88% { transform: translateY(30px); opacity: 1; } 100% { transform: translateY(38px); opacity: 0; } }
+  @keyframes us-tk0 { 0% { transform: scale(1) rotate(0); } 22% { transform: scale(1.018) rotate(.9deg); } 100% { transform: scale(1) rotate(0); } }
+  @keyframes us-tk1 { 0% { transform: scale(1) rotate(0); } 22% { transform: scale(1.018) rotate(-.9deg); } 100% { transform: scale(1) rotate(0); } }
   @keyframes us-csway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
   @keyframes us-ledsw { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
   @keyframes us-flash { 0% { opacity: 1; } 50% { opacity: .25; } }
@@ -780,6 +822,33 @@ a.btn.wp { cursor: pointer; }
   @keyframes us-beat { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.05); } 24% { transform: scale(1); } 38% { transform: scale(1.035); } 52% { transform: scale(1); } }
   @keyframes us-bidleL { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-5deg); } }
   @keyframes us-bidleR { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(5deg); } }
+.us-tv .d7 .sg { fill: #7ff5ff; } .us-tv .d7 .sg.on { filter: drop-shadow(0 0 2.4px #7ff5ff); }
+.us-kassette .d7 .sg { fill: #2b2140; } .us-kassette .d7 .sg.on { filter: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .us-blume .pt { animation: us-petal 3.4s ease-in-out var(--dl, 0s) infinite alternate; }
+  .us-blume.ringing .pt { animation: us-bloom .5s cubic-bezier(.3, 1.8, .5, 1) var(--dl, 0s) infinite alternate; } .us-blume.ringing .uss { animation: none; }
+  .us-kranz .wr { animation: us-spin 140s linear infinite; } .us-kranz.ringing .wr { animation-duration: 3s; }
+  .us-kranz .kf { animation: us-kf 2.8s cubic-bezier(.3, 1.8, .5, 1) var(--dl, 0s) infinite; } .us-kranz.ringing .uss { animation: none; }
+  .us-falter .wgL, .us-falter .wgR { animation: us-flap 3.2s cubic-bezier(.4, 0, .3, 1) infinite; }
+  .us-falter .fa-all { animation: us-float 3.6s ease-in-out infinite alternate; }
+  .us-falter.ringing .wgL, .us-falter.ringing .wgR { animation: us-flap2 .3s ease-in-out infinite alternate; } .us-falter.ringing .uss { animation: none; }
+  .us-synth .sy-sun { animation: us-sunp 4s ease-in-out infinite alternate; } .us-synth .sy-ring { animation: us-ringp 2.4s ease-in-out infinite alternate; }
+  .us-synth.ringing .sy-ring { animation: us-flash .3s steps(1) infinite; } .us-synth.ringing .uss { animation: none; }
+  .us-tv .tv-ant { animation: us-ant 3.2s ease-in-out infinite alternate; } .us-tv .tv-scr { animation: us-crt 6s steps(1) infinite; }
+  .us-tv.ringing .tv-ant { animation: us-ant .18s ease-in-out infinite alternate; } .us-tv.ringing .tv-scr { animation: us-flash .16s steps(1) infinite; }
+  .us-kassette .rl { animation: us-spin 4s linear infinite; } .us-kassette .rr { animation: us-spin 4.7s linear infinite; }
+  .us-kassette.ringing .rl, .us-kassette.ringing .rr { animation-duration: .5s; } .us-kassette.ringing .uss { animation: none; }
+}
+@keyframes us-petal { from { transform: scale(1, 1); } to { transform: scale(1.08, 1.13); } }
+@keyframes us-bloom { from { transform: scale(.8, .78); } to { transform: scale(1.24, 1.3); } }
+@keyframes us-kf { 0%, 70%, 100% { transform: scale(1) rotate(0); } 82% { transform: scale(1.3) rotate(40deg); } 92% { transform: scale(.94) rotate(72deg); } }
+@keyframes us-flap { 0%, 56%, 100% { transform: scaleX(1); } 12% { transform: scaleX(.58); } 26% { transform: scaleX(1.02); } 40% { transform: scaleX(.7); } }
+@keyframes us-flap2 { from { transform: scaleX(.55); } to { transform: scaleX(1.02); } }
+@keyframes us-float { from { transform: translateY(-2px); } to { transform: translateY(3px); } }
+@keyframes us-sunp { from { filter: brightness(.96) saturate(1); } to { filter: brightness(1.12) saturate(1.15); } }
+@keyframes us-ringp { from { filter: drop-shadow(0 0 1px var(--ac)); } to { filter: drop-shadow(0 0 6px var(--ac)); } }
+@keyframes us-ant { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
+@keyframes us-crt { 0%, 100% { opacity: 1; } 91% { opacity: .9; } 93% { opacity: 1; } 96% { opacity: .94; } 97% { opacity: 1; } }
 }
 
 /* Umblättern */
@@ -1110,6 +1179,8 @@ const THEMES = {
   cyan: { name: "Cyan", a: "#2fe0ff", ink: "#04171c", panel: "#0f1c26", line: "#1f3545", text: "#cfe6f0", pb: "#091017", mu: "#7f9bab" },
   vintage: { name: "Vintage", a: "#d9a441", ink: "#2a1709", panel: "#2b1d12", line: "#6b4a2a", text: "#f0e2c0", pb: "#1a110a", mu: "#b39a72" },
   sanrio: { name: "Smells like Sanrio", a: "#ff8fc0", ink: "#4a1030", panel: "#2e1a28", line: "#6a3a58", text: "#ffe3f0", pb: "#1e1019", mu: "#d9a3c0" },
+  floral: { name: "Floral", a: "#ff9a8b", ink: "#3a1208", panel: "#1c2b20", line: "#40604a", text: "#f6efe0", pb: "#111c14", mu: "#9cb59a" },
+  retro: { name: "Retro", a: "#ff8a3c", ink: "#2a0f00", panel: "#1e1636", line: "#4a3a78", text: "#f4eaff", pb: "#130d26", mu: "#a99bd2" },
   violett: { name: "Violett", a: "#d77bff", ink: "#1a0a22", panel: "#1a1222", line: "#35244a", text: "#e6d6f2", pb: "#100b16", mu: "#a08fb5" },
 };
 const FILLS = [["solid", "Gefüllt"], ["outline", "Umriss"], ["ghost", "Transparent"]];
@@ -1555,7 +1626,7 @@ function wUhr(sh) {
     let sAng = 0, lastS = -1;
     upd = () => {
       const p = partsIn(new Date(), tz); hH.style.transform = "rotate(" + (((p.h % 12) + p.mi / 60) * 30) + "deg)"; hM.style.transform = "rotate(" + ((p.mi + p.s / 60) * 6) + "deg)";
-      if (hS && p.s !== lastS) { if (lastS === -1) sAng = p.s * 6; else { sAng += ((p.s - lastS + 60) % 60) * 6; } lastS = p.s; hS.style.transform = "rotate(" + sAng + "deg)"; }
+    if (hS && p.s !== lastS) { if (lastS === -1) sAng = p.s * 6; else { sAng += ((p.s - lastS + 60) % 60) * 6; } lastS = p.s; hS.style.transform = "rotate(" + sAng + "deg)"; }
       const d = dateTxt(p); if (dl.textContent !== d) dl.textContent = d;
     };
     if (hS) hS.style.transition = reduced() ? "none" : "transform .45s cubic-bezier(.3,2.2,.5,1)";
@@ -1619,16 +1690,50 @@ function naviNode(kind, prev) {
   else { s.classList.remove("kmir"); s.textContent = prev ? "‹" : "›"; s.style.width = "auto"; }
   return s;
 }
+/* Besondere Tage: Umrandung (SVG) + Füllung (Teilchen) */
+const MK_BORDERS = ["dot", "flower", "double", "dash"], MK_FILLS = ["hearts", "dots", "stars", "fw", "glit"];
+const MK_BORDER_LIST = [["", "Standard"], ["dot", "Gepunktet"], ["flower", "Blumen"], ["double", "Doppelt"], ["dash", "Gestrichelt"]];
+const MK_FILL_LIST = [["", "Keine"], ["hearts", "Herzchen"], ["dots", "Polka Dots"], ["stars", "Sterne"], ["fw", "Feuerwerk"], ["glit", "Glitzer"]];
+function mkBorder(kind, anim) {
+  const NS = "http://www.w3.org/2000/svg", sv = document.createElementNS(NS, "svg"); sv.setAttribute("viewBox", "0 0 40 40"); sv.setAttribute("class", "mkb mkb-" + kind); sv.setAttribute("aria-hidden", "true");
+  const R = (x, w, rx, sw, extra, cls) => '<rect class="' + (cls || "") + '" x="' + x + '" y="' + x + '" width="' + w + '" height="' + w + '" rx="' + rx + '" fill="none" stroke="currentColor" stroke-width="' + sw + '" stroke-linecap="round" ' + (extra || "") + "/>";
+  let h = "";
+  if (kind === "dot") h = R(1.5, 37, 6, 2.6, 'stroke-dasharray="0.01 4.6"', anim ? "a" : "");
+  else if (kind === "dash") h = R(1.4, 37.2, 6, 2.2, 'stroke-dasharray="7 4.2"', anim ? "a" : "");
+  else if (kind === "double") h = R(1.2, 37.6, 6, 1.8, "", anim ? "out" : "") + '<g class="l2">' + R(5.2, 29.6, 3.5, 1.6, "", anim ? "in" : "") + "</g>";
+  else if (kind === "flower") {
+    h = R(3.2, 33.6, 6, .9, "", "vine");
+    const pos = [[3.2, 3.2], [36.8, 3.2], [36.8, 36.8], [3.2, 36.8], [14.5, 3.2], [25.5, 3.2], [14.5, 36.8], [25.5, 36.8], [3.2, 14.5], [3.2, 25.5], [36.8, 14.5], [36.8, 25.5]], cols = ["var(--ac)", "color-mix(in srgb, var(--ac) 50%, #fff)", "#fff"];
+    pos.forEach((q, i) => {
+      let pe = ""; for (let k = 0; k < 5; k++) { const a = k * 72 * Math.PI / 180 - Math.PI / 2; pe += '<circle cx="' + f1(q[0] + 1.25 * Math.cos(a)) + '" cy="' + f1(q[1] + 1.25 * Math.sin(a)) + '" r="1" fill="' + cols[i % 3] + '"/>'; }
+      h += '<g class="fl" style="--dl:' + f1(i * .27) + 's">' + pe + '<circle cx="' + q[0] + '" cy="' + q[1] + '" r=".75" fill="' + (i % 3 === 2 ? "var(--ac)" : "#fff") + '"/></g>';
+    });
+  }
+  sv.innerHTML = h; return sv;
+}
+const MKP = {
+  hearts: { n: 7, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 21C4 14 2 9 5 6c2-2 5-1 7 2 2-3 5-4 7-2 3 3 1 8-7 15Z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(14 + a * 72) + "%;--y:" + f1(62 + b * 30) + "%;--w:" + f1(.6 + c * .35) + "em;--dx:" + f1((a - .5) * 1.1) + "em;--dy:" + f1(-.9 - c * .7) + "em;--rot:" + Math.round((b - .5) * 50) + "deg;--t:" + f1(2.6 + c * 1.4) + "s;--dl:-" + f1(k * .55) + "s" },
+  dots: { n: 8, svg: () => '<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>', css: (k) => { const G = [[16, 18], [50, 12], [84, 18], [88, 50], [84, 82], [50, 88], [16, 82], [12, 50]], x = G[k][0], y = G[k][1]; return "--x:" + x + "%;--y:" + y + "%;--w:" + (k % 2 ? ".3em" : ".22em") + ";--dx:" + f1((x - 50) / 18) + "em;--dy:" + f1((y - 50) / 18) + "em;--t:" + f1(2.2 + (k % 3) * .35) + "s;--dl:-" + f1(k * .3) + "s"; } },
+  stars: { n: 6, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 1.5l3 7.2 7.7.6-5.9 5 1.8 7.5L12 17.6l-6.6 4.2 1.8-7.5-5.9-5 7.7-.6z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(16 + a * 68) + "%;--y:" + f1(16 + b * 68) + "%;--w:" + f1(.4 + c * .3) + "em;--dx:" + f1((a - .5) * 2.2) + "em;--dy:" + f1((b - .5) * 2.2) + "em;--t:" + f1(2.4 + c * 1.2) + "s;--dl:-" + f1(k * .5) + "s" },
+  glit: { n: 10, svg: () => '<svg viewBox="0 0 24 24"><path d="M12 0C12.8 7.5 16.5 11.2 24 12C16.5 12.8 12.8 16.5 12 24C11.2 16.5 7.5 12.8 0 12C7.5 11.2 11.2 7.5 12 0Z" fill="currentColor"/></svg>', css: (k, a, b, c) => "--x:" + f1(10 + a * 80) + "%;--y:" + f1(10 + b * 80) + "%;--w:" + f1(.28 + c * .3) + "em;--dx:" + f1((a - .5) * 2.4) + "em;--dy:" + f1((b - .5) * 2.4) + "em;--t:" + f1(1.4 + c * 1.1) + "s;--dl:-" + f1(k * .33) + "s" },
+  fw: { n: 3, svg: () => { let r = ""; for (let i = 0; i < 8; i++) { const an = i * 45 * Math.PI / 180, ca = Math.cos(an), sa = Math.sin(an); r += '<line x1="' + f1(12 + 4.5 * ca) + '" y1="' + f1(12 + 4.5 * sa) + '" x2="' + f1(12 + 9.5 * ca) + '" y2="' + f1(12 + 9.5 * sa) + '" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="' + f1(12 + 11.2 * ca) + '" cy="' + f1(12 + 11.2 * sa) + '" r=".75" fill="currentColor"/>'; } return '<svg viewBox="0 0 24 24">' + r + '<circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>'; }, css: (k) => { const pt = [[30, 34], [70, 30], [52, 68]][k]; return "--x:" + pt[0] + "%;--y:" + pt[1] + "%;--w:1.3em;--t:" + f1(2.7 + k * .3) + "s;--dl:-" + f1(k * .95) + "s"; } },
+};
+function mkFill(kind) {
+  const L = el("span", "mkf mkf-" + kind), P = MKP[kind]; L.setAttribute("aria-hidden", "true");
+  for (let k = 0; k < P.n; k++) { const a = (k * .618034 + .13) % 1, b = (k * .381966 + .37) % 1, c = (k * .7548 + .21) % 1, pe = el("i", "p"); pe.style.cssText = P.css(k, a, b, c); pe.innerHTML = P.svg(k); L.appendChild(pe); }
+  return L;
+}
 function wKalender(sh) {
   const { body, o, host, b } = sh;
   const sunStart = o.start === "su", nav = o.nav !== "0", wk = o.wk === "1", we = o.we !== "0";
   const now = new Date(), mm = /^(\d{4})-(\d{2})$/.exec(o.month || ""); let vy = now.getFullYear(), vm = now.getMonth() + 1; if (mm && +mm[2] >= 1 && +mm[2] <= 12) { vy = +mm[1]; vm = +mm[2]; }
   const marks = new Set(), yearly = new Set();
   (o.mark || "").split(",").forEach((s) => { const m = /^(\d{4})-(\d{2})-(\d{2})(y?)$/.exec(s.trim()); if (!m) return; if (m[4]) yearly.add(m[2] + "-" + m[3]); else marks.add(m[1] + "-" + m[2] + "-" + m[3]); });
-  const base = { y: vy, m: vm };
+  const base = { y: vy, m: vm }, mbd = MK_BORDERS.includes(o.mbd) ? o.mbd : "", mba = o.mba !== "0", mfl = MK_FILLS.includes(o.mfl) ? o.mfl : "";
   const head = el("div", "kh"), navk = NAVI[o.navi] || /^a:[a-z0-9]+$/.test(o.navi || "") ? o.navi : "txt", prevB = el("button", "kb"), nextB = el("button", "kb"), ttl = el("div", "kt gl"); prevB.appendChild(naviNode(navk, true)); nextB.appendChild(naviNode(navk, false)); prevB.type = nextB.type = "button"; prevB.setAttribute("aria-label", "Vorheriger Monat"); nextB.setAttribute("aria-label", "Nächster Monat");
   if (nav) head.append(prevB, ttl, nextB); else head.append(ttl);
   const grid = el("div", "kg"); body.append(head, grid);
+  if (mfl) { let tmo = 0; const on = () => grid.classList.add("hv"), off = () => { clearTimeout(tmo); grid.classList.remove("hv"); }; b.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; on(); }); b.addEventListener("pointerleave", off); b.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") { on(); clearTimeout(tmo); tmo = setTimeout(off, 3500); } });}
   const draw = () => {
     ttl.textContent = MONTHS[vm - 1] + " " + vy; grid.textContent = ""; grid.classList.toggle("wk", wk); grid.classList.toggle("nowe", !we);
     const names = sunStart ? [6, 0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6];
@@ -1643,7 +1748,10 @@ function wKalender(sh) {
         if (i >= 1 && i <= dim && r < rows) {
           const dow = sunStart ? (c + 6) % 7 : c; cell.textContent = String(i);
           if (dow >= 5) cell.classList.add("we"); if (vy === ty && vm === tm && i === td) cell.classList.add("td");
-          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.has(pad2(vm) + "-" + pad2(i))) cell.classList.add("mk");
+          if (marks.has(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.has(pad2(vm) + "-" + pad2(i))) {
+            cell.classList.add("mk");
+            if (mbd || mfl) { cell.textContent = ""; cell.appendChild(el("span", "kn", String(i))); if (mbd) { cell.classList.add("mk2"); cell.appendChild(mkBorder(mbd, mba)); } if (mfl) { cell.classList.add("mkx"); cell.appendChild(mkFill(mfl)); } }
+          }
         } else cell.classList.add("em");
         grid.appendChild(cell);
       }
@@ -1761,10 +1869,12 @@ const US_LIST = {
   vintage: [["kamin", "Kaminuhr"], ["schmelz", "Schmelzuhr"], ["pendel", "Pendeluhr"], ["tasche", "Taschenuhr"], ["kuckuck", "Kuckucksuhr"]],
   standard: [["led", "LED-Wecker"], ["weckerl", "Wecker · Umriss"], ["weckerf", "Wecker · gefüllt"], ["striche", "Strichuhr"], ["roemisch", "Römische Uhr"]],
   sanrio: [["katze", "Katzenuhr"], ["schwein", "Schweinchen-Uhr"], ["herz", "Herz-Wecker"]],
+  floral: [["blume", "Blütenuhr"], ["kranz", "Blumenkranz-Uhr"], ["falter", "Schmetterlings-Uhr"]],
+  retro: [["synth", "Sonnenuntergang"], ["tv", "Röhren-Fernseher"], ["kassette", "Kassette"]],
 };
 const US_KEYS = [].concat(...Object.values(US_LIST).map((l) => l.map((x) => x[0])));
 let usUid = 0;
-const ROMAN = ["I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 const f1 = (n) => (+n).toFixed(1);
 const usTicks = (cx, cy, r, l5, l1, w5, w1, col, col5) => {
   let s = "";
@@ -1819,21 +1929,23 @@ US.kamin = { vb: [160, 214], build: () => {
     usHand("uhh", 80, 86, 22, 3.1, 4, "spade", "#1c1209") + usHand("uhm", 80, 86, 33, 2.6, 5, "spade", "#1c1209") + usSec(80, 86, 34, 1, 8, "#8a2b17", 2) + '<circle cx="80" cy="86" r="3.4" fill="url(#' + u + 'b)" stroke="#5a3a12" stroke-width=".8"/>';
 } };
 
-US.schmelz = { vb: [200, 236], build: () => {
+US.schmelz = { vb: [200, 250], build: () => {
   const u = "s" + (++usUid);
-  return '<defs>' + usGrad(u + "g", [[0, "#ffe27a"], [.5, "#e8a823"], [1, "#a8680a"]]) + usRad(u + "c", [[0, "#fffdf1"], [1, "#efdca8"]], .45, .4, .65) + '</defs>' +
-    '<g class="sch-sway" style="transform-origin:100px 20px">' +
-    '<circle cx="100" cy="17" r="12" fill="none" stroke="url(#' + u + 'g)" stroke-width="5.5"/><rect x="91" y="26" width="18" height="10" rx="3" fill="url(#' + u + 'g)"/>' +
-    '<path d="M34 92C34 52 62 30 100 30S166 52 166 92C166 114 160 124 157 136C153 152 158 170 150 178C142 186 134 170 132 152C130 140 124 138 118 152C112 174 114 204 100 206C86 204 88 174 82 152C76 138 70 140 68 152C66 170 58 186 50 178C42 170 47 152 43 136C40 124 34 114 34 92Z" fill="url(#' + u + 'g)"/>' +
-    '<g class="drip d1" style="transform-origin:100px 190px"><path d="M93 196H107V204C107 214 93 214 93 204Z" fill="url(#' + u + 'g)"/></g>' +
-    '<g class="drip d2" style="transform-origin:149px 170px"><path d="M143 172H155V180C155 189 143 189 143 180Z" fill="url(#' + u + 'g)"/></g>' +
-    '<g class="drip d3" style="transform-origin:51px 170px"><path d="M45 172H57V180C57 189 45 189 45 180Z" fill="url(#' + u + 'g)"/></g>' +
-    '<path d="M50 88C50 60 72 42 100 42S150 60 150 88C150 106 146 118 142 130C134 144 120 130 100 136C80 130 66 144 58 130C54 118 50 106 50 88Z" fill="#8a5a0a" fill-opacity=".55" transform="translate(1.5 2.5)"/>' +
-    '<path d="M50 88C50 60 72 42 100 42S150 60 150 88C150 106 146 118 142 130C134 144 120 130 100 136C80 130 66 144 58 130C54 118 50 106 50 88Z" fill="url(#' + u + 'c)"/>' +
-    '<g transform="translate(0 4) scale(1 1.07)" style="transform-origin:100px 86px">' + usTicks(100, 84, 41, 6, 0, 2.4, 0, "#3a2a10") + usTicks(100, 84, 41, 0, 3, 0, 1, "#8a6a30") + "</g>" +
-    '<ellipse cx="72" cy="52" rx="26" ry="9" fill="#fff" fill-opacity=".28" transform="rotate(-28 72 52)"/>' +
-    usHand("uhh", 100, 86, 24, 4, 4, "taper", "#2b2a33") + usHand("uhm", 100, 86, 36, 3.2, 6, "taper", "#2b2a33") + usSec(100, 86, 38, 1.1, 10, "#b0301f", 2.2) + '<circle cx="100" cy="86" r="4" fill="#2b2a33"/>' +
-    '<g class="dropf"><path d="M126 206C126 206 121 214 121 218A5 5 0 0 0 131 218C131 214 126 206 126 206Z" fill="url(#' + u + 'g)"/></g></g>';
+  const body = "M16 150C8 148 6 136 20 128C20 92 44 46 86 44C126 44 146 78 148 116C149 134 152 146 160 156C167 167 167 192 163 206C161 224 141 224 139 206C137 190 138 178 134 168L132 150Z";
+  const face = "M38 96C38 64 60 50 86 50C112 50 130 66 133 92C135 112 137 128 129 140C119 152 90 146 70 148C50 148 38 124 38 96Z";
+  return '<defs>' + usGrad(u + "g", [[0, "#ffe27a"], [.5, "#e8a823"], [1, "#a8680a"]]) + usGrad(u + "w", [[0, "#5a3a1c"], [1, "#2a170a"]], true) + usRad(u + "c", [[0, "#fffdf1"], [1, "#efdca8"]], .45, .4, .65) + '<clipPath id="' + u + 'f"><path d="' + face + '"/></clipPath></defs>' +
+    '<g class="sch-all">' +
+    '<ellipse cx="156" cy="232" rx="20" ry="4" fill="#000" fill-opacity=".28"/>' +
+    '<rect x="2" y="150" width="132" height="30" rx="3" fill="url(#' + u + 'w)"/><rect x="2" y="150" width="132" height="3.4" rx="1.5" fill="#c79a5a" fill-opacity=".7"/><path d="M12 166H124M12 174H124" stroke="#1a0d05" stroke-opacity=".35" stroke-width="1"/>' +
+    '<g class="drip d1" style="transform-origin:151px 214px"><path d="M143 212H159V222C159 232 143 232 143 222Z" fill="#dca020"/></g>' +
+    '<g class="drip d2" style="transform-origin:23px 150px"><path d="M17 150H29V160C29 169 17 169 17 160Z" fill="#e8b030"/></g>' +
+    '<path d="' + body + '" fill="url(#' + u + 'g)"/>' +
+    '<path d="M28 126C28 100 44 62 84 56" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="3.2" stroke-linecap="round"/><path d="M150 150C158 160 158 190 155 206" fill="none" stroke="#7a4f0e" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>' +
+    '<path d="' + face + '" fill="#8a5a0a" fill-opacity=".55" transform="translate(1.5 2.5)"/><path d="' + face + '" fill="url(#' + u + 'c)"/>' +
+    '<g clip-path="url(#' + u + 'f)"><g transform="rotate(-4 86 98)"><g transform="translate(86 98) scale(1 .94) translate(-86 -98)">' + usTicks(86, 98, 41, 6, 0, 2.4, 0, "#3a2a10") + usTicks(86, 98, 41, 0, 3, 0, 1, "#8a6a30") + "</g></g></g>" +
+    '<ellipse cx="62" cy="62" rx="22" ry="7" fill="#fff" fill-opacity=".28" transform="rotate(-24 62 62)"/>' +
+    usHand("uhh", 86, 99, 22, 4, 4, "taper", "#2b2a33") + usHand("uhm", 86, 99, 33, 3.2, 6, "taper", "#2b2a33") + usSec(86, 99, 35, 1.1, 10, "#b0301f", 2.2) + '<circle cx="86" cy="99" r="4" fill="#2b2a33"/>' +
+    '<g class="dropf"><path d="M151 232C151 232 146 240 146 244A5 5 0 0 0 156 244C156 240 151 232 151 232Z" fill="url(#' + u + 'g)"/></g></g>';
 } };
 
 US.pendel = { vb: [140, 244], build: () => {
@@ -1855,8 +1967,8 @@ US.tasche = { vb: [250, 262], build: () => {
     '<g class="lid"><circle cx="46" cy="86" r="56" fill="url(#' + u + 'h)"/><circle cx="46" cy="86" r="48" fill="none" stroke="#7a4f0e" stroke-width="1.6" stroke-opacity=".7"/><circle cx="46" cy="86" r="38" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M30 80Q46 56 62 80Q46 96 30 80Z" fill="none" stroke="#7a4f0e" stroke-opacity=".6" stroke-width="2"/></g>' +
     '<rect x="111" y="52" width="18" height="14" rx="3" fill="url(#' + u + 'g)"/><circle cx="120" cy="44" r="14" fill="none" stroke="url(#' + u + 'g)" stroke-width="6"/>' +
     '<circle cx="120" cy="140" r="72" fill="url(#' + u + 'g)"/><circle cx="120" cy="140" r="65" fill="none" stroke="#7a4f0e" stroke-width="1.6"/><circle cx="120" cy="140" r="60" fill="url(#' + u + 'c)" stroke="#a77d2c" stroke-width="2"/>' +
-    usTicks(120, 140, 57, 0, 4, 0, .8, "#6a4a1a") + usNums(120, 140, 42, ROMAN, 11, "#2b1c0c", false) +
-    '<g class="sub" transform="translate(120 172)"><circle r="14" fill="#f7efd2" stroke="#9b7226" stroke-width="1.8"/>' + usTicks(0, 0, 12, 3, 0, 1, 0, "#6a4a1a") + usSec(0, 0, 10, 1, 3, "#b0301f", 1.4) + "</g>" +
+    '<g class="tdial" style="transform-origin:120px 140px">' + usTicks(120, 140, 57, 0, 4, 0, .8, "#6a4a1a") + usNums(120, 140, 42, ROMAN, 11, "#2b1c0c", false) +
+    '<g class="sub" transform="translate(120 172)"><circle r="14" fill="#f7efd2" stroke="#9b7226" stroke-width="1.8"/>' + usTicks(0, 0, 12, 3, 0, 1, 0, "#6a4a1a") + usSec(0, 0, 10, 1, 3, "#b0301f", 1.4) + "</g></g>" +
     usHand("uhh", 120, 140, 31, 3.6, 5, "spade", "#1c1209") + usHand("uhm", 120, 140, 46, 3, 7, "spade", "#1c1209") +
     '<circle cx="120" cy="140" r="4.6" fill="url(#' + u + 'g)" stroke="#5a3a12" stroke-width="1"/>' +
     '<path d="M70 96C84 76 106 70 128 74C104 78 88 90 80 108Z" fill="#fff" fill-opacity=".28"/></g>';
@@ -1982,6 +2094,86 @@ US.herz = { vb: [210, 244], build: () => {
     '<ellipse cx="68" cy="84" rx="14" ry="7" fill="#fff" fill-opacity=".55" transform="rotate(-32 68 84)"/></g></g>';
 } };
 
+/* ---------- FLORAL ---------- */
+const CRM = "#fff6e6", MIXL = "color-mix(in srgb, var(--ac) 55%, #fff)";
+US.blume = { vb: [200, 200], build: () => {
+  let pet = "";
+  for (let i = 0; i < 12; i++) pet += '<g transform="rotate(' + i * 30 + ' 100 100)"><g class="pt" style="transform-origin:100px 70px;--dl:' + f1(i * .21) + 's"><ellipse cx="100" cy="42" rx="15" ry="31" fill="' + (i % 2 ? MIXL : "var(--ac)") + '"/><path d="M100 20V60" stroke="#fff" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round"/></g></g>';
+  return '<g class="bl-all">' + pet + '<circle cx="100" cy="100" r="46" fill="#e7b24a" fill-opacity=".9"/><circle cx="100" cy="100" r="43" fill="' + CRM + '" stroke="#b86a58" stroke-width="1.6"/>' +
+    usTicks(100, 100, 39, 5, 2.4, 2.2, 1, "#a8604e") +
+    usHand("uhh", 100, 100, 22, 4.2, 4, "taper", "#2f4a36") + usHand("uhm", 100, 100, 33, 3.2, 5, "taper", "#2f4a36") + usSec(100, 100, 36, 1.1, 9, "#e0485a", 2.4) +
+    '<circle cx="100" cy="100" r="4.2" fill="#2f4a36"/><circle cx="100" cy="100" r="1.6" fill="#ffb3a6"/></g>';
+} };
+
+US.kranz = { vb: [200, 200], build: () => {
+  let lv = "", fl = "";
+  for (let i = 0; i < 18; i++) lv += '<g transform="rotate(' + i * 20 + ' 100 100)"><ellipse cx="100" cy="19" rx="6.2" ry="15" fill="' + (i % 2 ? "#5da56b" : "#3f8450") + '" transform="rotate(' + (i % 2 ? 32 : -32) + ' 100 19)"/></g>';
+  for (let i = 0; i < 9; i++) {
+    const a = (i * 40 + 20) * Math.PI / 180, cx = 100 + 80 * Math.sin(a), cy = 100 - 80 * Math.cos(a); let pe = "";
+    for (let k = 0; k < 5; k++) { const b = k * 72 * Math.PI / 180; pe += '<circle cx="' + f1(cx + 6.4 * Math.sin(b)) + '" cy="' + f1(cy - 6.4 * Math.cos(b)) + '" r="5.6" fill="' + (i % 2 ? "var(--ac)" : MIXL) + '"/>'; }
+    fl += '<g class="kf" style="transform-origin:' + f1(cx) + "px " + f1(cy) + 'px;--dl:' + f1(i * .35) + 's">' + pe + '<circle cx="' + f1(cx) + '" cy="' + f1(cy) + '" r="3.6" fill="#ffd86b"/></g>';
+  }
+  return '<g class="wr" style="transform-origin:100px 100px"><circle cx="100" cy="100" r="80" fill="none" stroke="#3a6a44" stroke-width="2.6"/>' + lv + fl + "</g>" +
+    '<circle cx="100" cy="100" r="62" fill="' + CRM + '" stroke="#3f6e48" stroke-width="3"/>' + usTicks(100, 100, 56, 6, 3, 2.2, 1, "#6b8a62") +
+    usHand("uhh", 100, 100, 30, 4.4, 5, "taper", "#2f4a36") + usHand("uhm", 100, 100, 46, 3.4, 6, "taper", "#2f4a36") + usSec(100, 100, 50, 1.2, 11, "#e0485a", 2.6) +
+    '<circle cx="100" cy="100" r="4.4" fill="#2f4a36"/><circle cx="100" cy="100" r="1.8" fill="#ffb3a6"/>';
+} };
+
+US.falter = { vb: [220, 190], build: () => {
+  const up = "M104 88C82 44 28 30 16 64C8 90 52 108 104 98Z", lo = "M104 106C72 104 34 122 44 150C56 176 96 152 104 118Z", ST = "color-mix(in srgb, var(--ac) 55%, #000)";
+  const wing = '<path d="' + up + '" fill="var(--ac)" stroke="' + ST + '" stroke-width="2.4" stroke-linejoin="round"/><path d="' + lo + '" fill="' + MIXL + '" stroke="' + ST + '" stroke-width="2.4" stroke-linejoin="round"/><circle cx="48" cy="68" r="8" fill="#fff" fill-opacity=".85"/><circle cx="72" cy="84" r="4.6" fill="#fff" fill-opacity=".85"/><circle cx="34" cy="86" r="3.6" fill="#fff" fill-opacity=".7"/><circle cx="66" cy="141" r="5.4" fill="#fff" fill-opacity=".85"/>';
+  return '<g class="fa-all"><g class="wgL" style="transform-origin:110px 98px">' + wing + '</g><g class="wgR" style="transform-origin:110px 98px"><g transform="translate(220 0) scale(-1 1)">' + wing + "</g></g>" +
+    '<ellipse cx="110" cy="98" rx="5.6" ry="44" fill="#3a2a22"/><circle cx="110" cy="54" r="7.4" fill="#3a2a22"/>' +
+    '<path d="M107 49C103 38 98 30 90 26M113 49C117 38 122 30 130 26" fill="none" stroke="#3a2a22" stroke-width="2" stroke-linecap="round"/><circle cx="90" cy="26" r="2.6" fill="#3a2a22"/><circle cx="130" cy="26" r="2.6" fill="#3a2a22"/>' +
+    '<circle cx="110" cy="98" r="35" fill="' + CRM + '" stroke="#5a3a2a" stroke-width="2.8"/>' + usTicks(110, 98, 31, 4, 2, 1.8, .8, "#8a6a58") +
+    usHand("uhh", 110, 98, 17, 3.4, 3, "taper", "#3a2a22") + usHand("uhm", 110, 98, 26, 2.8, 4, "taper", "#3a2a22") + usSec(110, 98, 28, 1, 7, "#e0485a", 2) +
+    '<circle cx="110" cy="98" r="3.4" fill="#3a2a22"/></g>';
+} };
+
+/* ---------- RETRO ---------- */
+US.synth = { vb: [200, 200], build: () => {
+  const u = "y" + (++usUid); let st = ""; [[110, 2.2], [122, 3.2], [134, 4.4], [146, 5.8], [158, 7.2]].forEach((a) => { st += '<rect x="0" y="' + a[0] + '" width="200" height="' + a[1] + '" fill="#000"/>'; });
+  return '<defs>' + usGrad(u + "g", [[0, "#ffe14a"], [.5, "#ff8a3c"], [1, "#ff2e88"]], true) + '<mask id="' + u + 'm"><rect width="200" height="200" fill="#fff"/>' + st + '</mask></defs>' +
+    '<g class="sy-sun"><circle cx="100" cy="100" r="86" fill="url(#' + u + 'g)" mask="url(#' + u + 'm)"/></g>' +
+    '<circle class="sy-ring" cx="100" cy="100" r="92" fill="none" stroke="var(--ac)" stroke-width="3.2"/><circle cx="100" cy="100" r="97" fill="none" stroke="#19e6ff" stroke-opacity=".7" stroke-width="1.4"/>' +
+    usTicks(100, 100, 80, 11, 0, 4.4, 0, "#2a0f3a") + usTicks(100, 100, 80, 0, 4, 0, 1.6, "#2a0f3a") +
+    usHand("uhh", 100, 100, 42, 5.4, 6, "taper", "#2a0f3a") + usHand("uhm", 100, 100, 62, 4, 8, "taper", "#2a0f3a") + usSec(100, 100, 70, 1.5, 14, "#fff", 3.4) +
+    '<circle cx="100" cy="100" r="5.4" fill="#2a0f3a"/><circle cx="100" cy="100" r="2" fill="#19e6ff"/>';
+} };
+
+US.tv = { vb: [250, 224], build: () => {
+  const u = "v" + (++usUid), DK = "color-mix(in srgb, var(--ac) 45%, #000)";
+  const led = [[44, 80], [68, 80], [112, 80], [136, 80]].map((q) => seg7Digit(q[0], q[1], .62)).join("");
+  return '<defs>' + usGrad(u + "b", [[0, "color-mix(in srgb, var(--ac) 82%, #fff)"], [1, "var(--ac)"]], true) + '<pattern id="' + u + 's" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1.5" fill="#000" fill-opacity=".38"/></pattern></defs>' +
+    '<g class="tv-ant" style="transform-origin:125px 50px"><path d="M112 50L74 8M138 50L178 12" stroke="#cfc6dd" stroke-width="3.2" stroke-linecap="round"/><circle cx="74" cy="8" r="3.6" fill="#cfc6dd"/><circle cx="178" cy="12" r="3.6" fill="#cfc6dd"/></g>' +
+    '<rect x="62" y="194" width="30" height="10" rx="3" fill="' + DK + '"/><rect x="158" y="194" width="30" height="10" rx="3" fill="' + DK + '"/>' +
+    '<rect x="8" y="46" width="234" height="152" rx="24" fill="url(#' + u + 'b)" stroke="' + DK + '" stroke-width="3"/>' +
+    '<rect x="22" y="60" width="160" height="124" rx="20" fill="#06090d" stroke="' + DK + '" stroke-width="5"/>' +
+    '<g class="tv-scr"><rect x="26" y="64" width="152" height="116" rx="17" fill="#0b1520"/>' +
+    '<g class="led-d">' + led + '<g class="led-c"><rect x="95" y="89" width="5" height="5" rx="1" fill="#7ff5ff"/><rect x="95" y="101" width="5" height="5" rx="1" fill="#7ff5ff"/></g></g>' +
+    '<text class="led-ap" x="170" y="76" font-size="9" fill="#7ff5ff" text-anchor="end" font-weight="700" font-family="var(--ff),sans-serif"></text>' +
+    '<text class="led-wd" x="44" y="150" font-size="10" fill="#7ff5ff" fill-opacity=".85" font-weight="700" font-family="var(--ff),sans-serif"></text>' +
+    '<g class="led-sd">' + Array.from({ length: 12 }, (_, i) => '<rect x="' + (44 + i * 10.2) + '" y="160" width="7" height="3.4" rx="1.4" fill="#7ff5ff"/>').join("") + '</g>' +
+    '<rect x="26" y="64" width="152" height="116" rx="17" fill="url(#' + u + 's)"/><path d="M36 84C38 74 48 70 62 70" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="3.2" stroke-linecap="round"/></g>' +
+    '<circle cx="214" cy="88" r="12" fill="#f3e8d0" stroke="' + DK + '" stroke-width="2.4"/><path d="M214 88V79" stroke="#2a0f3a" stroke-width="2.4" stroke-linecap="round"/>' +
+    '<circle cx="214" cy="124" r="12" fill="#f3e8d0" stroke="' + DK + '" stroke-width="2.4"/><path d="M214 124L220 118" stroke="#2a0f3a" stroke-width="2.4" stroke-linecap="round"/>' +
+    '<path d="M198 152H230M198 159H230M198 166H230M198 173H230" stroke="' + DK + '" stroke-width="2.6" stroke-linecap="round"/>';
+}, digital: true };
+
+US.kassette = { vb: [260, 172], build: () => {
+  const u = "q" + (++usUid), DK = "color-mix(in srgb, var(--ac) 45%, #000)", LBL = "#f6e8c8";
+  const led = [[76, 42], [98, 42], [144, 42], [166, 42]].map((q) => seg7Digit(q[0], q[1], .62)).join("");
+  const reel = (cx, cls, dur) => { let sp = ""; for (let i = 0; i < 6; i++) { const a = i * 60 * Math.PI / 180; sp += '<line x1="' + cx + '" y1="118" x2="' + f1(cx + 14 * Math.sin(a)) + '" y2="' + f1(118 - 14 * Math.cos(a)) + '" stroke="#2b2140" stroke-width="2.6" stroke-linecap="round"/>'; } return '<g class="reel ' + cls + '" style="transform-origin:' + cx + 'px 118px"><circle cx="' + cx + '" cy="118" r="17" fill="' + LBL + '"/>' + sp + '<circle cx="' + cx + '" cy="118" r="5" fill="#2b2140"/></g>'; };
+  return '<g class="ks-all"><rect x="6" y="8" width="248" height="156" rx="14" fill="var(--ac)" stroke="' + DK + '" stroke-width="3"/>' +
+    '<circle cx="20" cy="22" r="3.4" fill="' + DK + '"/><circle cx="240" cy="22" r="3.4" fill="' + DK + '"/><circle cx="20" cy="150" r="3.4" fill="' + DK + '"/><circle cx="240" cy="150" r="3.4" fill="' + DK + '"/>' +
+    '<rect x="30" y="20" width="200" height="72" rx="6" fill="' + LBL + '"/><rect x="30" y="20" width="200" height="11" rx="5" fill="#19c2c9"/><rect x="30" y="31" width="200" height="4" fill="#ff2e88"/>' +
+    '<g class="led-d">' + led + '<g class="led-c"><rect x="119" y="52" width="5" height="5" rx="1" fill="#2b2140"/><rect x="119" y="63" width="5" height="5" rx="1" fill="#2b2140"/></g></g>' +
+    '<text class="led-ap" x="222" y="52" font-size="9" fill="#2b2140" text-anchor="end" font-weight="700" font-family="var(--ff),sans-serif"></text>' +
+    '<text class="led-wd" x="38" y="86" font-size="9" fill="#2b2140" fill-opacity=".8" font-weight="700" font-family="var(--ff),sans-serif"></text>' +
+    '<rect x="62" y="94" width="136" height="48" rx="24" fill="#150f22" stroke="' + DK + '" stroke-width="2.4"/>' + '<path d="M96 134H164" stroke="#6b5a8a" stroke-width="2"/>' + reel(98, "rl", 4) + reel(162, "rr", 4.7) +
+    '<g class="led-sd">' + Array.from({ length: 12 }, (_, i) => '<rect x="' + (72 + i * 9.7) + '" y="150" width="6.4" height="3.4" rx="1.4" fill="' + LBL + '"/>').join("") + '</g></g>';
+}, digital: true };
+
 /* ---------- Laufzeit ---------- */
 function wUhrStil(sh, key, tz, o) {
   const { body, host, b } = sh, def = US[key], sec = o.sec !== "0", h12 = o.h12 === "1", dmode = ["none", "short", "long"].includes(o.date) ? o.date : "short";
@@ -1993,7 +2185,7 @@ function wUhrStil(sh, key, tz, o) {
   const dl = el("div", "udt"); if (dmode !== "none") body.appendChild(dl);
   const dateTxt = (p) => { const wd = WDAYS[p.dow]; return dmode === "long" ? wd + ", " + p.d + ". " + MONTHS[p.m - 1] + " " + p.y : wd.slice(0, 2) + " " + pad2(p.d) + "." + pad2(p.m) + "." + p.y; };
   const setSeg = (g, n) => { const on = SEG7[n] || ""; Array.from(g.querySelectorAll(".sg")).forEach((s) => s.classList.toggle("on", on.indexOf(s.getAttribute("class").split(" ")[1].slice(1)) >= 0)); };
-  let sAng = 0, lastS = -1, rung = "", lastDot = -1, busy = false, litS = -1; const dmap = []; for (let i = 0; i < 60; i++) if (i % 5 !== 0) dmap.push(i);
+  let sAng = 0, lastS = -1, lastTk = -1, rung = "", lastDot = -1, busy = false, litS = -1; const dmap = []; for (let i = 0; i < 60; i++) if (i % 5 !== 0) dmap.push(i);
   if (hS && !reduced()) hS.style.transition = "transform .45s cubic-bezier(.3,2.2,.5,1)";
   const later = (fn, ms) => { const t = setTimeout(fn, ms); wReg(host, { o: t }); return t; };
   const show = (n) => {
@@ -2008,6 +2200,7 @@ function wUhrStil(sh, key, tz, o) {
   const upd = () => {
     const p = partsIn(new Date(), tz);
     if (hH) hH.style.transform = "rotate(" + (((p.h % 12) + p.mi / 60) * 30) + "deg)"; if (hM) hM.style.transform = "rotate(" + ((p.mi + p.s / 60) * 6) + "deg)";
+    if (key === "tasche" && sec && p.s !== lastTk && !reduced()) { lastTk = p.s; const td = $q(".tdial"); if (td) { td.classList.remove("tk0", "tk1"); void td.getBoundingClientRect(); td.classList.add(p.s % 2 ? "tk1" : "tk0"); } }
     if (hS && p.s !== lastS) { if (lastS === -1) sAng = p.s * 6; else sAng += ((p.s - lastS + 60) % 60) * 6; lastS = p.s; hS.style.transform = "rotate(" + sAng + "deg)"; }
     if (segs.length) { const h = h12 ? (p.h % 12 || 12) : p.h, t = pad2(h) + pad2(p.mi); segs.forEach((g, i) => { if (g.dataset.v !== t[i]) { g.dataset.v = t[i]; setSeg(g, +t[i]); } }); const ap = $q(".led-ap"); if (ap) ap.textContent = h12 ? (p.h < 12 ? "AM" : "PM") : ""; const wd = $q(".led-wd"); if (wd) wd.textContent = WDAYS[p.dow].slice(0, 2).toUpperCase(); const c = $q(".led-c"); if (c) c.style.opacity = p.s % 2 === 0 ? 1 : .12; }
     if (key === "schwein") { const h = h12 ? (p.h % 12 || 12) : p.h, t = pad2(h) + pad2(p.mi); ["d1", "d2", "d3", "d4"].forEach((k, i) => { const e = $q("." + k); if (e && e.textContent !== t[i]) e.textContent = t[i]; }); const c = $q(".dc"); if (c) c.style.opacity = p.s % 2 === 0 ? 1 : .15; const ap = $q(".pg-ap"); if (ap) ap.textContent = h12 ? (p.h < 12 ? "AM" : "PM") : ""; }
@@ -2252,7 +2445,7 @@ if (q.has("url") || q.has("w")) {
     '<div class="tabs" role="tablist"><button type="button" role="tab" id="tab-e" aria-selected="true">Emojis</button><button type="button" role="tab" id="tab-s" aria-selected="false">Symbole</button><button type="button" role="tab" id="tab-a" aria-selected="false">Animiert</button></div>' +
     '<div class="igrid" id="ip-grid"></div><div class="dact"><button type="button" id="ip-none">Kein Symbol</button><button type="button" class="go" id="ip-ok">Schließen</button></div></div></dialog>';
   const TK = "wfn-theme";
-  let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (t === "standard" || t === "vintage" || t === "sanrio") savedTheme = t; } catch (e) { /* ohne Speicher */ }
+  let savedTheme = "standard"; try { const t = localStorage.getItem(TK); if (t === "standard" || t === "vintage" || t === "sanrio" || t === "floral" || t === "retro") savedTheme = t; } catch (e) { /* ohne Speicher */ }
   const S = { theme: savedTheme, fill: "solid", shape: "cut", frame: "auto", pat: "scan", hov: "bright", clk: "press", scheme: "dark", caps: true, pad: "auto", fit: "content", fx: FX_DEFAULT.slice(), open: "tab", size: "mid", align: "left", icon: "", font: "rajdhani", diy: {}, w: "button" };
   const OPENHINT = { tab: "Normaler Tab des Browsers bzw. der Notion-App.", side: "Notions Seitenansicht (Side Peek) des Eintrags.", center: "Notions zentrierte Ansicht (Center Peek) des Eintrags.", full: "Notions Vollseite des Eintrags." };
   const SCHEMEHINT = { dark: "Notion läuft im Dunkelmodus: Hintergrund des Widgets bleibt transparent.", light: "Notion läuft im Hellmodus: Hintergrund des Widgets bleibt transparent.", auto: "Folgt der Systemeinstellung. Nur transparent, wenn Notion dieselbe Einstellung nutzt; sonst erscheint ein weißer oder schwarzer Kasten." };
@@ -2276,11 +2469,14 @@ function applyPage() {
     const pre = !up || !!c.jub; set("pre", pre); set("preu", pre && +c.pre > 0); set("pmsg", pre && +c.pre > 0); set("pfx", pre && +c.pre > 0);
     set("fxd", [c.dfx, c.jfx, c.pfx].some(Boolean));
   }
+  function calVis() {
+    if (S.w !== "kalender") return; const k = X.kalender, e = document.querySelector('#wc [data-f="mba"]'), r = e ? e.closest(".row") : null; if (r) r.style.display = k.mbd ? "" : "none";
+  }
   function uhrVis() {
     if (S.w !== "uhr") return; const u = X.uhr, row = (k) => { const e = document.querySelector('#wc [data-f="' + k + '"]'); return e ? e.closest(".row") : null; }, set = (k, on) => { const r = row(k); if (r) r.style.display = on ? "" : "none"; };
-    const st = !!u.ds, dig = !st && u.mode !== "analog"; set("mode", !st); set("flip", dig); set("fu", dig && u.flip !== "none"); set("h12", st ? ["led", "schwein"].includes(u.ds) : dig);
+    const st = !!u.ds, dig = !st && u.mode !== "analog"; set("mode", !st); set("flip", dig); set("fu", dig && u.flip !== "none"); set("h12", st ? ["led", "schwein", "tv", "kassette"].includes(u.ds) : dig);
   }
-  const THEME_PICK = [["standard", "Cybercriminal", true], ["vintage", "Vintage", true], ["sanrio", "Smells like Sanrio", true], ["floral", "Floral", false], ["retro", "Retro", false]];
+  const THEME_PICK = [["standard", "Cybercriminal", true], ["vintage", "Vintage", true], ["sanrio", "Smells like Sanrio", true], ["floral", "Floral", true], ["retro", "Retro", true]];
   function drawThemes() {
     const host = $("g-themes"); host.textContent = "";
     THEME_PICK.forEach(([k, name, ready]) => {
@@ -2600,7 +2796,7 @@ function applyPage() {
       F("jub", "Jubiläum", "seg", { items: [["", "Keins"], ["w", "Wöchentlich"], ["m", "Monatlich"], ["y", "Jährlich"]], def: "", hint: "Meldung und Effekt am Jahrestag, Monatstag bzw. Wochentag des Startdatums (24 Stunden lang)." }), F("jmsg", "Meldung zum Jubiläum", "text", { max: 80, def: "{n}. Jubiläum!", hint: "{n} = Anzahl Wochen, Monate bzw. Jahre." }), F("jfx", "Effekt zum Jubiläum", "efx", { def: "" }),
       F("pre", "Vorab-Meldung ab", "num", { min: 0, max: 999, def: "0", hint: "0 = aus. Countdown: vor dem Zieldatum. Countup: vor dem nächsten Jubiläum." }), F("preu", "Einheit", "seg", { items: [["d", "Tage vorher"], ["h", "Stunden vorher"]], def: "d" }), F("pmsg", "Vorab-Meldung", "text", { max: 80, def: "", ph: "z. B. Nur noch kurz!", hint: "{n} = nächstes Jubiläum (nur Countup)." }), F("pfx", "Vorab-Effekt", "efx", { def: "" }),
       F("fxd", "Effekt-Dauer", "seg", { items: [["5", "5 s"], ["8", "8 s"], ["15", "15 s"], ["30", "30 s"], ["0", "Dauerhaft"]], def: "8" })],
-    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag)." })],
+    kalender: [F("month", "Monat", "month", { hint: "Leer = aktueller Monat." }), F("start", "Wochenstart", "seg", { items: [["mo", "Montag"], ["su", "Sonntag"]], def: "mo" }), F("we", "Wochenende", "seg", { items: [["1", "Hervorgehoben"], ["0", "Normal"]], def: "1", hint: "Keine Feiertage." }), F("wk", "Kalenderwochen", "seg", { items: [["0", "Aus"], ["1", "An"]], def: "0" }), F("nav", "Monatswechsel", "seg", { items: [["1", "Mit Pfeilen"], ["0", "Fest"]], def: "1" }), F("navi", "Pfeil-Symbol", "navi", { def: "txt", hint: "Gilt für beide Richtungen, links wird gespiegelt." }), F("mark", "Markierte Tage", "mdates", { hint: "Datum wählen, mit + weitere ergänzen. „Jährlich“ markiert den Tag in jedem Jahr (z. B. Geburtstag)." }), F("mbd", "Umrandung der markierten Tage", "seg", { items: MK_BORDER_LIST, def: "", hint: "Standard = Ring mit Punkt." }), F("mba", "Umrandung animiert", "seg", { items: YN("An", "Aus"), def: "1" }), F("mfl", "Füllung der markierten Tage", "seg", { items: MK_FILL_LIST, def: "", hint: "Die Effekte laufen im Feld. Bewegt sich die Maus über den Kalender, wandern sie über das Feld hinaus." })],
     fun: [F("die", "Würfel", "seg", { items: DIE_SIDES.map((d) => [String(d), "W" + d]), def: "20" }), F("n", "Anzahl", "num", { min: 1, max: 10, def: "1" }), F("mult", "Multiplikator", "num", { min: 1, max: 20, def: "1", hint: "Würfelsumme × Multiplikator." }), F("mod", "Modifikator", "num", { min: -50, max: 50, def: "0", hint: "Wird zuletzt addiert: (Summe × Multiplikator) + Modifikator." }), F("ctl", "Bedienung im Widget", "seg", { items: YN("An", "Aus"), def: "1", hint: "Würfel, Anzahl, Multiplikator und Modifikator lassen sich im Widget selbst ändern (wird im Browser gemerkt). Die Werte oben sind die Startwerte." }), F("name", "Name", "text", { max: 24, def: "Würfel-Bot", ph: "Name des Roboters" }), F("hist", "Verlauf", "seg", { items: YN("An", "Aus"), def: "1" })],
   };
   const X = {}; WTYPES.forEach((t) => { X[t] = {}; WSCHEMA[t].forEach((f) => { X[t][f.k] = String(f.def); }); });
@@ -2704,7 +2900,7 @@ function applyPage() {
     show("g-label", isB); show("g-sub", isB); show("g-ico", isB || t === "banner"); show("g-url", isB || t === "banner"); show("g-open", isB);
     ALL_ROWS.forEach((id) => { if (id !== "g-open") show(id, ROWSV[t].includes(id)); });
     $("opt-h").textContent = "OPTIONEN · " + WLABEL[t].toUpperCase();
-    uhrVis();
+    uhrVis(); calVis();
     seg("g-align", t === "textfeld" ? ALIGNS_T : ALIGNS, "align");
     const sz = $("g-size").closest(".row").querySelector(".hint2"); if (sz) sz.textContent = isB ? "Der Button ist so groß wie die Schrift plus 5 px Rand rundum." : "Grundgröße des Inhalts. Bei „Rahmen ausfüllen“ passt sich bei Uhr, Countdown, Kalender und Würfel-Roboter der Inhalt dem Rahmen an.";
     const ft = $("g-fit").closest(".row").querySelector(".hint2"); if (ft) ft.textContent = isB ? "„Rahmen ausfüllen“: Button füllt den Notion-Rahmen bis zum Rand, Schrift und Symbol wachsen und schrumpfen mit dem Rahmen mit (Einstellung „Größe“ gilt dann nicht)." : (WSCALE[t] ? "„Rahmen ausfüllen“: Fläche und Inhalt füllen den Notion-Rahmen und skalieren mit (Einstellung „Größe“ gilt dann nicht)." : "„Rahmen ausfüllen“: Fläche füllt den Notion-Rahmen; die Schriftgröße bleibt wie eingestellt.");
@@ -2723,7 +2919,7 @@ function applyPage() {
     const t = S.w, cfg = cfgNow(); cfg.label = ""; cfg.sub = ""; if (t !== "banner") { cfg.icon = ""; cfg.url = ""; }
     prev.style.display = "flex"; prev.style.alignItems = "center"; prev.style.justifyContent = JUST[S.align] || "flex-start"; prev.classList.remove("ff");
     { const big = t === "uhr" && (X.uhr.mode === "analog" || X.uhr.ds), key = t + (big ? "L" : ""); if (prev._wk !== key) { prev._wk = key; prev.style.height = (big ? 280 : WPREV[t]) + "px"; } }
-    uhrVis(); cdVis();
+    uhrVis(); cdVis(); calVis();
     const sh = buildWidget(t, cfg, oFor(t), prev); btn = sh.b;
     const raw = cfg.url, ok = !!okUrl(raw);
     $("g-msg").textContent = t !== "banner" ? "" : !raw ? "Optional: Mit Ziel-Adresse wird das Banner anklickbar." : ok ? "" : "Ziel nicht erlaubt oder unvollständig: Das Banner bleibt nicht anklickbar (erlaubt: https:// mit Notion bzw. Formular-Adresse, oder eine E-Mail-Adresse).";

@@ -27,6 +27,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .btn.f-outline { background: var(--panel); color: var(--a); }
 .btn.f-ghost { background: transparent; color: var(--a); }
 /* Form */
+.btn.wp.wt-kalender { --cut: clamp(14px, 1.3em, 26px); }
 .btn.sh-cut { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
 .btn.sh-round { border-radius: .45em; }
 .btn.sh-pill { border-radius: 999px; padding-left: calc(5px + .7em); padding-right: calc(5px + .6em); }
@@ -623,8 +624,8 @@ a.btn.wp { cursor: pointer; }
 /* Kalender */
 .kh { display: flex; align-items: center; justify-content: space-between; gap: .6em; margin-bottom: .55em; }
 .kt { font-size: 1.15em; font-weight: 700; color: var(--ac); letter-spacing: .12em; text-transform: uppercase; flex: 1; text-align: center; cursor: default; }
-.kb { font: inherit; font-size: 1.3em; line-height: 1; width: 1.6em; height: 1.6em; color: var(--ac); background: transparent; border: 1px solid var(--dim); border-radius: .2em; cursor: pointer; padding: 0; transition: transform .15s cubic-bezier(.3, 2.2, .5, 1), background .12s; }
-.kb:hover { background: var(--dim); transform: scale(1.1); } .kb:active { transform: scale(.9); }
+.kb { font: inherit; font-size: 1.3em; line-height: 1; width: 1.6em; height: 1.6em; color: var(--ac); background: transparent; border: 0; border-radius: .2em; cursor: pointer; padding: 0; transition: transform .15s cubic-bezier(.3, 2.2, .5, 1), filter .12s; }
+.kb:hover { filter: brightness(1.25); transform: scale(1.15); } .kb:active { transform: scale(.9); }
 .kg { display: grid; grid-template-columns: repeat(7, 2.1em); gap: .2em; }
 .kg.wk { grid-template-columns: 1.8em repeat(7, 2.1em); }
 .kd0 { font-size: .7em; letter-spacing: .1em; text-transform: uppercase; opacity: .7; padding: .2em 0 .35em; text-align: center; }
@@ -1126,6 +1127,7 @@ dialog.dlg::backdrop { background: rgb(0 0 0 / .6); }
 /* ---- Farbauswahl: Kreise (Kuchenstücke) ---- */
 .seg .pie { width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--pl); cursor: pointer; transform: rotate(-90deg); }
 .seg .pie:hover { transform: rotate(-90deg) scale(1.08); }
+.seg.pals { gap: 10px 12px; align-items: flex-start; } .palo { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; width: 62px; } .palo .pn { font-size: .66rem; line-height: 1.15; text-align: center; color: var(--pm); overflow-wrap: anywhere; } .palo .pie[aria-pressed=true] + .pn { color: var(--pa); }
 .seg .pie[aria-pressed=true] { border-color: var(--pa); box-shadow: 0 0 0 2px var(--pp), 0 0 0 3px var(--pa); }
 
 .stamp { text-align: center; color: var(--muted); font-size: 11px; letter-spacing: .08em; margin: 18px 0 10px; opacity: .7; }
@@ -1352,7 +1354,7 @@ function cutFrame(b, frame) {
   const defs = (CUT_FRAMES[frame] || []).map((o) => Object.assign({ cls: "fr" }, o)).concat([{ d: .5, w: 1, cls: "hv" }]);
   const polys = defs.map((o) => { const p = document.createElementNS(NS, "polygon"); p.setAttribute("class", o.cls); p.setAttribute("stroke-width", o.w); if (o.dash) p.setAttribute("stroke-dasharray", o.dash); if (o.cap) p.setAttribute("stroke-linecap", o.cap); svg.appendChild(p); return [p, o.d]; });
   const draw = () => {
-    const W = b.offsetWidth, H = b.offsetHeight, fs = parseFloat(getComputedStyle(b).fontSize) || 16, c = Math.min(9, Math.max(5, .32 * fs));
+    const W = b.offsetWidth, H = b.offsetHeight, fs = parseFloat(getComputedStyle(b).fontSize) || 16, c = b.classList.contains("wt-kalender") ? Math.min(26, Math.max(14, 1.3 * fs)) : Math.min(9, Math.max(5, .32 * fs));
     svg.setAttribute("viewBox", "0 0 " + W + " " + H);
     polys.forEach(([p, d]) => { const k = d * (Math.SQRT2 - 1), r = (n) => Math.round(n * 100) / 100;
       p.setAttribute("points", [[c + k, d], [W - d, d], [W - d, H - c - k], [W - c - k, H - d], [d, H - d], [d, c + k]].map((q) => r(q[0]) + "," + r(q[1])).join(" ")); });
@@ -1726,8 +1728,8 @@ function mkBorder(kind, anim) {
     h = R(3.2, 33.6, 6, .9, "", "vine");
     const pos = [[3.2, 3.2], [36.8, 3.2], [36.8, 36.8], [3.2, 36.8], [14.5, 3.2], [25.5, 3.2], [14.5, 36.8], [25.5, 36.8], [3.2, 14.5], [3.2, 25.5], [36.8, 14.5], [36.8, 25.5]], cols = ["var(--ac)", "color-mix(in srgb, var(--ac) 50%, #fff)", "#fff"];
     pos.forEach((q, i) => {
-      let pe = ""; for (let k = 0; k < 5; k++) { const a = k * 72 * Math.PI / 180 - Math.PI / 2; pe += '<circle cx="' + f1(q[0] + 1.25 * Math.cos(a)) + '" cy="' + f1(q[1] + 1.25 * Math.sin(a)) + '" r="1" fill="' + cols[i % 3] + '"/>'; }
-      h += '<g class="fl" style="--dl:' + f1(i * .27) + 's">' + pe + '<circle cx="' + q[0] + '" cy="' + q[1] + '" r=".75" fill="' + (i % 3 === 2 ? "var(--ac)" : "#fff") + '"/></g>';
+      let pe = ""; for (let k = 0; k < 5; k++) { const a = k * 72 * Math.PI / 180 - Math.PI / 2; pe += '<circle cx="' + f1(q[0] + 2.3 * Math.cos(a)) + '" cy="' + f1(q[1] + 2.3 * Math.sin(a)) + '" r="1.9" fill="' + cols[i % 3] + '"/>'; }
+      h += '<g class="fl" style="--dl:' + f1(i * .27) + 's">' + pe + '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="1.4" fill="' + (i % 3 === 2 ? "var(--ac)" : "#fff") + '"/></g>';
     });
   }
   sv.innerHTML = h; return sv;
@@ -2509,7 +2511,6 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Öffnen in</span><div class="seg" id="g-open"></div><p class="hint2" id="g-openhint"></p></div>' +
     '<div id="wc"></div>' +
     '<h3 class="sub3">Aussehen</h3>' +
-    '<div class="row"><span class="lab">Farbe</span><div class="seg" id="g-colors"></div><p class="hint2">Kreise: Farbpaletten (Themes und gespeicherte Kombinationen), jedes Stück = eine Farbe. DIY öffnet die Detaileinstellungen.</p></div>' +
     '<div class="row"><span class="lab">Füllung</span><div class="seg" id="g-fill"></div></div>' +
     '<div class="row"><span class="lab">Form</span><div class="seg" id="g-shape"></div></div>' +
     '<div class="row"><span class="lab">Rahmen</span><div class="seg" id="g-frame"></div></div>' +
@@ -2526,6 +2527,8 @@ if (q.has("url") || q.has("w")) {
     '<div class="row"><span class="lab">Klick</span><div class="seg" id="g-clk"></div><p class="hint2">Klick auf die Option zeigt die Wirkung, danach wird sie gewählt.</p></div>' +
     '<h3 class="sub3">Notion</h3>' +
     '<div class="row"><span class="lab">Notion-Modus</span><div class="seg" id="g-scheme"></div><p class="hint2" id="g-schemehint"></p></div>' +
+    '<h3 class="sub3">Farbpalette</h3>' +
+    '<div class="row"><span class="lab">Vorlage</span><div class="seg pals" id="g-colors"></div><p class="hint2">Nur für dieses Widget. Das Theme (Seite und Grundfarben) wird oben in der Kopfleiste gewählt. Jedes Stück eines Kreises = eine Farbe. DIY öffnet die Detaileinstellungen.</p></div>' +
     '</section>' +
     '</div><aside class="side" aria-label="Vorschau"><div class="sideinner">' +
     '<section class="card"><h2>VORSCHAU</h2><div class="prev" id="g-prev"></div><p class="prevhint">Entspricht dem Rahmen in Notion; unten rechts ziehbar.</p><p class="prevhint" id="g-fitnote"></p></section>' +
@@ -2609,21 +2612,37 @@ function applyPage() {
   };
   /* Farbauswahl: Kreise mit allen einmaligen Farben als Kuchenstücke (Themes + gespeicherte Kombinationen) + DIY-Knopf */
   const sameDiy = (a, b) => { const ka = Object.keys(a || {}).filter((k) => a[k]), kb = Object.keys(b || {}).filter((k) => b[k]); return ka.length === kb.length && ka.every((k) => String(a[k]).toLowerCase() === String(b[k] || "").toLowerCase()); };
-  const pieOf = (theme, diy) => {
-    const p = palette(Object.assign({ theme }, diy || {})), cols = [];
+  const pieP = (p) => {
+    const cols = [];
     [p.a, p.ink, p.panel, p.line, p.glow, p.g1, p.g2].forEach((c) => { c = String(c).toLowerCase(); if (!cols.includes(c)) cols.push(c); });
     const n = cols.length, st = cols.map((c, k) => c + " " + (k * 360 / n).toFixed(2) + "deg " + ((k + 1) * 360 / n).toFixed(2) + "deg");
     return "conic-gradient(from 0deg, " + st.join(", ") + ")";
   };
-  const colorOpts = () => THEME_PICK.filter((t) => t[2]).map(([k, name]) => ({ name, theme: k, diy: {} })).concat(getCombos());
-  const activeName = () => { const o = colorOpts().find((c) => c.theme === S.theme && sameDiy(c.diy, S.diy)); return o ? o.name : THEMES[S.theme].name + (diyCount() ? " · DIY " + diyCount() : ""); };
+  const palKey = (p) => [p.a, p.ink, p.panel, p.line, p.glow, p.g1, p.g2].map((c) => String(c).toLowerCase()).join(",");
+  /* Vorlage -> DIY-Farben der aktuellen Kopfleisten-Theme; entspricht sie dem Theme selbst, bleibt DIY leer */
+  const palDiy = (p) => {
+    if (palKey(p) === palKey(palette({ theme: S.theme }))) return {};
+    return { color: p.a, ink: p.ink, panel: p.panel, line: p.line, glow: p.glow, g1: p.g1, g2: p.g2 };
+  };
+  const diyHex = (o) => { const r = {}; Object.keys(o).forEach((k) => { r[k] = String(o[k]).toLowerCase().replace("#", ""); }); return r; };
+  const PAL_X = [
+    ["Pastel", { color: "c9b6ff", ink: "2e2150", panel: "34304f", line: "8d85c4", glow: "c9b6ff", g1: "ffb5d0", g2: "a8f0d8" }],
+    ["Neon", { color: "ff2bd6", ink: "0a0010", panel: "0d0221", line: "7a00ff", glow: "ff2bd6", g1: "ffee00", g2: "00f5ff" }],
+  ];
+  const colorOpts = () => THEME_PICK.filter((t) => t[2]).map(([k, name]) => ({ name, p: palette({ theme: k }) }))
+    .concat(PAL_X.map(([name, d]) => ({ name, p: palette(Object.assign({ theme: "standard" }, d)) })))
+    .concat(getCombos().map((c) => ({ name: c.name, p: palette(Object.assign({ theme: c.theme }, c.diy)) })));
+  const curKey = () => palKey(palette(Object.assign({ theme: S.theme }, S.diy)));
+  const activeName = () => { const k = curKey(), o = colorOpts().find((c) => palKey(c.p) === k); return o ? o.name : THEMES[S.theme].name + (diyCount() ? " · DIY " + diyCount() : ""); };
   function drawColors() {
-    const host = $("g-colors"); if (!host) return; host.textContent = "";
+    const host = $("g-colors"); if (!host) return; host.textContent = ""; const k0 = curKey();
     colorOpts().forEach((c) => {
-      const b = document.createElement("button"); b.type = "button"; b.className = "pie"; b.style.background = pieOf(c.theme, c.diy);
-      b.title = c.name; b.setAttribute("aria-label", c.name); b.setAttribute("aria-pressed", String(c.theme === S.theme && sameDiy(c.diy, S.diy)));
-      b.addEventListener("click", () => { S.theme = c.theme; S.diy = Object.assign({}, c.diy); try { localStorage.setItem(TK, c.theme); } catch (e) { /* ignorieren */ } applyPage(); drawThemes(); drawDiyBtn(); if (dlg.open) drawDiy(); render(); });
-      host.appendChild(b);
+      const w = document.createElement("div"); w.className = "palo";
+      const b = document.createElement("button"); b.type = "button"; b.className = "pie"; b.style.background = pieP(c.p);
+      b.title = c.name; b.setAttribute("aria-label", c.name); b.setAttribute("aria-pressed", String(palKey(c.p) === k0));
+      b.addEventListener("click", () => { S.diy = diyHex(palDiy(c.p)); drawDiyBtn(); if (dlg.open) drawDiy(); render(); });
+      const n = document.createElement("span"); n.className = "pn"; n.textContent = c.name; w.append(b, n);
+      host.appendChild(w);
     });
     const d = document.createElement("button"); d.type = "button"; d.id = "g-diy"; d.className = "diy" + (diyCount() ? " on" : ""); d.textContent = "DIY" + (diyCount() ? " · " + diyCount() : "");
     d.addEventListener("click", openDiy); host.appendChild(d);
@@ -2686,7 +2705,7 @@ function applyPage() {
       [p.a, p.ink, p.panel, p.g1, p.g2].forEach((col) => { const d = document.createElement("i"); d.style.background = col; dots.appendChild(d); });
       const nm = document.createElement("span"); nm.textContent = c.name;
       const use = document.createElement("button"); use.type = "button"; use.textContent = "Laden";
-      use.addEventListener("click", () => { S.theme = c.theme; S.diy = Object.assign({}, c.diy); applyPage(); drawThemes(); drawDiyBtn(); drawDiy(); render(); });
+      use.addEventListener("click", () => { S.diy = diyHex(palDiy(palette(Object.assign({ theme: c.theme }, c.diy)))); drawDiyBtn(); drawDiy(); render(); });
       const cp = document.createElement("button"); cp.type = "button"; cp.textContent = "Code"; cp.title = "Code kopieren";
       cp.addEventListener("click", async () => { const code = encCombo(c); try { await navigator.clipboard.writeText(code); cp.textContent = "Kopiert"; } catch (e) { $("cb-code").value = code; cp.textContent = "Unten"; } setTimeout(() => { cp.textContent = "Code"; }, 1500); });
       const del = document.createElement("button"); del.type = "button"; del.textContent = "×"; del.title = "Löschen"; del.setAttribute("aria-label", c.name + " löschen");
@@ -2718,7 +2737,7 @@ function applyPage() {
   $("cb-save").addEventListener("click", () => {
     const a = getCombos(), name = $("cb-name").value.trim() || "Kombi " + (a.length + 1);
     const c = cleanCombo({ name, theme: S.theme, diy: S.diy });
-    if (!Object.keys(c.diy).length && S.theme === "standard") { $("cb-note").textContent = "Erst Farben ändern, dann speichern."; return; }
+    if (!Object.keys(c.diy).length) { $("cb-note").textContent = "Erst Farben ändern, dann speichern."; return; }
     a.push(c); $("cb-note").textContent = putCombos(a) ? "Gespeichert nur in diesem Browser. Für andere Geräte: Code kopieren und dort einfügen." : "Speichern im Browser nicht möglich. Bitte „Code“ kopieren und selbst aufbewahren.";
     $("cb-name").value = ""; drawCombos(); drawColors();
   });
@@ -2857,7 +2876,7 @@ function applyPage() {
       const sum = document.createElement("span"); sum.className = "sum"; sum.id = id + "-sum";
       lab.replaceWith(head); head.after(sum); row.classList.add("cr");
       const set = (open) => { row.classList.toggle("closed", !open); head.setAttribute("aria-expanded", String(open)); chev.textContent = open ? "▾" : "▸"; };
-      set(!!openState[id]); rowSetters.push([id, set]);
+      set(id in openState ? !!openState[id] : id === "g-colors"); rowSetters.push([id, set]);
       head.addEventListener("click", () => { const open = row.classList.contains("closed"); set(open); openState[id] = open; saveOpen(); });
     });
     document.querySelectorAll(".sub3").forEach((h) => {
@@ -3048,7 +3067,7 @@ function applyPage() {
   }
   const NAV_READY = ["button"].concat(WTYPES);
   drawWc(); setupCollapse(); applyWidgetUI(); applyPage(); drawAll(); render();
-  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 22.11.2026 23:02"; $("app").appendChild(st); }
+  { const st = document.createElement("p"); st.className = "stamp"; st.textContent = "Stand: 23.11.2026 03:05"; $("app").appendChild(st); }
   startBursts(() => btn);
 }
 

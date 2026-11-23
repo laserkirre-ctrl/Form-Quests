@@ -1362,6 +1362,7 @@ html[data-theme="sanrio"] dialog.dlg { border-color: var(--pa); }
 html[data-theme="sanrio"] :is(button, input, select, textarea, .pv, .tb, .seg, .tabs):not(.btn):not(.ico) { clip-path: none; border-radius: 14px; }
 html[data-theme="sanrio"] .tb, html[data-theme="sanrio"] .seg button, html[data-theme="sanrio"] .tabs button { border-radius: 999px; }
 html[data-theme="sanrio"] .stamp, html[data-theme="sanrio"] h1, html[data-theme="sanrio"] .lab { letter-spacing: .06em; }
+.igrid.ksa { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; } .igrid.ksa button { height: 76px; } .igrid.ksa button svg { width: 58px; height: 58px; overflow: visible; }
 </style>
 </head>
 <body>
@@ -3184,7 +3185,7 @@ function applyPage() {
     const b = $("g-ico"); b.textContent = ""; if (S.icon) b.appendChild(iconNode(S.icon)); b.appendChild(document.createTextNode(S.icon ? "ändern" : "wählen"));
   }
   function drawGrid() {
-    const g = $("ip-grid"); g.textContent = ""; g.classList.toggle("fita", tab === "a");
+    const g = $("ip-grid"); g.textContent = ""; g.classList.toggle("fita", tab === "a"); g.classList.toggle("ksa", tab === "k");
     $("tab-e").setAttribute("aria-selected", String(tab === "e")); $("tab-s").setAttribute("aria-selected", String(tab === "s")); $("tab-a").setAttribute("aria-selected", String(tab === "a")); $("tab-k").setAttribute("aria-selected", String(tab === "k")); $("tab-k").hidden = S.theme !== "sanrio"; if (tab === "k" && S.theme !== "sanrio") tab = "e";
     const add = (val, node, title) => { const b = document.createElement("button"); b.type = "button"; b.title = title || val; b.setAttribute("aria-label", title || val); b.setAttribute("aria-pressed", String(S.icon === val)); b.appendChild(node);
       b.addEventListener("click", () => { S.icon = val; drawIcoBtn(); drawGrid(); render(); ip.close(); }); g.appendChild(b); };

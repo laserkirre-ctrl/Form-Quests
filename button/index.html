@@ -650,6 +650,8 @@ a.btn.wp { cursor: pointer; }
 .kc.mk2, .kc.mkx { z-index: 2; }
 .kc .kn { position: relative; z-index: 3; }
 .mkf.fr { z-index: 4; }
+.kc.mkr:not(.mk2)::after { display: block; }
+.mkrc { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
 .mkb { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: var(--ac); }
 .mkb .l2 { color: color-mix(in srgb, var(--ac) 55%, #fff); }
 .mkb .fl { transform-box: fill-box; transform-origin: center; }
@@ -1710,9 +1712,9 @@ function naviNode(kind, prev) {
 }
 /* Besondere Tage: Umrandung (SVG) + Füllung (Teilchen) */
 const MK_TOK = /^(\d{4})-(\d{2})-(\d{2})(y?)(?:~([a-z]*)\.([a-z]*)\.([01]?))?$/;
-const MK_BORDERS = ["dot", "flower", "double", "dash"], MK_FILLS = ["hearts", "dots", "stars", "fw", "glit"];
+const MK_BORDERS = ["dot", "flower", "double", "dash"], MK_FILLS = ["hearts", "dots", "stars", "fw", "glit", "roche"];
 const MK_BORDER_LIST = [["", "Standard"], ["dot", "Gepunktet"], ["flower", "Blumen"], ["double", "Doppelt"], ["dash", "Gestrichelt"]];
-const MK_FILL_LIST = [["", "Keine"], ["hearts", "Herzchen"], ["dots", "Polka Dots"], ["stars", "Sterne"], ["fw", "Feuerwerk"], ["glit", "Glitzer"]];
+const MK_FILL_LIST = [["", "Keine"], ["hearts", "Herzchen"], ["dots", "Polka Dots"], ["stars", "Sterne"], ["fw", "Feuerwerk"], ["glit", "Glitzer"], ["roche", "Roché"]];
 function mkBorder(kind, anim) {
   const NS = "http://www.w3.org/2000/svg", sv = document.createElementNS(NS, "svg"); sv.setAttribute("viewBox", "0 0 40 40"); sv.setAttribute("class", "mkb mkb-" + kind); sv.setAttribute("aria-hidden", "true");
   const R = (x, w, rx, sw, extra, cls) => '<rect class="' + (cls || "") + '" x="' + x + '" y="' + x + '" width="' + w + '" height="' + w + '" rx="' + rx + '" fill="none" stroke="currentColor" stroke-width="' + sw + '" stroke-linecap="round" ' + (extra || "") + "/>";
@@ -1765,6 +1767,53 @@ function mkFill(kind) {
   if (!P.css) [back, front].forEach((L) => L.addEventListener("animationiteration", (e) => { const p = e.target; if (p.classList && p.classList.contains("p")) { const g = p.closest(".kg"); mkPlace(p, kind, !!(g && g.classList.contains("hv"))); } }));
   fr.append(back, front); return fr;
 }
+
+/* Roché: goldener Glitzer-Schweif (Canvas). Davor: schlängelt sich in der Box · Hover davor / am Tag: über den Kalender · Hover am Tag: kräftiger · Danach: Reste bröseln nach unten */
+const ROCHE_COL = ["#c8961e", "#e8c25a", "#f7e08a", "#fff6cf", "#b8860b", "#d9a62e"];
+function mkRoche(b, grid) {
+  if (b._roche) return; b._roche = true;
+  const cv = document.createElement("canvas"); cv.className = "mkrc"; cv.setAttribute("aria-hidden", "true"); b.appendChild(cv);
+  const cx = cv.getContext("2d"), parts = [], st = new WeakMap(); let last = 0, W = 0, H = 0;
+  const R = MKR;
+  const spawn = (x, y, vx, vy, life, size, g) => { if (parts.length < 3200) parts.push({ x, y, vx, vy, life, max: life, size, g, c: ROCHE_COL[(Math.random() * ROCHE_COL.length) | 0], tw: Math.random() * 6.28, fl: Math.random() < .035 }); };
+  const frame = (now) => {
+    if (!b.isConnected) return; requestAnimationFrame(frame);
+    const dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
+    const br = b.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), w = Math.round(br.width), h = Math.round(br.height);
+    if (w !== W || h !== H) { W = w; H = h; cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, W, H);
+    const hv = grid.classList.contains("hv"), T = now / 1000;
+    grid.querySelectorAll(".kc.mkr").forEach((c) => {
+      const r = c.getBoundingClientRect(), ph = c.dataset.ph, cs = r.width, ox = r.left - br.left + cs / 2, oy = r.top - br.top + cs / 2;
+      let s0 = st.get(c); if (!s0) { s0 = { a: R(0, 6.28), b: R(0, 6.28), c: R(0, 6.28), d: R(0, 6.28), A: .3, B: .3, px: null, py: null }; st.set(c, s0); }
+      if (ph === "a") { /* nach dem Tag: Reste bröseln aus der Box */
+        let n = (hv ? 70 : 38) * dt, k = Math.floor(n) + (Math.random() < n % 1 ? 1 : 0);
+        while (k--) spawn(ox + R(-.5, .5) * cs, oy + R(-.1, .5) * cs, R(-7, 7), R(8, 30), R(1.4, 3), R(.7, 1.7), 70);
+        return;
+      }
+      const big = (ph === "b" && hv) || (ph === "o"), force = ph === "o" && hv;
+      const tA = !big ? .3 : (force ? 4.2 : 3), tB = !big ? .3 : (force ? 2.9 : 2), rate = !big ? 230 : (force ? 1000 : 520), k = 1 - Math.exp(-dt * 2.6);
+      s0.A += (tA - s0.A) * k; s0.B += (tB - s0.B) * k;
+      const sp = force ? 1.5 : 1, x0 = ox + cs * s0.A * (.62 * Math.sin(T * 1.25 * sp + s0.a) + .38 * Math.sin(T * 2.9 * sp + s0.b)), y0 = oy + cs * s0.B * (.62 * Math.cos(T * 1.05 * sp + s0.c) + .38 * Math.sin(T * 2.3 * sp + s0.d));
+      const fold = (v, m) => { const L = m - 12; let q = ((v - 6) % (2 * L) + 2 * L) % (2 * L); return 6 + (q > L ? 2 * L - q : q); }, hx = fold(x0, W), hy = fold(y0, H);
+      const n = rate * dt, cnt = Math.floor(n) + (Math.random() < n % 1 ? 1 : 0), px = s0.px === null ? hx : s0.px, py = s0.py === null ? hy : s0.py;
+      for (let i = 0; i < cnt; i++) {
+        const f = (i + 1) / cnt, x = px + (hx - px) * f + R(-1, 1) * cs * (big ? .09 : .06), y = py + (hy - py) * f + R(-1, 1) * cs * (big ? .09 : .06), v = force ? 26 : 9;
+        spawn(x, y, R(-v, v), R(-v, v) - 4, big ? R(1.1, force ? 3.2 : 2.6) : R(.6, 1.3), R(.6, force ? 2 : 1.6), 0);
+      }
+      s0.px = hx; s0.py = hy;
+    });
+    cx.globalCompositeOperation = "lighter";
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i]; p.life -= dt; if (p.life <= 0) { parts.splice(i, 1); continue; }
+      p.vy += p.g * dt; p.vx *= 1 - .6 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      const a = Math.pow(p.life / p.max, .8) * (.65 + .35 * Math.sin(T * 9 + p.tw)); cx.globalAlpha = Math.max(0, Math.min(1, a)); cx.fillStyle = p.c;
+      if (p.fl) { const L = p.size * 4; cx.fillRect(p.x - L, p.y - .4, L * 2, .8); cx.fillRect(p.x - .4, p.y - L, .8, L * 2); } else cx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = "source-over";
+  };
+  requestAnimationFrame(frame);
+}
 let KAL_VIEW = null;
 function wKalender(sh) {
   const { body, o, host, b } = sh;
@@ -1798,7 +1847,7 @@ function wKalender(sh) {
           const mst = marks.get(vy + "-" + pad2(vm) + "-" + pad2(i)) || yearly.get(pad2(vm) + "-" + pad2(i));
           if (mst) {
             cell.classList.add("mk"); const ef = eff(mst);
-            if (ef.bd || ef.fl) { cell.textContent = ""; cell.appendChild(el("span", "kn", String(i))); if (ef.bd) { cell.classList.add("mk2"); cell.appendChild(mkBorder(ef.bd, ef.an)); } if (ef.fl) { cell.classList.add("mkx"); cell.appendChild(mkFill(ef.fl)); } }
+            if (ef.bd || ef.fl) { cell.textContent = ""; cell.appendChild(el("span", "kn", String(i))); if (ef.bd) { cell.classList.add("mk2"); cell.appendChild(mkBorder(ef.bd, ef.an)); } if (ef.fl === "roche") { const d0 = new Date(vy, vm - 1, i), t0 = new Date(ty, tm - 1, td); cell.classList.add("mkx", "mkr"); cell.dataset.ph = d0 > t0 ? "b" : (+d0 === +t0 ? "o" : "a"); } else if (ef.fl) { cell.classList.add("mkx"); cell.appendChild(mkFill(ef.fl)); } }
           }
         } else cell.classList.add("em");
         grid.appendChild(cell);
@@ -1808,6 +1857,7 @@ function wKalender(sh) {
   prevB.addEventListener("click", () => { vm--; if (vm < 1) { vm = 12; vy--; } draw(); }); nextB.addEventListener("click", () => { vm++; if (vm > 12) { vm = 1; vy++; } draw(); });
   ttl.addEventListener("click", () => { if (nav) { vy = base.y; vm = base.m; draw(); } }); if (nav) ttl.title = "Zurück zum Ausgangsmonat";
   draw();
+  if (!reduced() && (mfl === "roche" || Array.from(marks.values()).concat(Array.from(yearly.values())).some((q) => q.fl === "roche"))) mkRoche(b, grid);
 }
 
 /* ---------- Würfel-Roboter (eigene Figur) ---------- */

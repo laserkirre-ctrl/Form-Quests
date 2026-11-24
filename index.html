@@ -26,7 +26,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 header {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
-  padding: 12px clamp(14px, 3vw, 28px); background: color-mix(in srgb, var(--panel) 28%, transparent); border-bottom: 1px solid var(--line);
+  padding: 12px clamp(14px, 3vw, 28px); background: var(--panel); border-bottom: 1px solid var(--line);
 }
 h1 { margin: 0; font-size: 1.35rem; font-weight: 500; letter-spacing: .08em; color: var(--lime); }
 .hint { margin: 0; color: var(--muted); font-size: .95rem; flex: 1 1 260px; }
@@ -68,7 +68,7 @@ main { width: min(100%, 780px); margin: 0 auto; padding: 18px clamp(12px, 3vw, 2
 
 .card { --cut: 16px; position: relative; padding: 1.5px; background: var(--line);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
-.card-in { position: relative; overflow: hidden; padding: 18px 20px 20px; background: color-mix(in srgb, var(--panel) 28%, transparent);
+.card-in { position: relative; overflow: hidden; padding: 18px 20px 20px; background: var(--panel);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
 .card:hover { background: rgb(var(--lime-rgb) / .45); }
 .card:focus-within { background: var(--lime); }

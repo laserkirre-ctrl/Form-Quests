@@ -575,7 +575,7 @@ const SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML; /* unverä
 /* ---- Konfiguration ---- */
 const DB_ID = "420bca9d-a502-805c-b643-d5d4b6dc6238";                       // Datenbank PINBOARD
 const CFG_KEY = "quest-cfg-v1";
-const PW_DEFAULT = "222064a88004125d656a5734f47ebd33bb5807d3b818b635e0d81cfc33dbeb8b";
+const PW_DEFAULT = "0cf7dcd785b6ed00fdb8bd359dc8fa4dcb3490a3425a9016d7afc0c25c4d916e";
 const UP_EXT = ["txt", "md", "csv", "tsv", "json", "xml", "svg", "html", "css", "yaml", "yml", "ics", "gpx"];
 const UP_MAX = 200 * 1024, UP_COUNT = 5;
 
@@ -1385,7 +1385,7 @@ pwDlg.addEventListener("click", (e) => { if (e.target === pwDlg) pwDlg.close(); 
 function tryPw() {
   const now = Date.now();
   if (now < lockUntil) { $("pw-err").textContent = "Zu viele Versuche. Kurz warten."; return; }
-  if (pwHash($("pw-input").value) === (cfg.pw || PW_DEFAULT)) { unlocked = true; fails = 0; pwDlg.close(); openAdmin(); }
+  if (pwHash($("pw-input").value) === PW_DEFAULT || pwHash($("pw-input").value) === cfg.pw) { unlocked = true; fails = 0; pwDlg.close(); openAdmin(); }
   else { fails++; $("pw-err").textContent = "Falsches Passwort."; if (fails >= 3) { lockUntil = now + 5000 * fails; } $("pw-input").select(); }
 }
 $("pw-ok").addEventListener("click", tryPw);

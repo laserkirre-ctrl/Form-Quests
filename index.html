@@ -453,7 +453,7 @@ main { padding-top: 10px; }
   <div class="dlg"><div class="dlg-in">
     <div class="stripes" aria-hidden="true"></div>
     <h2 id="cf-title">Alle Felder leeren?</h2>
-    <p id="cf-text">Alle Eingaben werden gelöscht. Das lässt sich nicht rückgängig machen.</p>
+    <p id="cf-text">Alle Eingaben werden gelöscht und die Seite wird neu geladen. Das lässt sich nicht rückgängig machen.</p>
     <div class="actions">
       <button type="button" id="cf-cancel" autofocus>Abbrechen</button>
       <button type="button" id="cf-ok" class="danger">Felder leeren</button>
@@ -1245,7 +1245,12 @@ function resetForm() {
 }
 $("clear").addEventListener("click", () => { if (typeof dlgClear.showModal === "function") dlgClear.showModal(); else resetForm(); });
 $("cf-cancel").addEventListener("click", () => dlgClear.close());
-$("cf-ok").addEventListener("click", () => { dlgClear.close(); resetForm(); });
+$("cf-ok").addEventListener("click", () => {
+  dlgClear.close(); resetForm();
+  /* Seite komplett neu laden (Cache umgehen) */
+  try { const u = new URL(location.href); u.searchParams.set("r", Date.now()); location.replace(u.toString()); }
+  catch (e) { location.reload(); }
+});
 dlgClear.addEventListener("click", (e) => { if (e.target === dlgClear) dlgClear.close(); });
 
 /* ---- Felder → Notion ---- */

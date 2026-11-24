@@ -588,6 +588,7 @@ const BUILTIN = {
     { id: "buch", prop: "BUCH", title: "✨🧾 BUCH-QUEST…", showFor: ["BUCH"],
       opts: ["COVER", "INHALTSVERZEICHNIS", "CHARACTERSHEET", "SEITEN", "GLOSSAR", "BACK", "DESIGN", "ILLUSTRATION"] },
     { id: "design", prop: "DESIGN", title: "✨🧾 DESIGN…", opts: ["STYLESHEET", "SYMBOLE & ICONS"], parent: "buch", parentOpt: "DESIGN" },
+    { id: "thema", prop: "THEMA", title: "✨🧾 THEMA…", opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "WUNDEN & GEISTIGE GESUNDHEIT", "AKTIONEN & REAKTIONEN", "SCHADENSARTEN", "STATUSEFFEKTE", "KAMPFKLASSEN", "EXPERTENROLLEN", "GEGNERTYPEN", "FÄHIGKEITEN"], parent: "buch", parentOpt: "*" },
     { id: "ziel", prop: "MISSIONSZIEL", title: "📖 DAS MISSIONSZIEL", opts: ["INHALT", "GESTALTUNG"], showFor: ["BUCH", "SPIELSYSTEM"] },
     { id: "spiel", prop: "SPIELSYSTEM", title: "✨🧾 SPIELSYSTEM-QUEST…", showFor: ["SPIELSYSTEM"],
       opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "VERTEIDIGUNGSWERTE", "WUNDEN", "GEISTIGE GESUNDHEIT", "AP", "AKTIONEN& REAKTIONEN",
@@ -605,11 +606,9 @@ const BUILTIN = {
   deadline: { title: "DEADLINE" },
   journal: { title: "🧾✍️ JOURNAL", desc: "Hier ist Platz für Notizen, Hinweise, Fragen, Mitschriften uvm." },
   upload: { title: "📍 UPLOAD", desc: "Lade Entwürfe, Referenzen, Ideen, Inspiration uvm. hoch." },
-  extras: [
-    { prop: "THEMA", type: "multi_select", title: "🎯 THEMA", opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "WUNDEN & GEISTIGE GESUNDHEIT", "AKTIONEN & REAKTIONEN", "SCHADENSARTEN", "STATUSEFFEKTE", "KAMPFKLASSEN", "EXPERTENROLLEN", "GEGNERTYPEN", "FÄHIGKEITEN"] },
-  ],
+  extras: [],
 };
-const KNOWN_PROPS = new Set(["Name", "#", "HAST DU ES SCHON GESCHAFFT?", "UPLOAD", "LINK", "DEADLINE", "JOURNAL", "KAPITEL", "TASKS", "ZUSTÄNDIG", ...BUILTIN.extras.map((x) => x.prop), ...BUILTIN.sections.map((s) => s.prop)]);
+const KNOWN_PROPS = new Set(["Name", "#", "HAST DU ES SCHON GESCHAFFT?", "UPLOAD", "LINK", "DEADLINE", "JOURNAL", "KAPITEL", "TASKS", "ZUSTÄNDIG", ...BUILTIN.sections.map((s) => s.prop)]);
 const EXTRA_TYPES = ["multi_select", "select", "text", "url", "number", "date", "checkbox"];
 
 /* ---- Helfer ---- */
@@ -845,7 +844,7 @@ function mergedModel() {
   ov(m.kapitel, f.kapitel);
   for (const sec of m.sections) ov(sec, f.sections && f.sections[sec.id]);
   ov(m.tasks, f.tasks); ov(m.who, f.who); ov(m.deadline, f.deadline); ov(m.journal, f.journal);
-  { const cx = Array.isArray(f.extras) ? f.extras : []; m.extras = [...cx, ...BUILTIN.extras.filter((b) => !cx.some((x) => x.prop === b.prop))]; }
+  m.extras = Array.isArray(f.extras) ? f.extras.filter((x) => x.prop !== "THEMA") : [];
   return m;
 }
 let model = mergedModel();
@@ -1184,7 +1183,7 @@ function readState() {
 }
 function isVisible(s, st) {
   if (s.gone) return false;
-  if (s.parent) { const p = byId[s.parent]; return !!p && isVisible(p, st) && st.sel[p.id].has(s.parentOpt); }
+  if (s.parent) { const p = byId[s.parent]; return !!p && isVisible(p, st) && (s.parentOpt === "*" ? st.sel[p.id].size > 0 : st.sel[p.id].has(s.parentOpt)); }
   return !!st.kap && (s.showFor || []).includes(st.kap);
 }
 const typers = new WeakMap();

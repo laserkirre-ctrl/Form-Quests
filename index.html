@@ -1454,7 +1454,8 @@ function colorKeysFor(t) {
   const tc = same("color", ["--bg", "--panel", "--line", "--lime-ink"]);
   const own = [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
   if (tc.length && own) return tc;
-  if (e.closest(".card, .card-in, .dlg, .dlg-in, header, .pv")) return ["--panel", "--line"];
+  if (e.closest(".pv")) return ["--bg", "--line"];
+  if (e.closest(".card, .card-in, .dlg, .dlg-in, header")) return ["--panel", "--line"];
   if (e.closest(".status.err, .er, .err")) return ["--warn"];
   return ["--bg"];
 }

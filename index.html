@@ -1232,7 +1232,7 @@ $("cf-ok").addEventListener("click", () => { dlgClear.close(); resetForm(); });
 dlgClear.addEventListener("click", (e) => { if (e.target === dlgClear) dlgClear.close(); });
 
 /* ---- Felder → Notion ---- */
-function entryName(kap) { const n = new Date(); return two(n.getDate()) + "." + two(n.getMonth() + 1) + "." + two(n.getFullYear() % 100) + " · " + kap; }
+function entryName(kap) { const n = new Date(); return kap + " · " + two(n.getDate()) + "." + two(n.getMonth() + 1) + "." + two(n.getFullYear() % 100); }
 function todayStr() { const n = new Date(); return n.getFullYear() + "-" + two(n.getMonth() + 1) + "-" + two(n.getDate()); }
 function buildFields(st) {
   const F = [{ prop: "Name", type: "title", value: entryName(st.kap) }];

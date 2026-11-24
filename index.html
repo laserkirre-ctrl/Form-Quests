@@ -838,7 +838,8 @@ function renderThemes() {
   }
 }
 function applyColors() {
-  const root = document.documentElement, c = (typeof colorsBackup !== "undefined" && colorsBackup !== null) ? (cfg.colors || {}) : effectiveColors();
+  const root = document.documentElement; let c = (typeof colorsBackup !== "undefined" && colorsBackup !== null) ? (cfg.colors || {}) : effectiveColors();
+  if (!c["--bg"] || ["#0c120d", "#120e08", "#08121a", "#110a16", "transparent"].includes(String(c["--bg"]).toLowerCase())) c = Object.assign({}, c, { "--bg": "#2a2a2a" });
   for (const d of COLOR_DEFS) { if (c[d.k]) root.style.setProperty(d.k, c[d.k]); else root.style.removeProperty(d.k); }
   const hex = (c["--lime"] || "#c1f130").replace("#", "");
   const n = parseInt(hex.length === 3 ? hex.replace(/./g, "$&$&") : hex, 16);

@@ -605,9 +605,11 @@ const BUILTIN = {
   deadline: { title: "DEADLINE" },
   journal: { title: "🧾✍️ JOURNAL", desc: "Hier ist Platz für Notizen, Hinweise, Fragen, Mitschriften uvm." },
   upload: { title: "📍 UPLOAD", desc: "Lade Entwürfe, Referenzen, Ideen, Inspiration uvm. hoch." },
-  extras: [],
+  extras: [
+    { prop: "THEMA", type: "multi_select", title: "🎯 THEMA", opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "WUNDEN & GEISTIGE GESUNDHEIT", "AKTIONEN & REAKTIONEN", "SCHADENSARTEN", "STATUSEFFEKTE", "KAMPFKLASSEN", "EXPERTENROLLEN", "GEGNERTYPEN", "FÄHIGKEITEN"] },
+  ],
 };
-const KNOWN_PROPS = new Set(["Name", "#", "HAST DU ES SCHON GESCHAFFT?", "UPLOAD", "LINK", "DEADLINE", "JOURNAL", "KAPITEL", "TASKS", "ZUSTÄNDIG", ...BUILTIN.sections.map((s) => s.prop)]);
+const KNOWN_PROPS = new Set(["Name", "#", "HAST DU ES SCHON GESCHAFFT?", "UPLOAD", "LINK", "DEADLINE", "JOURNAL", "KAPITEL", "TASKS", "ZUSTÄNDIG", ...BUILTIN.extras.map((x) => x.prop), ...BUILTIN.sections.map((s) => s.prop)]);
 const EXTRA_TYPES = ["multi_select", "select", "text", "url", "number", "date", "checkbox"];
 
 /* ---- Helfer ---- */
@@ -843,7 +845,7 @@ function mergedModel() {
   ov(m.kapitel, f.kapitel);
   for (const sec of m.sections) ov(sec, f.sections && f.sections[sec.id]);
   ov(m.tasks, f.tasks); ov(m.who, f.who); ov(m.deadline, f.deadline); ov(m.journal, f.journal);
-  m.extras = Array.isArray(f.extras) ? f.extras : [];
+  { const cx = Array.isArray(f.extras) ? f.extras : []; m.extras = [...cx, ...BUILTIN.extras.filter((b) => !cx.some((x) => x.prop === b.prop))]; }
   return m;
 }
 let model = mergedModel();

@@ -588,7 +588,7 @@ const BUILTIN = {
     { id: "buch", prop: "BUCH", title: "✨🧾 BUCH-QUEST…", showFor: ["BUCH"],
       opts: ["COVER", "INHALTSVERZEICHNIS", "CHARACTERSHEET", "SEITEN", "GLOSSAR", "BACK", "DESIGN", "ILLUSTRATION"] },
     { id: "design", prop: "DESIGN", title: "✨🧾 DESIGN…", opts: ["STYLESHEET", "SYMBOLE & ICONS"], parent: "buch", parentOpt: "DESIGN" },
-    { id: "thema", prop: "THEMA", title: "✨🧾 THEMA…", opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "WUNDEN & GEISTIGE GESUNDHEIT", "AKTIONEN & REAKTIONEN", "SCHADENSARTEN", "STATUSEFFEKTE", "KAMPFKLASSEN", "EXPERTENROLLEN", "GEGNERTYPEN", "FÄHIGKEITEN"], parent: "buch", parentOpt: "*" },
+    { id: "thema", prop: "THEMA", title: "✨🧾 THEMA…", opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "WUNDEN & GEISTIGE GESUNDHEIT", "AKTIONEN & REAKTIONEN", "SCHADENSARTEN", "STATUSEFFEKTE", "KAMPFKLASSEN", "EXPERTENROLLEN", "GEGNERTYPEN", "FÄHIGKEITEN"], parent: "buch", parentOpt: ["COVER", "SEITEN", "DESIGN", "ILLUSTRATION"] },
     { id: "ziel", prop: "MISSIONSZIEL", title: "📖 DAS MISSIONSZIEL", opts: ["INHALT", "GESTALTUNG"], showFor: ["BUCH", "SPIELSYSTEM"] },
     { id: "spiel", prop: "SPIELSYSTEM", title: "✨🧾 SPIELSYSTEM-QUEST…", showFor: ["SPIELSYSTEM"],
       opts: ["FERTIGKEITEN", "FUNKEN", "ESSENCE", "VERTEIDIGUNGSWERTE", "WUNDEN", "GEISTIGE GESUNDHEIT", "AP", "AKTIONEN& REAKTIONEN",
@@ -1183,7 +1183,7 @@ function readState() {
 }
 function isVisible(s, st) {
   if (s.gone) return false;
-  if (s.parent) { const p = byId[s.parent]; return !!p && isVisible(p, st) && (s.parentOpt === "*" ? st.sel[p.id].size > 0 : st.sel[p.id].has(s.parentOpt)); }
+  if (s.parent) { const p = byId[s.parent]; return !!p && isVisible(p, st) && (Array.isArray(s.parentOpt) ? s.parentOpt.some((o) => st.sel[p.id].has(o)) : st.sel[p.id].has(s.parentOpt)); }
   return !!st.kap && (s.showFor || []).includes(st.kap);
 }
 const typers = new WeakMap();

@@ -337,8 +337,8 @@ main { width: min(100%, 1240px); }
 .row .col > .sec { flex: 1; display: flex; flex-direction: column; }
 .row.r1 .col > .sec > .sec-clip { flex: 1; }
 .row.r3 > .sec.wide { grid-column: 1 / -1; }
-@media (max-width: 859px) { .row { --cols: 2; } }
-@media (max-width: 619px) { .row { --cols: 1; } }
+@media (max-width: 859px) { .row, .row.r1, .row.r3 { --cols: 2; } }
+@media (max-width: 619px) { .row, .row.r1, .row.r3 { --cols: 1; } }
 
 /* Mehrfachauswahl */
 .multi { margin-top: 8px; }
@@ -396,6 +396,14 @@ main { padding-top: 10px; }
 .row .opt { padding: 5px 10px; font-size: .88rem; }
 .row .opts { gap: 4px; }
 .row.r1, .row.r2 { align-items: start; }
+.row.r1 { --cols: 2; }
+.row .col > .sec { flex: 0 0 auto; }
+.row .col > .sec:not(.open) { display: none; }
+.row.r2:empty { display: none; }
+.row.r3 { --cols: 2; align-items: start; }
+.row.r3 > .sec[data-sec]:not(.open) { display: none; }
+.row.r3:has(> .sec[data-sec="ziel"].open) > .sec.wide { grid-column: auto; }
+@media (max-width: 619px) { .row.r1, .row.r3 { --cols: 1; } }
 .row.r3 textarea.field { min-height: 64px; overflow: hidden; resize: none; line-height: 1.35; }
 </style>
 </head>
@@ -1040,7 +1048,7 @@ function buildForm() {
   form.textContent = "";
   const r1 = el("div", "row r1"), r2 = el("div", "row r2"), r3 = el("div", "row r3");
   form.append(r1, r2, r3);
-  const col1 = el("div", "col"); r1.appendChild(col1);
+  const col1 = el("div", "col"), kcol = el("div", "col"); r1.append(col1, kcol);
   /* DEADLINE */
   { const { c, inn } = card(model.deadline.title);
     const d = el("div", "dates");
@@ -1050,17 +1058,17 @@ function buildForm() {
   { const { c, inn } = card(model.kapitel.title, { orn: true, req: true });
     c.id = "card-kapitel";
     inn.append(el("p", "q-desc", model.kapitel.desc || ""), el("p", "q-hint", "(Wähle bis zu 1 Option aus)"), optionList("KAPITEL", model.kapitel.opts, "radio"));
-    r1.appendChild(wrap(c, { open: true })); }
+    kcol.appendChild(wrap(c, { open: true })); }
   /* Bedingte Abschnitte */
   for (const s of SECTIONS) {
     const { c, inn } = card(s.title);
     if (s.desc) inn.appendChild(el("p", "q-desc", s.desc));
     inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(s.prop, s.opts, s.id, null, "Auswählen"));
     const sw = wrap(c, { open: false, nest: !!s.parent, id: s.id });
-    r2.appendChild(sw);
+    (s.id === "ziel" ? r3 : kcol).appendChild(sw);
   }
   /* TASKS, ZUSTÄNDIG */
-  for (const [key, name, row, lbl] of [["who", "ZUSTÄNDIG", r1, "Verantwortlich"], ["tasks", "TASKS", col1, "Aufgaben"]]) {
+  for (const [key, name, row, lbl] of [["who", "ZUSTÄNDIG", col1, "Verantwortlich"], ["tasks", "TASKS", col1, "Aufgaben"]]) {
     const m = model[key], { c, inn } = card(m.title);
     if (m.desc) inn.appendChild(el("p", "q-desc", m.desc));
     inn.append(el("p", "q-hint", "(Mehrfachauswahl)"), multiList(name, m.opts, key, null, lbl));

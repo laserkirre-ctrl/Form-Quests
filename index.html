@@ -318,7 +318,7 @@ button::after, a.btn::after { content: ""; position: absolute; top: 0; bottom: 0
 
 /* 3-Spalten-Raster */
 main { width: min(100%, 1240px); }
-@media (hover: hover) and (min-width: 700px) { main { padding-right: calc(clamp(12px, 3vw, 24px) + 118px); } }
+@media (hover: hover) { html, body { min-width: 600px; } main { padding-right: calc(clamp(12px, 3vw, 24px) + 118px); } }
 .row { --cols: 3; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 14px; align-items: start; }
 .row.r1, .row.r2 { align-items: stretch; }
 .row.r2 > .sec:not(.open) { display: none; }

@@ -429,6 +429,15 @@ main { padding-top: 10px; }
 .row.r3:has(> .sec[data-sec="ziel"].open) > .sec.wide { grid-column: auto; }
 @media (max-width: 619px) { .row.r1, .row.r3 { --cols: 1; } }
 .row.r3 textarea.field { min-height: 64px; overflow: hidden; resize: none; line-height: 1.35; }
+/* Admin-Fenster: flexibel (verschiebbar + Größe ziehbar), Hauptseite wird nicht abgedunkelt */
+dialog#admin::backdrop { background: transparent; backdrop-filter: none; animation: none; }
+dialog#admin { width: min(94vw, 660px); min-width: 320px; max-width: 98vw; }
+dialog#admin .dlg, dialog#admin .dlg-in { height: 100%; box-sizing: border-box; }
+dialog#admin .dlg-in { max-height: 96vh; }
+dialog#admin.sized .dlg-in { max-height: none; }
+dialog#admin .stripes, dialog#admin h2 { cursor: move; touch-action: none; user-select: none; }
+#ad-rs { position: absolute; right: 22px; bottom: 3px; width: 18px; height: 18px; cursor: nwse-resize; z-index: 3; touch-action: none;
+  background: linear-gradient(135deg, transparent 0 50%, var(--lime) 50% 58%, transparent 58% 72%, var(--lime) 72% 80%, transparent 80%); opacity: .8; }
 </style>
 </head>
 <body>
@@ -1493,6 +1502,29 @@ document.addEventListener("click", (ev) => {
   ev.preventDefault(); ev.stopImmediatePropagation();
   pickColor(t);
 }, true);
+/* Admin-Fenster verschieben + Größe ändern */
+(() => {
+  const dlg = adDlg, inner = dlg.querySelector(".dlg"); let ox = 0, oy = 0;
+  inner.style.position = "relative";
+  const rs = document.createElement("div"); rs.id = "ad-rs"; rs.title = "Größe ziehen"; inner.appendChild(rs);
+  const apply = () => { dlg.style.translate = ox + "px " + oy + "px"; };
+  const clampPos = () => { const r = dlg.getBoundingClientRect(); const dx = Math.min(Math.max(r.left, -r.width + 80), innerWidth - 80) - r.left, dy = Math.min(Math.max(r.top, 0), innerHeight - 40) - r.top; if (dx || dy) { ox += dx; oy += dy; apply(); } };
+  const drag = (el, onMove) => el.addEventListener("pointerdown", (e) => {
+    if (e.button) return; e.preventDefault(); el.setPointerCapture(e.pointerId);
+    const sx = e.clientX, sy = e.clientY, b = { ox, oy, w: dlg.getBoundingClientRect().width, h: dlg.getBoundingClientRect().height };
+    const mv = (m) => onMove(m.clientX - sx, m.clientY - sy, b);
+    const up = () => { el.removeEventListener("pointermove", mv); el.removeEventListener("pointerup", up); clampPos(); };
+    el.addEventListener("pointermove", mv); el.addEventListener("pointerup", up);
+  });
+  dlg.querySelectorAll(".stripes, #ad-title").forEach((h) => drag(h, (dx, dy, b) => { ox = b.ox + dx; oy = b.oy + dy; apply(); }));
+  drag(rs, (dx, dy, b) => {
+    const w = Math.min(Math.max(b.w + dx, 320), innerWidth * .98), h = Math.min(Math.max(b.h + dy, 240), innerHeight * .98);
+    dlg.classList.add("sized"); dlg.style.width = w + "px"; dlg.style.height = h + "px";
+    ox = b.ox + (w - b.w) / 2; oy = b.oy + (h - b.h) / 2; apply(); /* Dialog ist zentriert: linke obere Ecke bleibt stehen */
+  });
+  dlg.addEventListener("dblclick", (e) => { if (e.target.closest(".stripes, #ad-title")) { ox = oy = 0; dlg.style.translate = ""; dlg.style.width = dlg.style.height = ""; dlg.classList.remove("sized"); } });
+  addEventListener("resize", () => { if (dlg.open) clampPos(); });
+})();
 adDlg.addEventListener("close", revertColors);
 $("ad-close").addEventListener("click", () => adDlg.close());
 adDlg.querySelectorAll("[data-open]").forEach((b) => b.addEventListener("click", () => showPane(b.dataset.open)));
